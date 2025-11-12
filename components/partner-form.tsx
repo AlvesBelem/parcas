@@ -32,7 +32,7 @@ export function PartnerForm({ categories }: PartnerFormProps) {
   return (
     <form
       action={formAction}
-      className="space-y-6 rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-950/80 to-zinc-950/40 p-8 shadow-2xl"
+      className="space-y-6 rounded-3xl border border-white/10 bg-linear-to-b from-zinc-950/80 to-zinc-950/40 p-8 shadow-2xl"
     >
       <div className="space-y-2">
         <p className="text-sm uppercase tracking-[0.35em] text-white/40">

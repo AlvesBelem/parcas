@@ -19,7 +19,7 @@ export function PartnerCarousel({ partners }: PartnerCarouselProps) {
     <ScrollArea className="w-full rounded-3xl border border-white/10 bg-zinc-950/60 p-3">
       <div className="flex gap-4 pb-4">
         {partners.map((partner) => (
-          <div key={partner.id} className="w-[270px] flex-shrink-0">
+          <div key={partner.id} className="w-[270px] shrink-0">
             <PartnerCard partner={partner} />
           </div>
         ))}

@@ -41,7 +41,7 @@ export function PartnerGrid({ partners, onEdit }: PartnerGridProps) {
             className={`rounded-2xl border ${partner.active ? "border-white/10 bg-black/30" : "border-red-500/30 bg-black/20"} p-4 text-white`}
           >
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-3xl border border-white/10 bg-white p-2">
+              <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-3xl border border-white/10 bg-white p-2">
                 <Image
                   src={partner.logoUrl}
                   alt={partner.name}
@@ -61,7 +61,7 @@ export function PartnerGrid({ partners, onEdit }: PartnerGridProps) {
                     "Sem descricao cadastrada. Atualize o parceiro para adicionar um texto curto."}
                 </p>
               </div>
-              <div className="flex flex-shrink-0 items-center gap-2">
+              <div className="flex shrink-0 items-center gap-2">
                 <button
                   type="button"
                   onClick={() => onEdit(partner)}

@@ -32,7 +32,7 @@ export function ProductGrid({ products, onEdit }: ProductGridProps) {
             className={`rounded-2xl border ${product.active ? "border-white/10 bg-black/30" : "border-red-400/30 bg-black/10"} p-4 text-white`}
           >
           <div className="flex flex-col gap-4 md:flex-row md:items-center">
-            <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-3xl border border-white/10 bg-white p-2">
+            <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-3xl border border-white/10 bg-white p-2">
               <Image
                 src={coverImage}
                 alt={product.name}

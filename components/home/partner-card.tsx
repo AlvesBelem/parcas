@@ -32,7 +32,7 @@ export function PartnerCard({ partner, className }: PartnerCardProps) {
     >
       <CardHeader className="space-y-4">
         <div className="flex items-center gap-3">
-          <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-3xl border border-white/10 bg-white p-2">
+          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-3xl border border-white/10 bg-white p-2">
             <Image
               src={partner.logoUrl}
               alt={partner.name}
