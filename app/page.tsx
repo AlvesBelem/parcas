@@ -62,7 +62,7 @@ export default async function Home({
     <div className="space-y-14">
       <section
         id="rede"
-        className="rounded-3xl border border-white/10 bg-linear-to-br from-zinc-950 via-zinc-900 to-black p-10 shadow-2xl shadow-black/30"
+        className="space-y-8 rounded-3xl border border-white/10 bg-linear-to-br from-zinc-950 via-zinc-900 to-black p-8 text-center shadow-2xl shadow-black/30 sm:p-10 sm:text-left"
       >
         <div className="flex items-center justify-center">
           <Image
@@ -75,29 +75,29 @@ export default async function Home({
           />
         </div>
         <div className="flex flex-col gap-6">
-          <Badge variant="outline" className="w-fit">
+          <Badge variant="outline" className="mx-auto w-fit sm:mx-0">
             Rede oficial de parceiros e produtos CPAD Belém
           </Badge>
           <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
             Bem-vindo ao Programa de Parcerias e Produtos da CPAD Belém
           </h1>
-          <p className="max-w-3xl text-lg text-white/70 text-justify">
+          <p className="mx-auto max-w-3xl text-lg text-white/70 sm:mx-0 sm:text-left">
             Aqui reunimos lojistas amigos e também produtos afiliados que conhecemos de perto.
             Tudo passa pela curadoria da CPAD Belém para garantir compras seguras, suporte humano
             e transparência em cada recomendação.
           </p>
 
 
-          <div className="flex flex-wrap gap-4 text-sm text-white/70">
+          <div className="flex flex-wrap justify-center gap-4 text-sm text-white/70 sm:justify-start">
             <FeaturePill text="Documentados, testados e aprovados" />
             <FeaturePill text="Entrega garantida pelo time CPAD Belém" />
             <FeaturePill text="Produtos e lojistas com suporte direto" />
           </div>
-          <div className="flex flex-wrap gap-3">
-            <Button asChild size="lg">
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+            <Button asChild size="lg" className="w-full sm:w-auto">
               <Link href="#categorias">Explorar parceiros</Link>
             </Button>
-            <Button asChild variant="secondary" size="lg">
+            <Button asChild variant="secondary" size="lg" className="w-full sm:w-auto">
               <Link href="#produtos">Ver produtos oficiais</Link>
             </Button>
           </div>
@@ -218,7 +218,7 @@ function HighlightSection({
 
 function FeaturePill({ text }: { text: string }) {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80">
+    <span className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 sm:w-auto sm:justify-start">
       <Sparkles className="h-4 w-4 text-lime-200" />
       {text}
     </span>

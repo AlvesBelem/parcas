@@ -5,6 +5,7 @@ import { auth, signOut } from "@/auth";
 import { isAdminEmail } from "@/lib/auth-helpers";
 import { Button } from "@/components/ui/button";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
+import { AdminMobileMenu } from "@/components/admin/admin-mobile-menu";
 
 const navItems = [
   { label: "Visao geral", href: "/admin/overview", icon: "overview" },
@@ -21,7 +22,7 @@ export default async function AdminLayout({
   const session = await auth();
 
   if (!session) {
-    redirect("/api/auth/signin?callbackUrl=/admin");
+    redirect("/api/auth/signin?callbackUrl=/admin/overview");
   }
 
   if (!isAdminEmail(session.user?.email)) {
@@ -35,7 +36,7 @@ export default async function AdminLayout({
 
   return (
     <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
-      <aside className="space-y-10 rounded-3xl border border-white/10 bg-zinc-950/70 p-6">
+      <aside className="hidden rounded-3xl border border-white/10 bg-zinc-950/70 p-6 lg:block lg:space-y-10">
         <div className="flex items-center gap-3 text-white">
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-lime-300/15 text-lime-200">
             <ShieldCheck className="h-6 w-6" />
@@ -61,6 +62,7 @@ export default async function AdminLayout({
       </aside>
 
       <div className="space-y-6 rounded-3xl border border-white/10 bg-zinc-950/60 p-8">
+        <AdminMobileMenu navItems={navItems} />
         {children}
       </div>
     </div>

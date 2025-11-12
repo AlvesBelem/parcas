@@ -16,14 +16,14 @@ const iconMap: Record<IconKey, ComponentType<{ className?: string }>> = {
   products: Package,
 };
 
-type NavItem = {
+export type AdminNavItem = {
   label: string;
   href: string;
   icon: IconKey;
 };
 
 type AdminSidebarProps = {
-  navItems: readonly NavItem[];
+  navItems: readonly AdminNavItem[];
 };
 
 export function AdminSidebar({ navItems }: AdminSidebarProps) {
