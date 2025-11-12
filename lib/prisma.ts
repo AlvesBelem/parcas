@@ -4,7 +4,13 @@ type GlobalWithPrisma = typeof globalThis & { prisma?: PrismaClient };
 
 const globalForPrisma = globalThis as GlobalWithPrisma;
 
-const shouldSkipInit = process.env.SKIP_PRISMA_INIT === "true";
+const isNextBuildPhase = process.env.NEXT_PHASE === "phase-production-build";
+const isVercelBuildStep =
+  process.env.VERCEL === "1" && process.env.NEXT_RUNTIME === undefined;
+
+const shouldSkipInit =
+  process.env.SKIP_PRISMA_INIT === "true" &&
+  (isNextBuildPhase || isVercelBuildStep);
 
 const client =
   globalForPrisma.prisma ??
