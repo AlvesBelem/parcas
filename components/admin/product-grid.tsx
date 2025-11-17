@@ -43,15 +43,15 @@ export function ProductGrid({ products, onEdit }: ProductGridProps) {
           Use os botoes laterais para editar, pausar ou excluir cada item.
         </p>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3">
         {products.map((product) => {
           const coverImage = product.imageUrls[0] ?? "/logo_cpad_belem.svg";
           return (
             <article
               key={product.id}
-              className={`rounded-2xl border ${product.active ? "border-white/10 bg-black/30" : "border-red-400/30 bg-black/10"} p-4 text-white shadow-lg shadow-black/20`}
+              className={`flex h-full min-h-[230px] flex-col rounded-2xl border ${product.active ? "border-white/10 bg-black/30" : "border-red-400/30 bg-black/10"} p-4 text-white shadow-lg shadow-black/20`}
             >
-              <div className="flex flex-col gap-4 md:flex-row md:items-center">
+              <div className="flex flex-1 flex-col gap-4 md:flex-row md:items-center">
                 <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-3xl border border-white/10 bg-white p-2">
                   <Image
                     src={coverImage}
@@ -75,7 +75,7 @@ export function ProductGrid({ products, onEdit }: ProductGridProps) {
                       </Badge>
                     )}
                   </div>
-                  <p className="text-sm text-white/70">
+                  <p className="text-sm text-white/70 line-clamp-2">
                     {product.description ?? "Produto sem descricao cadastrada."}
                   </p>
                 </div>

@@ -19,7 +19,7 @@ export function CategorySection({ categories }: CategorySectionProps) {
 
   return (
     <section className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/10 bg-zinc-950/70 p-6 shadow-2xl shadow-black/30">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/10 bg-zinc-950/70 p-5 shadow-2xl shadow-black/30">
         <div>
           <p className="text-xs uppercase tracking-[0.35em] text-white/40">
             Base de categorias
@@ -29,10 +29,20 @@ export function CategorySection({ categories }: CategorySectionProps) {
             Tudo o que voce cadastrar aqui aparece no filtro da landing e no select de parceiros.
           </p>
         </div>
-        <Button onClick={() => setOpen(true)}>Cadastrar categoria</Button>
+        <Button onClick={() => setOpen(true)} className="w-full sm:w-auto">
+          Cadastrar categoria
+        </Button>
       </div>
 
       <CategoryList categories={categories} onEdit={setEditing} />
+
+      <div className="sticky bottom-4 z-10 lg:hidden">
+        <div className="rounded-full border border-white/10 bg-black/70 px-4 py-3 shadow-2xl shadow-black/40 backdrop-blur">
+          <Button className="w-full" size="lg" onClick={() => setOpen(true)}>
+            + Cadastrar categoria
+          </Button>
+        </div>
+      </div>
 
       <AdminModal
         open={open}
