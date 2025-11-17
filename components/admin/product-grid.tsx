@@ -69,6 +69,7 @@ export function ProductGrid({ products, onEdit }: ProductGridProps) {
                     <Badge variant="outline">
                       {product.category?.name ?? "Sem categoria"}
                     </Badge>
+                    <Badge variant="outline">{product.clickCount} cliques</Badge>
                     {!product.active && (
                       <Badge variant="outline" className="text-red-300">
                         Inativo

@@ -10,6 +10,7 @@ export type PartnerProductSummary = {
   url: string;
   imageUrls: string[];
   description?: string | null;
+  clickCount: number;
   active: boolean;
   createdAt: Date;
   category: {

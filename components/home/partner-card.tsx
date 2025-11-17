@@ -65,7 +65,7 @@ export function PartnerCard({ partner, className }: PartnerCardProps) {
       </CardContent>
       <CardFooter>
         <Button asChild className="w-full">
-          <Link href={partner.url} target="_blank" rel="noopener noreferrer">
+          <Link href={`/out/partner/${partner.slug}`} prefetch={false}>
             Visitar loja
             <ExternalLink className="h-4 w-4" />
           </Link>

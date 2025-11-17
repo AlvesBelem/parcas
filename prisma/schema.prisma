@@ -15,9 +15,11 @@ model Partner {
   url         String
   logoUrl     String
   description String?
+  clickCount  Int      @default(0)
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  clickStats  PartnerClickStat[]
 }
 
 model Category {
@@ -48,11 +50,39 @@ model PartnerProduct {
   url         String
   imageUrls   String[] @default([])
   description String?
+  clickCount  Int      @default(0)
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   category    ProductCategory? @relation(fields: [categoryId], references: [id])
+  clickStats  ProductClickStat[]
+}
+
+model PartnerClickStat {
+  id         String   @id @default(cuid())
+  partnerId  String
+  date       DateTime
+  count      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  partner    Partner  @relation(fields: [partnerId], references: [id])
+
+  @@unique([partnerId, date])
+}
+
+model ProductClickStat {
+  id         String   @id @default(cuid())
+  productId  String
+  date       DateTime
+  count      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  product    PartnerProduct @relation(fields: [productId], references: [id])
+
+  @@unique([productId, date])
 }
 
 model User {
