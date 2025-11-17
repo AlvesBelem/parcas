@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { startTransition, useEffect, useRef, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
+import { useRouter } from "next/navigation";
 
 import { createProduct } from "@/lib/actions/product-actions";
 import { getInitialFormState } from "@/lib/actions/form-action-state";
@@ -26,10 +27,22 @@ type ProductFormProps = {
 };
 
 export function ProductForm({ categories }: ProductFormProps) {
+  const router = useRouter();
   const [state, formAction] = useFormState(createProduct, initialState);
   const [imageFields, setImageFields] = useState<string[]>([""]);
   const [selectedCategory, setSelectedCategory] = useState(categories[0]?.id ?? "");
   const hasCategories = categories.length > 0;
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (!state.ok) return;
+    formRef.current?.reset();
+    startTransition(() => {
+      setImageFields([""]);
+      setSelectedCategory(categories[0]?.id ?? "");
+    });
+    router.refresh();
+  }, [state.ok, categories, router]);
 
   function updateImageField(index: number, value: string) {
     setImageFields((prev) => prev.map((item, idx) => (idx === index ? value : item)));
@@ -50,7 +63,7 @@ export function ProductForm({ categories }: ProductFormProps) {
   }
 
   return (
-    <form action={formAction} className="space-y-6">
+    <form ref={formRef} action={formAction} className="space-y-6">
       <Field label="Nome do produto" name="name">
         <Input name="name" id="product-name" placeholder="Curso XYZ" required autoComplete="off" />
       </Field>
@@ -133,15 +146,6 @@ export function ProductForm({ categories }: ProductFormProps) {
         )}
       </div>
 
-      <Field label="Preco (opcional)" name="price" optional>
-        <Input
-          name="price"
-          id="product-price"
-          placeholder="199.90"
-          inputMode="decimal"
-        />
-      </Field>
-
       <Field label="Descricao" name="description" optional>
         <Textarea
           name="description"
@@ -154,8 +158,10 @@ export function ProductForm({ categories }: ProductFormProps) {
 
       <div className="flex flex-col gap-3">
         <SubmitButton disabled={!hasCategories || !selectedCategory} />
-        {state.message && (
-          <p className={`text-sm ${state.ok ? "text-lime-300" : "text-red-300"}`}>{state.message}</p>
+        {(state.message || state.ok === true) && (
+          <p className={`text-sm ${state.ok ? "text-lime-300" : "text-red-300"}`}>
+            {state.message || "Produto cadastrado com sucesso!"}
+          </p>
         )}
       </div>
     </form>

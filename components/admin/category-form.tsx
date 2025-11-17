@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { startTransition, useEffect, useRef, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
+import { useRouter } from "next/navigation";
 
 import { createCategory } from "@/lib/actions/category-actions";
 import { getInitialFormState } from "@/lib/actions/form-action-state";
@@ -20,11 +21,23 @@ import {
 const initialState = getInitialFormState();
 
 export function CategoryForm() {
+  const router = useRouter();
   const [state, formAction] = useFormState(createCategory, initialState);
   const [scope, setScope] = useState("partners");
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (!state.ok) return;
+    formRef.current?.reset();
+    startTransition(() => {
+      setScope("partners");
+    });
+    router.refresh();
+  }, [state.ok, router]);
 
   return (
     <form
+      ref={formRef}
       action={formAction}
       className="space-y-6 rounded-3xl border border-white/10 bg-zinc-950/70 p-8"
     >
@@ -73,12 +86,12 @@ export function CategoryForm() {
 
       <div className="flex flex-col gap-3">
         <SubmitButton />
-        {state.message && (
+        {(state.message || state.ok) && (
           <p
             className={`text-sm ${state.ok ? "text-lime-300" : "text-red-300"}`}
             role="status"
           >
-            {state.message}
+            {state.message || "Categoria cadastrada com sucesso!"}
           </p>
         )}
       </div>

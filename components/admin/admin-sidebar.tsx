@@ -16,14 +16,14 @@ const iconMap: Record<IconKey, ComponentType<{ className?: string }>> = {
   products: Package,
 };
 
-type NavItem = {
+export type AdminNavItem = {
   label: string;
   href: string;
   icon: IconKey;
 };
 
 type AdminSidebarProps = {
-  navItems: readonly NavItem[];
+  navItems: readonly AdminNavItem[];
 };
 
 export function AdminSidebar({ navItems }: AdminSidebarProps) {
@@ -39,12 +39,27 @@ export function AdminSidebar({ navItems }: AdminSidebarProps) {
             key={item.href}
             href={item.href}
             className={cn(
-              "flex items-center gap-3 rounded-2xl px-3 py-2 text-sm text-white/70 transition hover:bg-white/5 hover:text-white",
-              isActive && "bg-white/10 text-white",
+              "group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-white/70 transition hover:bg-white/10 hover:text-white",
+              isActive && "border border-white/10 bg-white/10 text-white shadow-lg shadow-black/20",
             )}
           >
-            <Icon className="h-4 w-4" />
-            {item.label}
+            <span
+              className={cn(
+                "flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 transition",
+                isActive ? "border-lime-200/60 text-lime-100" : "group-hover:border-white/20",
+              )}
+            >
+              <Icon className="h-4 w-4" />
+            </span>
+            <div className="flex flex-col">
+              <span>{item.label}</span>
+              <span className="text-xs text-white/40">
+                {item.icon === "overview" && "Painel"}
+                {item.icon === "categories" && "Organize listas"}
+                {item.icon === "partners" && "Gestão de parceiros"}
+                {item.icon === "products" && "Ofertas afiliadas"}
+              </span>
+            </div>
           </Link>
         );
       })}

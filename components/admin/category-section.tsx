@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import type { CategoryWithStats } from "@/lib/data/categories";
+import type { AdminCategoryEntry } from "@/lib/data/categories";
 import { Button } from "@/components/ui/button";
 import { CategoryList } from "@/components/admin/category-list";
 import { CategoryForm } from "@/components/admin/category-form";
@@ -10,16 +10,16 @@ import { CategoryEditForm } from "@/components/admin/category-edit-form";
 import { AdminModal } from "@/components/admin/admin-modal";
 
 type CategorySectionProps = {
-  categories: CategoryWithStats[];
+  categories: AdminCategoryEntry[];
 };
 
 export function CategorySection({ categories }: CategorySectionProps) {
   const [open, setOpen] = useState(false);
-  const [editing, setEditing] = useState<CategoryWithStats | null>(null);
+  const [editing, setEditing] = useState<AdminCategoryEntry | null>(null);
 
   return (
-    <section className="space-y-4 rounded-3xl border border-white/10 bg-zinc-950/70 p-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+    <section className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/10 bg-zinc-950/70 p-6 shadow-2xl shadow-black/30">
         <div>
           <p className="text-xs uppercase tracking-[0.35em] text-white/40">
             Base de categorias

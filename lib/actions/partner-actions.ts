@@ -183,3 +183,29 @@ export async function togglePartnerStatus(formData: FormData) {
     console.error("Erro ao alterar status do parceiro:", error);
   }
 }
+
+export async function deletePartner(formData: FormData) {
+  const session = await auth();
+  if (!session || !isAdminEmail(session.user?.email)) {
+    return;
+  }
+
+  const partnerId = String(formData.get("partnerId") || "");
+
+  if (!partnerId) {
+    return;
+  }
+
+  try {
+    await prisma.partner.delete({
+      where: { id: partnerId },
+    });
+  } catch (error) {
+    console.error("Erro ao excluir parceiro:", error);
+    return;
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin/partners");
+  revalidatePath("/admin/overview");
+}

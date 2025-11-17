@@ -37,9 +37,9 @@ export default function RootLayout({
           </div>
           <div className="relative">
             <SiteHeader />
-            <main className="mx-auto w-full max-w-6xl px-6 py-12">{children}</main>
+            <main className="mx-auto w-full max-w-[95vw] px-6 py-12">{children}</main>
             <footer className="border-t border-white/10 bg-zinc-950/80">
-              <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-6 py-6 text-sm text-white/60 sm:flex-row sm:items-center sm:justify-between">
+              <div className="mx-auto flex w-full max-w-[95vw] flex-col gap-2 px-6 py-6 text-sm text-white/60 sm:flex-row sm:items-center sm:justify-between">
                 <p>© {new Date().getFullYear()} Nosite - Rede oficial de parceiros.</p>
                 <p className="text-white/40">
                   Transparência, segurança e confiança em cada indicação.
