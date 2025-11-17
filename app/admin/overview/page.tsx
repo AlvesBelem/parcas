@@ -5,6 +5,12 @@ import { auth } from "@/auth";
 import { fetchCategoriesWithStats } from "@/lib/data/categories";
 import { fetchPartners } from "@/lib/data/partners";
 import { fetchPartnerProducts } from "@/lib/data/products";
+import {
+  fetchTopPartnerClicks,
+  fetchTopProductClicks,
+  fetchPartnerClickSeries,
+  fetchProductClickSeries,
+} from "@/lib/data/click-stats";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,15 +19,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ClickMetrics } from "@/components/admin/click-metrics";
 
 export default async function AdminOverviewPage() {
   const session = await auth();
 
-  const [categories, partnerResult, productResult] = await Promise.all([
-    fetchCategoriesWithStats(),
-    fetchPartners({ page: 1, perPage: 50, includeInactive: true }),
-    fetchPartnerProducts({ page: 1, perPage: 50, includeInactive: true }),
-  ]);
+  const [categories, partnerResult, productResult, partnerClicks, productClicks, partnerSeries, productSeries] =
+    await Promise.all([
+      fetchCategoriesWithStats(),
+      fetchPartners({ page: 1, perPage: 50, includeInactive: true }),
+      fetchPartnerProducts({ page: 1, perPage: 50, includeInactive: true }),
+    Promise.all([
+      fetchTopPartnerClicks(1),
+      fetchTopPartnerClicks(7),
+      fetchTopPartnerClicks(30),
+      fetchTopPartnerClicks(365),
+    ]),
+      Promise.all([
+        fetchTopProductClicks(1),
+        fetchTopProductClicks(7),
+        fetchTopProductClicks(30),
+        fetchTopProductClicks(365),
+      ]),
+      fetchPartnerClickSeries(30),
+      fetchProductClickSeries(30),
+    ]);
 
   const stats = [
     {
@@ -68,6 +90,18 @@ export default async function AdminOverviewPage() {
   const lastCategories = categories.slice(0, 3);
   const userName = session?.user?.name ?? "admin";
   const userEmail = session?.user?.email ?? "sem-email";
+  const partnerStats = {
+    day: partnerClicks[0],
+    week: partnerClicks[1],
+    month: partnerClicks[2],
+    year: partnerClicks[3],
+  } as const;
+  const productStats = {
+    day: productClicks[0],
+    week: productClicks[1],
+    month: productClicks[2],
+    year: productClicks[3],
+  } as const;
 
   return (
     <section className="space-y-6 text-white">
@@ -193,6 +227,13 @@ export default async function AdminOverviewPage() {
           </CardContent>
         </Card>
       </div>
+
+      <ClickMetrics
+        partnerStats={partnerStats}
+        productStats={productStats}
+        partnerSeries={partnerSeries}
+        productSeries={productSeries}
+      />
     </section>
   );
 }

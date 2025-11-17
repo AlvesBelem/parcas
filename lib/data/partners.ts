@@ -5,7 +5,7 @@ import { fetchCategoryBySlug } from "@/lib/data/categories";
 
 export type PartnerSummary = Pick<
   Partner,
-  "id" | "name" | "category" | "logoUrl" | "url" | "description" | "slug" | "createdAt" | "active"
+  "id" | "name" | "category" | "logoUrl" | "url" | "description" | "slug" | "createdAt" | "active" | "clickCount"
 >;
 
 export type PartnerQueryResult = {

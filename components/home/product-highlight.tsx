@@ -97,9 +97,8 @@ function ProductHighlightCard({ product }: { product: PartnerProductSummary }) {
       </div>
       <div className="mt-auto pt-3">
         <Link
-          href={product.url}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={`/out/product/${product.slug}`}
+          prefetch={false}
           className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-lime-300/90 px-3 py-2.5 text-sm font-semibold text-black transition hover:bg-lime-200"
         >
           {ctaLabel}

@@ -65,6 +65,7 @@ export function PartnerGrid({ partners, onEdit }: PartnerGridProps) {
                 <div className="flex flex-wrap items-center gap-3">
                   <h3 className="text-lg font-semibold">{partner.name}</h3>
                   <Badge>{partner.category}</Badge>
+                  <Badge variant="outline">{partner.clickCount} cliques</Badge>
                   {!partner.active && (
                     <Badge variant="outline" className="text-red-300">
                       Inativo
