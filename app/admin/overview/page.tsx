@@ -105,9 +105,9 @@ export default async function AdminOverviewPage() {
 
   return (
     <section className="space-y-6 text-white">
-      <div className="flex flex-wrap items-start justify-between gap-4">
+      <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:justify-between sm:text-left">
         <div className="space-y-2">
-          <p className="flex items-center gap-2 text-sm text-white/60">
+          <p className="flex items-center justify-center gap-2 text-sm text-white/60 sm:justify-start">
             <Link href="/" className="inline-flex items-center gap-1 text-lime-300">
               <ArrowLeft className="h-4 w-4" />
               Voltar para landing
@@ -120,7 +120,7 @@ export default async function AdminOverviewPage() {
             Controle rapido do admin. Acesse listas, cadastros e status em um painel unico.
           </p>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/70">
+        <div className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/70 sm:w-auto">
           <p className="text-xs uppercase tracking-[0.3em] text-white/40">Usuario logado</p>
           <p className="font-semibold">{userName}</p>
           <p className="text-white/50">{userEmail}</p>
