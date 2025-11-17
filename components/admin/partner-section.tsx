@@ -20,15 +20,15 @@ export function PartnerSection({ partners, categories }: PartnerSectionProps) {
   const [editingPartner, setEditingPartner] = useState<PartnerSummary | null>(null);
 
   return (
-    <section className="space-y-4 rounded-3xl border border-white/10 bg-zinc-950/70 p-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+    <section className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/10 bg-zinc-950/70 p-6 shadow-2xl shadow-black/30">
         <div>
           <p className="text-xs uppercase tracking-[0.35em] text-white/40">
             Vitrine oficial
           </p>
           <h2 className="text-2xl font-semibold text-white">Parceiros cadastrados</h2>
           <p className="text-sm text-white/60">
-            Cadastre novas lojas homologadas e elas aparecem imediatamente na landing.
+            Cadastre novas lojas homologadas. Edite, pause ou exclua sempre que precisar.
           </p>
         </div>
         <Button onClick={() => setCreateOpen(true)}>Cadastrar parceiro</Button>

@@ -47,7 +47,6 @@ model PartnerProduct {
   platform    String
   url         String
   imageUrls   String[] @default([])
-  price       Decimal? @db.Decimal(10, 2)
   description String?
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())

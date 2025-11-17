@@ -22,7 +22,7 @@ export function ProductHighlight({ products }: ProductHighlightProps) {
   }
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="flex flex-wrap justify-center gap-4 sm:justify-start">
       {products.map((product) => (
         <ProductHighlightCard key={product.id} product={product} />
       ))}
@@ -43,11 +43,13 @@ function ProductHighlightCard({ product }: { product: PartnerProductSummary }) {
   }, [gallery.length]);
 
   const coverImage = gallery[currentImageIndex] ?? "/logo_cpad_belem.svg";
+  const isAmazon = product.platform.toLowerCase().includes("amazon");
+  const ctaLabel = isAmazon ? "Adquira na Amazon" : "Ver oferta oficial";
 
   return (
-    <article className="flex h-full flex-col rounded-3xl border border-white/10 bg-black/60 p-5 text-white">
-      <div className="space-y-3">
-        <div className="relative h-44 overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+    <article className="flex h-full w-full max-w-[270px] flex-col rounded-3xl border border-white/10 bg-black/60 p-4 text-white">
+      <div className="space-y-2.5">
+        <div className="relative h-36 overflow-hidden rounded-2xl border border-white/10 bg-white/5">
           <Image
             src={coverImage}
             alt={product.name}
@@ -62,7 +64,7 @@ function ProductHighlightCard({ product }: { product: PartnerProductSummary }) {
             {gallery.map((image, index) => (
               <div
                 key={image + index.toString()}
-                className={`relative h-14 w-14 overflow-hidden rounded-xl border ${
+                className={`relative h-12 w-12 overflow-hidden rounded-lg border ${
                   index === currentImageIndex ? "border-lime-300" : "border-white/10"
                 } bg-white/5 transition`}
               >
@@ -71,7 +73,7 @@ function ProductHighlightCard({ product }: { product: PartnerProductSummary }) {
                   alt={`${product.name} thumb ${index + 1}`}
                   fill
                   className="object-contain bg-black/50"
-                  sizes="56px"
+                  sizes="48px"
                   unoptimized
                 />
               </div>
@@ -81,23 +83,20 @@ function ProductHighlightCard({ product }: { product: PartnerProductSummary }) {
         <div className="flex flex-wrap items-center gap-2">
           <Badge>{product.platform}</Badge>
           <Badge variant="outline">{product.category?.name ?? "Sem categoria"}</Badge>
-          {product.price && (
-            <Badge variant="outline">R$ {Number(product.price).toFixed(2)}</Badge>
-          )}
         </div>
-        <h3 className="text-xl font-semibold">{product.name}</h3>
+        <h3 className="text-lg font-semibold">{product.name}</h3>
         <p className="text-sm text-white/70 line-clamp-3">
           {product.description ?? "Produto autorizado pelos parceiros oficiais da rede."}
         </p>
       </div>
-      <div className="mt-auto pt-4">
+      <div className="mt-auto pt-3">
         <Link
           href={product.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-lime-300/90 px-4 py-3 text-sm font-semibold text-black transition hover:bg-lime-200"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-lime-300/90 px-3 py-2.5 text-sm font-semibold text-black transition hover:bg-lime-200"
         >
-          Ver oferta
+          {ctaLabel}
           <ExternalLink className="h-4 w-4" />
         </Link>
       </div>

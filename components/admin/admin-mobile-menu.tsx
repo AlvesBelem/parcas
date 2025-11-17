@@ -18,7 +18,7 @@ export function AdminMobileMenu({ navItems }: AdminMobileMenuProps) {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="flex w-full items-center justify-between rounded-3xl border border-white/15 bg-white/5 px-5 py-3 text-left text-white/80"
+        className="flex w-full items-center justify-between rounded-3xl border border-white/15 bg-zinc-900/70 px-5 py-4 text-left text-white/80 shadow-lg shadow-black/30"
         aria-expanded={open}
       >
         <div>
@@ -29,8 +29,8 @@ export function AdminMobileMenu({ navItems }: AdminMobileMenuProps) {
       </button>
       <div
         className={cn(
-          "overflow-hidden rounded-3xl border border-white/10 bg-black/60 transition-all",
-          open ? "mt-4 max-h-[420px] opacity-100" : "max-h-0 opacity-0",
+          "overflow-hidden rounded-3xl border border-white/10 bg-black/70 shadow-xl shadow-black/40 transition-all",
+          open ? "mt-4 max-h-[520px] opacity-100" : "max-h-0 opacity-0",
         )}
       >
         <div className={cn(open ? "p-4" : "p-0")}>

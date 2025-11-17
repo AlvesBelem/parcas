@@ -5,7 +5,7 @@ import { useFormState, useFormStatus } from "react-dom";
 
 import { updateCategory } from "@/lib/actions/category-actions";
 import { getInitialFormState } from "@/lib/actions/form-action-state";
-import type { CategoryWithStats } from "@/lib/data/categories";
+import type { AdminCategoryEntry } from "@/lib/data/categories";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,16 +21,16 @@ import {
 const initialState = getInitialFormState();
 
 type CategoryEditFormProps = {
-  category: CategoryWithStats;
+  category: AdminCategoryEntry;
   onSuccess?: () => void;
 };
 
 export function CategoryEditForm({ category, onSuccess }: CategoryEditFormProps) {
-  const initialScope = category.productCategoryId ? "both" : "partners";
-  const [scope, setScope] = useState(initialScope);
+  const initialScope = category.scope;
+  const [scope, setScope] = useState<"partners" | "products" | "both">(initialScope);
 
   const updateAction = useMemo(
-    () => updateCategory.bind(null, category.id, category.productCategoryId ?? null),
+    () => updateCategory.bind(null, category.partnerId ?? null, category.productCategoryId ?? null),
     [category],
   );
 
@@ -58,7 +58,7 @@ export function CategoryEditForm({ category, onSuccess }: CategoryEditFormProps)
       </Field>
 
       <Field label="Tipo da categoria" name="scope">
-        <Select value={scope} onValueChange={setScope}>
+        <Select value={scope} onValueChange={(value) => setScope(value as typeof scope)}>
           <SelectTrigger>
             <SelectValue placeholder="Selecione o tipo" />
           </SelectTrigger>

@@ -20,13 +20,13 @@ export function ProductSection({ products, categories }: ProductSectionProps) {
   const [editing, setEditing] = useState<PartnerProductSummary | null>(null);
 
   return (
-    <section className="space-y-4 rounded-3xl border border-white/10 bg-zinc-950/70 p-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+    <section className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/10 bg-zinc-950/70 p-6 shadow-2xl shadow-black/30">
         <div>
           <p className="text-xs uppercase tracking-[0.35em] text-white/40">Monetizacao</p>
           <h2 className="text-2xl font-semibold text-white">Produtos de parceiros</h2>
           <p className="text-sm text-white/60">
-            Cadastre ofertas afiliadas da Hotmart, Kiwify, Amazon ou qualquer outro marketplace.
+            Cadastre ofertas afiliadas e gerencie status, edicao e exclusao em um lugar so.
           </p>
         </div>
         <Button onClick={() => setCreateOpen(true)}>Cadastrar produto</Button>

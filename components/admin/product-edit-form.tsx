@@ -132,9 +132,6 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
         )}
       </div>
 
-      <Field label="Preco" name="price" optional>
-        <Input name="price" defaultValue={product.price ?? ""} inputMode="decimal" />
-      </Field>
       <Field label="Descricao" name="description" optional>
         <Textarea
           name="description"

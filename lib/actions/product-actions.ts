@@ -7,7 +7,7 @@ import { isAdminEmail } from "@/lib/auth-helpers";
 import { Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
-import { slugify } from "@/lib/utils";
+import { generateUniqueSlug } from "@/lib/utils";
 import {
   createProductSchema,
   type CreateProductInput,
@@ -17,22 +17,26 @@ import type { FormActionState } from "@/lib/actions/form-action-state";
 
 export async function createProduct(
   _: FormActionState,
-  formData: FormData,
+  formData: FormData
 ): Promise<FormActionState> {
   const session = await auth();
   if (!session || !isAdminEmail(session.user?.email)) {
     return {
       ok: false,
-      message: "Voce precisa estar autenticado como admin para cadastrar produtos.",
+      message:
+        "Voce precisa estar autenticado como admin para cadastrar produtos.",
     };
   }
 
-  const parsed = createProductSchema.safeParse(extractProductFormValues(formData));
+  const parsed = createProductSchema.safeParse(
+    extractProductFormValues(formData)
+  );
 
   if (!parsed.success) {
     return {
       ok: false,
-      message: parsed.error.errors[0]?.message ?? "Nao foi possivel validar os dados.",
+      message:
+        parsed.error.errors[0]?.message ?? "Nao foi possivel validar os dados.",
     };
   }
 
@@ -43,27 +47,41 @@ export async function createProduct(
   if (!category) {
     return {
       ok: false,
-      message: "Categoria de produto nao encontrada. Recarregue e tente novamente.",
+      message:
+        "Categoria de produto nao encontrada. Recarregue e tente novamente.",
     };
   }
 
   try {
-    await prisma.partnerProduct.create({
-      data: {
-        ...parsed.data,
-        categoryId: category.id,
-        imageUrls: parsed.data.imageUrls,
-        price: parsed.data.price ? new Prisma.Decimal(parsed.data.price) : undefined,
-        slug: slugify(parsed.data.name),
-      },
-    });
+    // Buscar slugs existentes para garantir unicidade
+    const existingSlugs = await prisma.partnerProduct
+      .findMany({
+        select: { slug: true },
+      })
+      .then((products) => products.map((p) => p.slug));
+
+    const uniqueSlug = await generateUniqueSlug(
+      parsed.data.name,
+      existingSlugs
+    );
+
+    const data: Prisma.PartnerProductUncheckedCreateInput = {
+      name: parsed.data.name,
+      platform: parsed.data.platform,
+      url: parsed.data.url,
+      imageUrls: parsed.data.imageUrls,
+      description: parsed.data.description,
+      slug: uniqueSlug,
+      categoryId: category.id,
+      active: true,
+    };
+
+    await prisma.partnerProduct.create({ data });
     revalidateProducts();
     return { ok: true, message: "Produto cadastrado com sucesso!" };
   } catch (error) {
-    const message =
-      (error as Error)?.message.includes("Unique constraint failed")
-        ? "Ja existe um produto com esse nome."
-        : "Erro ao salvar produto. Tente novamente.";
+    console.error("Erro ao criar produto:", error);
+    const message = deriveProductErrorMessage(error);
     return { ok: false, message };
   }
 }
@@ -71,13 +89,14 @@ export async function createProduct(
 export async function updateProduct(
   productId: string,
   _: FormActionState,
-  formData: FormData,
+  formData: FormData
 ): Promise<FormActionState> {
   const session = await auth();
   if (!session || !isAdminEmail(session.user?.email)) {
     return {
       ok: false,
-      message: "Voce precisa estar autenticado como admin para editar produtos.",
+      message:
+        "Voce precisa estar autenticado como admin para editar produtos.",
     };
   }
 
@@ -89,7 +108,8 @@ export async function updateProduct(
   if (!parsed.success) {
     return {
       ok: false,
-      message: parsed.error.errors[0]?.message ?? "Nao foi possivel validar os dados.",
+      message:
+        parsed.error.errors[0]?.message ?? "Nao foi possivel validar os dados.",
     };
   }
 
@@ -100,31 +120,44 @@ export async function updateProduct(
   if (!category) {
     return {
       ok: false,
-      message: "Categoria de produto nao encontrada. Recarregue e tente novamente.",
+      message:
+        "Categoria de produto nao encontrada. Recarregue e tente novamente.",
     };
   }
 
   try {
+    // Buscar slugs existentes, excluindo o produto atual
+    const existingSlugs = await prisma.partnerProduct
+      .findMany({
+        where: { id: { not: parsed.data.productId } },
+        select: { slug: true },
+      })
+      .then((products) => products.map((p) => p.slug));
+
+    const uniqueSlug = await generateUniqueSlug(
+      parsed.data.name,
+      existingSlugs
+    );
+
+    const data: Prisma.PartnerProductUncheckedUpdateInput = {
+      name: parsed.data.name,
+      platform: parsed.data.platform,
+      url: parsed.data.url,
+      imageUrls: parsed.data.imageUrls,
+      description: parsed.data.description,
+      slug: uniqueSlug,
+      categoryId: category.id,
+    };
+
     await prisma.partnerProduct.update({
       where: { id: parsed.data.productId },
-      data: {
-        name: parsed.data.name,
-        platform: parsed.data.platform,
-        url: parsed.data.url,
-        categoryId: category.id,
-        imageUrls: parsed.data.imageUrls,
-        description: parsed.data.description,
-        price: parsed.data.price ? new Prisma.Decimal(parsed.data.price) : undefined,
-        slug: slugify(parsed.data.name),
-      },
+      data,
     });
     revalidateProducts();
     return { ok: true, message: "Produto atualizado com sucesso!" };
   } catch (error) {
-    const message =
-      (error as Error)?.message.includes("Unique constraint failed")
-        ? "Ja existe um produto com esse nome."
-        : "Erro ao atualizar produto. Tente novamente.";
+    console.error("Erro ao atualizar produto:", error);
+    const message = deriveProductErrorMessage(error);
     return { ok: false, message };
   }
 }
@@ -148,6 +181,23 @@ export async function toggleProductStatus(formData: FormData) {
   revalidateProducts();
 }
 
+export async function deleteProduct(formData: FormData) {
+  const session = await auth();
+  if (!session || !isAdminEmail(session.user?.email)) {
+    return;
+  }
+
+  const productId = String(formData.get("productId") || "");
+
+  if (!productId) return;
+
+  await prisma.partnerProduct.delete({
+    where: { id: productId },
+  });
+
+  revalidateProducts();
+}
+
 function extractProductFormValues(formData: FormData): CreateProductInput {
   const imageUrls = formData
     .getAll("imageUrls")
@@ -160,7 +210,6 @@ function extractProductFormValues(formData: FormData): CreateProductInput {
     platform: String(formData.get("platform") || ""),
     url: String(formData.get("url") || ""),
     imageUrls,
-    price: formData.get("price")?.toString() ?? undefined,
     description: formData.get("description")?.toString(),
   };
 }
@@ -169,4 +218,23 @@ function revalidateProducts() {
   revalidatePath("/");
   revalidatePath("/admin/products");
   revalidatePath("/admin/overview");
+}
+
+function deriveProductErrorMessage(error: unknown): string {
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error.code === "P2002") {
+      return "Ja existe um produto com esse nome ou slug.";
+    }
+    if (error.code === "P2003") {
+      return "Categoria selecionada nao existe mais. Recarregue a pagina.";
+    }
+  }
+  if (error instanceof Prisma.PrismaClientValidationError) {
+    return "Dados do produto invalidos. Verifique preco, URLs e categoria.";
+  }
+  const message = (error as Error)?.message;
+  if (message) {
+    return `Erro ao salvar produto: ${message}`;
+  }
+  return "Erro ao salvar produto. Tente novamente.";
 }

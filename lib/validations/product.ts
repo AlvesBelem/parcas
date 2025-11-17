@@ -1,12 +1,5 @@
 import { z } from "zod";
 
-const priceSchema = z
-  .string()
-  .trim()
-  .regex(/^\d+(\.\d{1,2})?$/, "Informe o preco no formato 0.00")
-  .transform((value) => value || undefined)
-  .optional();
-
 const imageSchema = z
   .array(
     z
@@ -36,7 +29,6 @@ export const createProductSchema = z.object({
     .string({ required_error: "Informe o link do produto." })
     .url("Use um link valido para o produto."),
   imageUrls: imageSchema,
-  price: priceSchema,
   description: z
     .string()
     .max(3000, "Use no maximo 3000 caracteres.")

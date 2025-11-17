@@ -9,7 +9,6 @@ export type PartnerProductSummary = {
   platform: string;
   url: string;
   imageUrls: string[];
-  price: string | null;
   description?: string | null;
   active: boolean;
   createdAt: Date;
@@ -86,7 +85,6 @@ export async function fetchPartnerProducts({
     products: products.map((product) => ({
       ...product,
       imageUrls: product.imageUrls ?? [],
-      price: product.price ? product.price.toString() : null,
     })),
     total,
     page: currentPage,

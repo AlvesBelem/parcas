@@ -13,6 +13,19 @@ export type CategoryWithStats = CategoryOption & {
   productCategoryId: string | null;
 };
 
+export type AdminCategoryEntry = {
+  id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+  createdAt: Date;
+  partnerCount: number;
+  productCount: number;
+  partnerId: string | null;
+  productCategoryId: string | null;
+  scope: "partners" | "products" | "both";
+};
+
 export async function fetchCategoryOptions(): Promise<CategoryOption[]> {
   return prisma.category.findMany({
     select: {
@@ -72,4 +85,51 @@ export async function fetchCategoryBySlug(slug: string) {
       slug: true,
     },
   });
+}
+
+export function mergeCategoriesForAdmin(
+  categories: CategoryWithStats[],
+  productCategories: { id: string; name: string; slug: string; description: string | null; createdAt: Date; productCount: number }[],
+): AdminCategoryEntry[] {
+  const map = new Map<string, AdminCategoryEntry>();
+
+  categories.forEach((category) => {
+    map.set(category.slug, {
+      id: category.id,
+      slug: category.slug,
+      name: category.name,
+      description: category.description,
+      createdAt: category.createdAt,
+      partnerCount: category.partnerCount,
+      productCount: 0,
+      partnerId: category.id,
+      productCategoryId: category.productCategoryId,
+      scope: category.productCategoryId ? "both" : "partners",
+    });
+  });
+
+  productCategories.forEach((productCategory) => {
+    const existing = map.get(productCategory.slug);
+    if (existing) {
+      existing.productCategoryId = productCategory.id;
+      existing.productCount = productCategory.productCount;
+      existing.scope = existing.partnerId ? "both" : "products";
+      // keep earliest createdAt from partner category; otherwise use product category date
+    } else {
+      map.set(productCategory.slug, {
+        id: productCategory.id,
+        slug: productCategory.slug,
+        name: productCategory.name,
+        description: productCategory.description,
+        createdAt: productCategory.createdAt,
+        partnerCount: 0,
+        productCount: productCategory.productCount,
+        partnerId: null,
+        productCategoryId: productCategory.id,
+        scope: "products",
+      });
+    }
+  });
+
+  return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name));
 }

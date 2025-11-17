@@ -7,7 +7,8 @@ Aplicacao em Next.js 16 (App Router) que apresenta um catalogo estilo streaming 
 - UI premium baseada nos componentes do shadcn/ui adaptados para o tema noturno.
 - Carrossel horizontal com filtro por categoria, paginacao e metricas em tempo real.
 - Autenticacao via Google (NextAuth v5) protegida por lista de e-mails `ADMIN_EMAILS`.
-- Painel administrativo com gerenciamento completo de categorias e parceiros.
+- Header responsivo com menu hamburguer e hero centralizado para mobile.
+- Painel administrativo com gerenciamento completo e menu mobile no `/admin/overview`.
 - Suporte a logos hospedadas externamente ou servidas pelo proprio projeto (`/public/...`).
 
 ## Stack
@@ -47,6 +48,13 @@ Aplicacao em Next.js 16 (App Router) que apresenta um catalogo estilo streaming 
    ```
 
    A aplicacao fica disponivel em `http://localhost:3000`.
+
+### Notas sobre Prisma e deploy
+
+- Rode `npx prisma generate` apos instalar dependencias ou automatize com `"postinstall": "prisma generate"`.
+- Em ambientes como a Vercel, defina `SKIP_PRISMA_INIT=true` apenas durante o passo de build para evitar que o Next tente se conectar ao banco nessa etapa.
+- Garanta que `DATABASE_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `AUTH_SECRET` e `ADMIN_EMAILS` estejam habilitadas tanto no build quanto no runtime.
+
 
 ## Fluxo do admin
 

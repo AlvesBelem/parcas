@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { isAdminEmail } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 import { slugify } from "@/lib/utils";
 import {
   createCategorySchema,
@@ -106,7 +107,7 @@ function extractFormValues(formData: FormData): CreateCategoryInput {
 }
 
 export async function updateCategory(
-  categoryId: string,
+  categoryId: string | null,
   existingProductCategoryId: string | null,
   _: FormActionState,
   formData: FormData,
@@ -127,83 +128,86 @@ export async function updateCategory(
     };
   }
 
-  const existingCategory = await prisma.category.findUnique({
-    where: { id: categoryId },
-  });
+  try {
+    const existingCategory = categoryId
+      ? await prisma.category.findUnique({
+          where: { id: categoryId },
+        })
+      : null;
 
-  if (!existingCategory) {
-    return {
-      ok: false,
-      message: "Categoria nao encontrada.",
-    };
-  }
+    if (categoryId && !existingCategory) {
+      return {
+        ok: false,
+        message: "Categoria nao encontrada.",
+      };
+    }
 
-  const newSlug = slugify(parsed.data.name);
-  const shouldHavePartner = parsed.data.scope !== "products";
-  const shouldHaveProduct = parsed.data.scope !== "partners";
+    const newSlug = slugify(parsed.data.name);
+    const shouldHavePartner = parsed.data.scope !== "products";
+    const shouldHaveProduct = parsed.data.scope !== "partners";
 
-  let productCategoryId = existingProductCategoryId;
-  if (!productCategoryId && existingCategory.slug) {
-    const productCategory = await prisma.productCategory.findUnique({
-      where: { slug: existingCategory.slug },
-    });
-    productCategoryId = productCategory?.id ?? null;
-  }
+    let productCategoryId = existingProductCategoryId;
+    if (!productCategoryId && existingCategory?.slug) {
+      const productCategory = await prisma.productCategory.findUnique({
+        where: { slug: existingCategory.slug },
+      });
+      productCategoryId = productCategory?.id ?? null;
+    }
 
-  const operations: Promise<unknown>[] = [];
-
-  if (shouldHavePartner) {
-    operations.push(
-      prisma.category.update({
+    // Partner category handling
+    if (shouldHavePartner) {
+      if (categoryId) {
+        await prisma.category.update({
+          where: { id: categoryId },
+          data: {
+            name: parsed.data.name,
+            slug: newSlug,
+            description: parsed.data.description,
+          },
+        });
+      } else {
+        const created = await prisma.category.create({
+          data: {
+            name: parsed.data.name,
+            slug: newSlug,
+            description: parsed.data.description,
+          },
+        });
+        categoryId = created.id;
+      }
+    } else if (categoryId) {
+      await prisma.category.delete({
         where: { id: categoryId },
-        data: {
-          name: parsed.data.name,
-          slug: newSlug,
-          description: parsed.data.description,
-        },
-      }),
-    );
-  } else {
-    operations.push(
-      prisma.category.delete({
-        where: { id: categoryId },
-      }),
-    );
-  }
+      });
+    }
 
-  if (shouldHaveProduct) {
-    if (productCategoryId) {
-      operations.push(
-        prisma.productCategory.update({
+    // Product category handling
+    if (shouldHaveProduct) {
+      if (productCategoryId) {
+        await prisma.productCategory.update({
           where: { id: productCategoryId },
           data: {
             name: parsed.data.name,
             slug: newSlug,
             description: parsed.data.description,
           },
-        }),
-      );
-    } else {
-      operations.push(
-        prisma.productCategory.create({
+        });
+      } else {
+        const created = await prisma.productCategory.create({
           data: {
             name: parsed.data.name,
             slug: newSlug,
             description: parsed.data.description,
           },
-        }),
-      );
-    }
-  } else if (productCategoryId) {
-    operations.push(
-      prisma.productCategory.delete({
+        });
+        productCategoryId = created.id;
+      }
+    } else if (productCategoryId) {
+      await prisma.productCategory.delete({
         where: { id: productCategoryId },
-      }),
-    );
-  }
+      });
+    }
 
-  try {
-    await Promise.all(operations);
     revalidatePath("/admin");
     revalidatePath("/admin/categories");
     revalidatePath("/admin/products");
@@ -224,4 +228,50 @@ export async function updateCategory(
       message,
     };
   }
+}
+
+export async function deleteCategory(formData: FormData) {
+  const session = await auth();
+  if (!session || !isAdminEmail(session.user?.email)) {
+    return;
+  }
+
+  const categoryId = formData.get("categoryId")?.toString() || null;
+  const productCategoryId = formData.get("productCategoryId")?.toString() || null;
+
+  if (!categoryId && !productCategoryId) {
+    return;
+  }
+
+  try {
+    const operations: Prisma.PrismaPromise<unknown>[] = [];
+
+    if (categoryId) {
+      operations.push(
+        prisma.category.delete({
+          where: { id: categoryId },
+        }),
+      );
+    }
+
+    if (productCategoryId) {
+      operations.push(
+        prisma.productCategory.delete({
+          where: { id: productCategoryId },
+        }),
+      );
+    }
+
+    if (!operations.length) return;
+
+    await prisma.$transaction(operations);
+  } catch (error) {
+    console.error("Erro ao excluir categoria:", error);
+    return;
+  }
+
+  revalidatePath("/admin/categories");
+  revalidatePath("/admin/products");
+  revalidatePath("/admin/overview");
+  revalidatePath("/");
 }
