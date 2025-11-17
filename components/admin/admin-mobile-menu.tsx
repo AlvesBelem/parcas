@@ -14,7 +14,7 @@ export function AdminMobileMenu({ navItems }: AdminMobileMenuProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="lg:hidden">
+    <div className="lg:hidden mt-[-20] ">
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}

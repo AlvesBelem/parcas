@@ -45,7 +45,7 @@ export default async function AdminLayout({
     <div className="mx-auto w-full max-w-[95vw] space-y-6 px-3 sm:px-4 lg:px-6">
       <AdminMobileMenu navItems={navItems} />
       <div className="grid min-h-[calc(100vh-160px)] grid-cols-1 gap-6 lg:grid-cols-[280px_1fr]">
-        <aside className="lg:sticky lg:top-8">
+        <aside className="hidden lg:sticky lg:top-8 lg:block">
           <Card className="h-full border-white/10 bg-gradient-to-b from-zinc-900/80 via-zinc-950 to-black">
             <CardHeader className="flex flex-row items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-lime-300/15 text-lime-200">
