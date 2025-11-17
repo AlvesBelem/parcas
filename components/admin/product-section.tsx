@@ -21,7 +21,7 @@ export function ProductSection({ products, categories }: ProductSectionProps) {
 
   return (
     <section className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/10 bg-zinc-950/70 p-6 shadow-2xl shadow-black/30">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/10 bg-zinc-950/70 p-5 shadow-2xl shadow-black/30">
         <div>
           <p className="text-xs uppercase tracking-[0.35em] text-white/40">Monetizacao</p>
           <h2 className="text-2xl font-semibold text-white">Produtos de parceiros</h2>
@@ -29,10 +29,20 @@ export function ProductSection({ products, categories }: ProductSectionProps) {
             Cadastre ofertas afiliadas e gerencie status, edicao e exclusao em um lugar so.
           </p>
         </div>
-        <Button onClick={() => setCreateOpen(true)}>Cadastrar produto</Button>
+        <Button onClick={() => setCreateOpen(true)} className="w-full sm:w-auto">
+          Cadastrar produto
+        </Button>
       </div>
 
       <ProductGrid products={products} onEdit={setEditing} />
+
+      <div className="sticky bottom-4 z-10 lg:hidden">
+        <div className="rounded-full border border-white/10 bg-black/70 px-4 py-3 shadow-2xl shadow-black/40 backdrop-blur">
+          <Button className="w-full" size="lg" onClick={() => setCreateOpen(true)}>
+            + Cadastrar produto
+          </Button>
+        </div>
+      </div>
 
       <AdminModal
         open={createOpen}

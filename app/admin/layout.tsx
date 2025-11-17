@@ -42,7 +42,7 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="mx-auto w-full max-w-[95vw] space-y-6 px-0 sm:px-2 lg:px-4">
+    <div className="mx-auto w-full max-w-[95vw] space-y-6 px-3 sm:px-4 lg:px-6">
       <AdminMobileMenu navItems={navItems} />
       <div className="grid min-h-[calc(100vh-160px)] grid-cols-1 gap-6 lg:grid-cols-[280px_1fr]">
         <aside className="lg:sticky lg:top-8">

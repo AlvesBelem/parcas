@@ -48,9 +48,9 @@ export function PartnerGrid({ partners, onEdit }: PartnerGridProps) {
         {partners.map((partner) => (
           <article
             key={partner.id}
-            className={`rounded-2xl border ${partner.active ? "border-white/10 bg-black/30" : "border-red-500/30 bg-black/20"} p-4 text-white shadow-lg shadow-black/20`}
+            className={`flex h-full min-h-[210px] flex-col rounded-2xl border ${partner.active ? "border-white/10 bg-black/30" : "border-red-500/30 bg-black/20"} p-4 text-white shadow-lg shadow-black/20`}
           >
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <div className="flex flex-1 flex-col gap-4 sm:flex-row sm:items-center">
               <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-3xl border border-white/10 bg-white p-2">
                 <Image
                   src={partner.logoUrl}
@@ -71,7 +71,7 @@ export function PartnerGrid({ partners, onEdit }: PartnerGridProps) {
                     </Badge>
                   )}
                 </div>
-                <p className="text-sm text-white/70">
+                <p className="text-sm text-white/70 line-clamp-2">
                   {partner.description ??
                     "Sem descricao cadastrada. Atualize o parceiro para adicionar um texto curto."}
                 </p>
