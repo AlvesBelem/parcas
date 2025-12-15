@@ -39,21 +39,22 @@ export function AdminSidebar({ navItems }: AdminSidebarProps) {
             key={item.href}
             href={item.href}
             className={cn(
-              "group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-white/70 transition hover:bg-white/10 hover:text-white",
-              isActive && "border border-white/10 bg-white/10 text-white shadow-lg shadow-black/20",
+              "group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-[#7a5a4b] transition hover:bg-[#fff1ec] hover:text-[#2f1d15]",
+              isActive &&
+                "border border-[#b02b24] bg-[#fff1ec] text-[#2f1d15] shadow-[0_10px_28px_rgba(178,45,38,0.12)]",
             )}
           >
             <span
               className={cn(
-                "flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 transition",
-                isActive ? "border-lime-200/60 text-lime-100" : "group-hover:border-white/20",
+                "flex h-10 w-10 items-center justify-center rounded-xl border border-[#eaded5] bg-[#fff8f3] transition",
+                isActive ? "border-[#b02b24] text-[#b02b24]" : "group-hover:border-[#d7c6bc]",
               )}
             >
               <Icon className="h-4 w-4" />
             </span>
             <div className="flex flex-col">
               <span>{item.label}</span>
-              <span className="text-xs text-white/40">
+              <span className="text-xs text-[#a38271]">
                 {item.icon === "overview" && "Painel"}
                 {item.icon === "categories" && "Organize listas"}
                 {item.icon === "partners" && "Gestão de parceiros"}

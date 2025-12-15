@@ -39,15 +39,13 @@ export function CategoryForm() {
     <form
       ref={formRef}
       action={formAction}
-      className="space-y-6 rounded-3xl border border-white/10 bg-zinc-950/70 p-8"
+      className="space-y-6 rounded-3xl border border-[#eaded5] bg-[#fff8f3] p-8"
     >
       <div className="space-y-2">
-        <p className="text-sm uppercase tracking-[0.35em] text-white/40">
-          Bases do catalogo
-        </p>
-        <h2 className="text-2xl font-semibold text-white">Cadastrar categoria</h2>
-        <p className="text-sm text-white/70">
-          Estas categorias podem alimentar o filtro publico de parceiros, produtos afiliados ou ambos.
+        <p className="text-sm uppercase tracking-[0.35em] text-[#b02b24]">Bases do catálogo</p>
+        <h2 className="text-2xl font-semibold text-[#2f1d15]">Cadastrar categoria</h2>
+        <p className="text-sm text-[#7a5a4b]">
+          Estas categorias alimentam o filtro público de parceiros, produtos afiliados ou ambos.
         </p>
       </div>
 
@@ -61,7 +59,7 @@ export function CategoryForm() {
         />
       </Field>
 
-      <Field label="Descricao interna" name="description" optional>
+      <Field label="Descrição interna" name="description" optional>
         <Textarea
           name="description"
           id="description"
@@ -87,10 +85,7 @@ export function CategoryForm() {
       <div className="flex flex-col gap-3">
         <SubmitButton />
         {(state.message || state.ok) && (
-          <p
-            className={`text-sm ${state.ok ? "text-lime-300" : "text-red-300"}`}
-            role="status"
-          >
+          <p className={`text-sm ${state.ok ? "text-[#b02b24]" : "text-[#d53838]"}`} role="status">
             {state.message || "Categoria cadastrada com sucesso!"}
           </p>
         )}
@@ -109,9 +104,8 @@ type FieldProps = {
 function Field({ label, name, optional, children }: FieldProps) {
   return (
     <div className="space-y-2">
-      <Label htmlFor={name} className="text-white">
-        {label}{" "}
-        {optional && <span className="text-xs uppercase text-white/40">Opcional</span>}
+      <Label htmlFor={name}>
+        {label} {optional && <span className="text-xs uppercase text-[#a38271]">Opcional</span>}
       </Label>
       {children}
     </div>

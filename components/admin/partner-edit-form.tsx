@@ -54,24 +54,18 @@ export function PartnerEditForm({
   const hasCategories = categories.length > 0;
 
   return (
-    <form action={formAction} className="space-y-6">
+    <form
+      action={formAction}
+      className="space-y-6 rounded-3xl border border-[#eaded5] bg-[#fff8f3] p-8 shadow-[0_15px_45px_rgba(63,33,25,0.08)]"
+    >
       <Field label="Nome da loja" name="name">
-        <Input
-          name="name"
-          id="edit-name"
-          defaultValue={partner.name}
-          required
-          autoComplete="off"
-        />
+        <Input name="name" id="edit-name" defaultValue={partner.name} required autoComplete="off" />
       </Field>
 
       <Field label="Categoria" name="categoryId">
         {hasCategories ? (
           <>
-            <Select
-              value={selectedCategory}
-              onValueChange={setSelectedCategory}
-            >
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger>
                 <SelectValue placeholder="Selecione uma categoria" />
               </SelectTrigger>
@@ -83,28 +77,17 @@ export function PartnerEditForm({
                 ))}
               </SelectContent>
             </Select>
-            <input
-              type="hidden"
-              name="categoryId"
-              value={selectedCategory}
-              required
-            />
+            <input type="hidden" name="categoryId" value={selectedCategory} required />
           </>
         ) : (
-          <p className="rounded-2xl border border-dashed border-white/20 bg-white/5 p-4 text-sm text-white/70">
+          <p className="rounded-2xl border border-dashed border-[#eaded5] bg-white p-4 text-sm text-[#7a5a4b]">
             Cadastre uma categoria antes de editar parceiros.
           </p>
         )}
       </Field>
 
       <Field label="Link oficial" name="url">
-        <Input
-          name="url"
-          id="edit-url"
-          type="url"
-          defaultValue={partner.url}
-          required
-        />
+        <Input name="url" id="edit-url" type="url" defaultValue={partner.url} required />
       </Field>
 
       <Field
@@ -112,15 +95,10 @@ export function PartnerEditForm({
         name="logoUrl"
         hint="Use um link HTTPS ou um caminho como /parceiros/loja-x/logo.png dentro de public."
       >
-        <Input
-          name="logoUrl"
-          id="edit-logoUrl"
-          defaultValue={partner.logoUrl}
-          required
-        />
+        <Input name="logoUrl" id="edit-logoUrl" defaultValue={partner.logoUrl} required />
       </Field>
 
-      <Field label="Descricao curta" name="description" optional>
+      <Field label="Descrição curta" name="description" optional>
         <Textarea
           name="description"
           id="edit-description"
@@ -132,10 +110,7 @@ export function PartnerEditForm({
       <div className="flex flex-col gap-3">
         <SubmitButton disabled={!hasCategories || !selectedCategory} />
         {state.message && (
-          <p
-            className={`text-sm ${state.ok ? "text-lime-300" : "text-red-300"}`}
-            role="status"
-          >
+          <p className={`text-sm ${state.ok ? "text-[#b02b24]" : "text-[#d53838]"}`} role="status">
             {state.message}
           </p>
         )}
@@ -155,12 +130,11 @@ type FieldProps = {
 function Field({ label, name, children, optional, hint }: FieldProps) {
   return (
     <div className="space-y-2">
-      <Label htmlFor={name} className="text-white">
-        {label}{" "}
-        {optional && <span className="text-xs uppercase text-white/40">Opcional</span>}
+      <Label htmlFor={name}>
+        {label} {optional && <span className="text-xs uppercase text-[#a38271]">Opcional</span>}
       </Label>
       {children}
-      {hint && <p className="text-xs text-white/50">{hint}</p>}
+      {hint && <p className="text-xs text-[#a38271]">{hint}</p>}
     </div>
   );
 }
@@ -169,7 +143,7 @@ function SubmitButton({ disabled }: { disabled?: boolean }) {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" className="w-full" disabled={pending || disabled}>
-      {pending ? "Salvando..." : "Salvar alteracoes"}
+      {pending ? "Salvando..." : "Salvar alterações"}
     </Button>
   );
 }

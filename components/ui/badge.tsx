@@ -12,11 +12,11 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border px-3 py-0.5 text-xs font-semibold uppercase tracking-wide",
+        "inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide",
         variant === "default" &&
-          "border-lime-300/30 bg-lime-300/20 text-lime-200",
+          "border-[#f3cfc6] bg-[#fdf0ec] text-[#9e231d]",
         variant === "outline" &&
-          "border-white/30 text-white/70",
+          "border-[#e1d4ca] text-[#6d4c3d]",
         className,
       )}
       {...props}

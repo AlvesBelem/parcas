@@ -64,7 +64,10 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
   }
 
   return (
-    <form action={formAction} className="space-y-6">
+    <form
+      action={formAction}
+      className="space-y-6 rounded-3xl border border-[#eaded5] bg-[#fff8f3] p-8 shadow-[0_15px_45px_rgba(63,33,25,0.08)]"
+    >
       <Field label="Nome do produto" name="name">
         <Input name="name" defaultValue={product.name} required />
       </Field>
@@ -92,7 +95,7 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
             <input type="hidden" name="categoryId" value={selectedCategory} required />
           </>
         ) : (
-          <p className="rounded-2xl border border-dashed border-white/20 bg-black/20 p-4 text-sm text-white/70">
+          <p className="rounded-2xl border border-dashed border-[#eaded5] bg-white p-4 text-sm text-[#7a5a4b]">
             Cadastre uma categoria de produto antes de editar ofertas.
           </p>
         )}
@@ -101,7 +104,7 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
       <div className="space-y-3">
         <Label>
           Imagens
-          <span className="ml-2 text-xs uppercase text-white/40">(1 a 5 imagens)</span>
+          <span className="ml-2 text-xs uppercase text-[#a38271]">(1 a 5 imagens)</span>
         </Label>
         <div className="space-y-2">
           {imageFields.map((value, index) => (
@@ -117,6 +120,7 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
                   type="button"
                   variant="ghost"
                   size="sm"
+                  className="text-[#b02b24] hover:bg-[#fff1ec]"
                   onClick={() => removeImageField(index)}
                 >
                   Remover
@@ -132,7 +136,7 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
         )}
       </div>
 
-      <Field label="Descricao" name="description" optional>
+      <Field label="Descrição" name="description" optional>
         <Textarea
           name="description"
           defaultValue={product.description ?? ""}
@@ -143,7 +147,7 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
       <div className="flex flex-col gap-3">
         <SubmitButton disabled={!hasCategories || !selectedCategory} />
         {state.message && (
-          <p className={`text-sm ${state.ok ? "text-lime-300" : "text-red-300"}`}>{state.message}</p>
+          <p className={`text-sm ${state.ok ? "text-[#b02b24]" : "text-[#d53838]"}`}>{state.message}</p>
         )}
       </div>
     </form>
@@ -161,7 +165,7 @@ function Field({ label, name, children, optional }: FieldProps) {
   return (
     <div className="space-y-2">
       <Label htmlFor={name}>
-        {label} {optional && <span className="text-xs uppercase text-white/40">(Opcional)</span>}
+        {label} {optional && <span className="text-xs uppercase text-[#a38271]">(Opcional)</span>}
       </Label>
       {children}
     </div>
@@ -172,7 +176,7 @@ function SubmitButton({ disabled }: { disabled?: boolean }) {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" className="w-full" disabled={pending || disabled}>
-      {pending ? "Salvando..." : "Salvar alteracoes"}
+      {pending ? "Salvando..." : "Salvar alterações"}
     </Button>
   );
 }

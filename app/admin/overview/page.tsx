@@ -29,12 +29,12 @@ export default async function AdminOverviewPage() {
       fetchCategoriesWithStats(),
       fetchPartners({ page: 1, perPage: 50, includeInactive: true }),
       fetchPartnerProducts({ page: 1, perPage: 50, includeInactive: true }),
-    Promise.all([
-      fetchTopPartnerClicks(1),
-      fetchTopPartnerClicks(7),
-      fetchTopPartnerClicks(30),
-      fetchTopPartnerClicks(365),
-    ]),
+      Promise.all([
+        fetchTopPartnerClicks(1),
+        fetchTopPartnerClicks(7),
+        fetchTopPartnerClicks(30),
+        fetchTopPartnerClicks(365),
+      ]),
       Promise.all([
         fetchTopProductClicks(1),
         fetchTopProductClicks(7),
@@ -77,18 +77,18 @@ export default async function AdminOverviewPage() {
     },
     {
       title: "Cadastrar parceiro",
-      description: "Publique lojas verificadas e mantenha o vitrine atualizada.",
+      description: "Publique lojas verificadas e mantenha a vitrine atualizada.",
       href: "/admin/partners",
     },
     {
       title: "Cadastrar produto",
-      description: "Inclua ofertas afiliadas com imagens, links e precos.",
+      description: "Inclua ofertas afiliadas com imagens, links e preços.",
       href: "/admin/products",
     },
   ];
 
   const lastCategories = categories.slice(0, 3);
-  const userName = session?.user?.name ?? "admin";
+  const userName = session?.user?.name ?? "Admin";
   const userEmail = session?.user?.email ?? "sem-email";
   const partnerStats = {
     day: partnerClicks[0],
@@ -104,26 +104,28 @@ export default async function AdminOverviewPage() {
   } as const;
 
   return (
-    <section className="space-y-6 text-white">
+    <section className="space-y-6 text-[#3f2b22]">
       <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:justify-between sm:text-left">
         <div className="space-y-2">
-          <p className="flex items-center justify-center gap-2 text-sm text-white/60 sm:justify-start">
-            <Link href="/" className="inline-flex items-center gap-1 text-lime-300">
+          <p className="flex items-center justify-center gap-2 text-sm text-[#7a5a4b] sm:justify-start">
+            <Link href="/" className="inline-flex items-center gap-1 text-[#b02b24]">
               <ArrowLeft className="h-4 w-4" />
-              Voltar para landing
+              Voltar para a vitrine
             </Link>
-            <span className="text-white/30">/</span>
+            <span className="text-[#c2a999]">/</span>
             painel seguro
           </p>
-          <h1 className="text-3xl font-semibold">Visao geral</h1>
-          <p className="text-sm text-white/60">
-            Controle rapido do admin. Acesse listas, cadastros e status em um painel unico.
+          <h1 className="text-3xl font-semibold" style={{ fontFamily: "var(--font-playfair)" }}>
+            Visão geral
+          </h1>
+          <p className="text-sm text-[#7a5a4b]">
+            Controle rápido do admin. Acesse listas, cadastros e status em um painel único.
           </p>
         </div>
-        <div className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/70 sm:w-auto">
-          <p className="text-xs uppercase tracking-[0.3em] text-white/40">Usuario logado</p>
-          <p className="font-semibold">{userName}</p>
-          <p className="text-white/50">{userEmail}</p>
+        <div className="w-full max-w-sm rounded-2xl border border-[#eaded5] bg-white px-4 py-3 text-sm text-[#7a5a4b] shadow-[0_10px_30px_rgba(63,33,25,0.08)] sm:w-auto">
+          <p className="text-xs uppercase tracking-[0.3em] text-[#b02b24]">Usuário logado</p>
+          <p className="font-semibold text-[#2f1d15]">{userName}</p>
+          <p className="text-[#7a5a4b]">{userEmail}</p>
         </div>
       </div>
 
@@ -133,24 +135,24 @@ export default async function AdminOverviewPage() {
           return (
             <Card
               key={stat.label}
-              className="border-white/10 bg-black/40 backdrop-blur transition hover:border-lime-200/30"
+              className="border-[#eaded5] bg-white shadow-[0_15px_45px_rgba(63,33,25,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_60px_rgba(63,33,25,0.12)]"
             >
               <CardHeader className="flex flex-row items-start justify-between">
                 <div className="space-y-1">
-                  <CardDescription className="uppercase tracking-[0.3em] text-xs text-white/50">
+                  <CardDescription className="uppercase tracking-[0.3em] text-xs text-[#b02b24]">
                     {stat.label}
                   </CardDescription>
-                  <CardTitle className="text-3xl text-white">{stat.value}</CardTitle>
-                  <p className="text-sm text-white/60">{stat.helper}</p>
+                  <CardTitle className="text-3xl text-[#2f1d15]">{stat.value}</CardTitle>
+                  <p className="text-sm text-[#7a5a4b]">{stat.helper}</p>
                 </div>
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-lime-200">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#eaded5] bg-[#fff8f3] text-[#b02b24]">
                   <Icon className="h-5 w-5" />
                 </span>
               </CardHeader>
               <CardContent>
                 <Link
                   href={stat.href}
-                  className="inline-flex items-center gap-2 text-sm text-lime-200 hover:text-lime-100"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#b02b24] hover:text-[#8f1f19]"
                 >
                   Ver detalhes
                   <ArrowRight className="h-4 w-4" />
@@ -162,64 +164,62 @@ export default async function AdminOverviewPage() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
-        <Card className="border-white/10 bg-zinc-950/70">
+        <Card className="border-[#eaded5] bg-white shadow-[0_15px_45px_rgba(63,33,25,0.08)]">
           <CardHeader className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <CardDescription className="uppercase tracking-[0.35em] text-xs text-white/50">
+              <CardDescription className="uppercase tracking-[0.35em] text-xs text-[#b02b24]">
                 Atalhos
               </CardDescription>
-              <CardTitle className="text-xl text-white">Fluxos principais</CardTitle>
-              <p className="text-sm text-white/60">
+              <CardTitle className="text-xl text-[#2f1d15]">Fluxos principais</CardTitle>
+              <p className="text-sm text-[#7a5a4b]">
                 Acesse rapidamente os cadastros mais usados.
               </p>
             </div>
-            <Sparkles className="h-8 w-8 text-lime-200" />
+            <Sparkles className="h-8 w-8 text-[#d37b2a]" />
           </CardHeader>
           <CardContent className="space-y-3">
             {shortcuts.map((shortcut) => (
               <Link
                 key={shortcut.href}
                 href={shortcut.href}
-                className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/40 px-4 py-3 transition hover:border-lime-200/40 hover:bg-white/5"
+                className="flex items-center justify-between rounded-2xl border border-[#eaded5] bg-[#fff8f3] px-4 py-3 transition hover:border-[#d7c6bc] hover:bg-[#fff1ec]"
               >
                 <div>
-                  <p className="text-sm font-semibold">{shortcut.title}</p>
-                  <p className="text-sm text-white/60">{shortcut.description}</p>
+                  <p className="text-sm font-semibold text-[#2f1d15]">{shortcut.title}</p>
+                  <p className="text-sm text-[#7a5a4b]">{shortcut.description}</p>
                 </div>
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4 text-[#b02b24]" />
               </Link>
             ))}
           </CardContent>
         </Card>
 
-        <Card className="border-white/10 bg-black/30">
+        <Card className="border-[#eaded5] bg-white shadow-[0_15px_45px_rgba(63,33,25,0.08)]">
           <CardHeader>
-            <CardDescription className="uppercase tracking-[0.35em] text-xs text-white/50">
-              Ultimas categorias
+            <CardDescription className="uppercase tracking-[0.35em] text-xs text-[#b02b24]">
+              Últimas categorias
             </CardDescription>
-            <CardTitle className="text-xl text-white">O que mudou?</CardTitle>
-            <p className="text-sm text-white/60">
-              Monitoramento rapido das ultimas entradas.
-            </p>
+            <CardTitle className="text-xl text-[#2f1d15]">O que mudou?</CardTitle>
+            <p className="text-sm text-[#7a5a4b]">Monitoramento rápido das últimas entradas.</p>
           </CardHeader>
           <CardContent className="space-y-3">
             {lastCategories.length ? (
               lastCategories.map((category) => (
                 <div
                   key={category.id}
-                  className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
+                  className="rounded-2xl border border-[#eaded5] bg-[#fff8f3] px-4 py-3"
                 >
-                  <p className="font-semibold">{category.name}</p>
-                  <p className="text-xs uppercase tracking-wide text-white/40">
+                  <p className="font-semibold text-[#2f1d15]">{category.name}</p>
+                  <p className="text-xs uppercase tracking-wide text-[#a38271]">
                     criado em {formatDate(category.createdAt)}
                   </p>
-                  <p className="text-sm text-white/60">
-                    {category.description ?? "Sem descricao."}
+                  <p className="text-sm text-[#7a5a4b]">
+                    {category.description ?? "Sem descrição."}
                   </p>
                 </div>
               ))
             ) : (
-              <p className="text-sm text-white/60">Nenhuma categoria cadastrada ainda.</p>
+              <p className="text-sm text-[#7a5a4b]">Nenhuma categoria cadastrada ainda.</p>
             )}
             <Button asChild variant="secondary" className="w-full">
               <Link href="/admin/categories">Ir para categorias</Link>

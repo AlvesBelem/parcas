@@ -19,14 +19,12 @@ export function CategorySection({ categories }: CategorySectionProps) {
 
   return (
     <section className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/10 bg-zinc-950/70 p-5 shadow-2xl shadow-black/30">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-[#eaded5] bg-white p-5 shadow-[0_15px_45px_rgba(63,33,25,0.08)]">
         <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-white/40">
-            Base de categorias
-          </p>
-          <h2 className="text-2xl font-semibold text-white">Gerenciar categorias</h2>
-          <p className="text-sm text-white/60">
-            Tudo o que voce cadastrar aqui aparece no filtro da landing e no select de parceiros.
+          <p className="text-xs uppercase tracking-[0.35em] text-[#b02b24]">Base de categorias</p>
+          <h2 className="text-2xl font-semibold text-[#2f1d15]">Gerenciar categorias</h2>
+          <p className="text-sm text-[#7a5a4b]">
+            Tudo o que você cadastrar aqui aparece no filtro da vitrine e nos formulários de parceiros.
           </p>
         </div>
         <Button onClick={() => setOpen(true)} className="w-full sm:w-auto">
@@ -37,7 +35,7 @@ export function CategorySection({ categories }: CategorySectionProps) {
       <CategoryList categories={categories} onEdit={setEditing} />
 
       <div className="sticky bottom-4 z-10 lg:hidden">
-        <div className="rounded-full border border-white/10 bg-black/70 px-4 py-3 shadow-2xl shadow-black/40 backdrop-blur">
+        <div className="rounded-full border border-[#eaded5] bg-white px-4 py-3 shadow-[0_18px_55px_rgba(63,33,25,0.12)] backdrop-blur">
           <Button className="w-full" size="lg" onClick={() => setOpen(true)}>
             + Cadastrar categoria
           </Button>

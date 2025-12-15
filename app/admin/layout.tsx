@@ -15,7 +15,7 @@ import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { AdminMobileMenu } from "@/components/admin/admin-mobile-menu";
 
 const navItems = [
-  { label: "Visao geral", href: "/admin/overview", icon: "overview" },
+  { label: "Visão geral", href: "/admin/overview", icon: "overview" },
   { label: "Categorias", href: "/admin/categories", icon: "categories" },
   { label: "Parceiros", href: "/admin/partners", icon: "partners" },
   { label: "Produtos", href: "/admin/products", icon: "products" },
@@ -42,27 +42,25 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="mx-auto w-full max-w-[95vw] space-y-6 px-3 sm:px-4 lg:px-6">
+    <div className="mx-auto w-full max-w-6xl space-y-6 px-4 sm:px-6 lg:px-8">
       <AdminMobileMenu navItems={navItems} />
       <div className="grid min-h-[calc(100vh-160px)] grid-cols-1 gap-6 lg:grid-cols-[280px_1fr]">
         <aside className="hidden lg:sticky lg:top-8 lg:block">
-          <Card className="h-full border-white/10 bg-gradient-to-b from-zinc-900/80 via-zinc-950 to-black">
+          <Card className="h-full border-[#eaded5] bg-white shadow-[0_18px_55px_rgba(63,33,25,0.1)]">
             <CardHeader className="flex flex-row items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-lime-300/15 text-lime-200">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#fdefec] text-[#b02b24]">
                 <ShieldCheck className="h-6 w-6" />
               </div>
               <div>
-                <p className="text-xs uppercase tracking-[0.3em] text-white/40">
-                  Painel
-                </p>
-                <CardTitle className="text-xl text-white">Nosite Admin</CardTitle>
-                <CardDescription>Controle central das operacoes.</CardDescription>
+                <p className="text-xs uppercase tracking-[0.3em] text-[#b02b24]/80">Painel</p>
+                <CardTitle className="text-xl text-[#2f1d15]">CPAD Admin</CardTitle>
+                <CardDescription>Controle central das operações.</CardDescription>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <AdminSidebar navItems={navItems} />
-              <div className="rounded-2xl border border-white/10 bg-black/40 p-4 text-sm text-white/70">
-                <p className="mb-3 truncate text-white">{session.user?.email}</p>
+              <div className="rounded-2xl border border-[#eaded5] bg-[#fff8f3] p-4 text-sm text-[#7a5a4b]">
+                <p className="mb-3 truncate text-[#2f1d15]">{session.user?.email}</p>
                 <form action={handleSignOut}>
                   <Button type="submit" variant="secondary" className="w-full">
                     Sair

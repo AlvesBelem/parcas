@@ -1,20 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { ClickStatEntry, ClickSeriesPoint } from "@/lib/data/click-stats";
 
 const periods = [
-  { key: "day", label: "Dia", helper: "Ultimas 24h" },
-  { key: "week", label: "Semana", helper: "Ultimos 7 dias" },
-  { key: "month", label: "Mes", helper: "Ultimos 30 dias" },
-  { key: "year", label: "Ano", helper: "Ultimos 365 dias" },
+  { key: "day", label: "Dia", helper: "Últimas 24h" },
+  { key: "week", label: "Semana", helper: "Últimos 7 dias" },
+  { key: "month", label: "Mês", helper: "Últimos 30 dias" },
+  { key: "year", label: "Ano", helper: "Últimos 365 dias" },
 ] as const;
 
 type PeriodKey = (typeof periods)[number]["key"];
 type MetricMap = Record<PeriodKey, ClickStatEntry[]>;
+type FocusView = "both" | "partners" | "products";
 
 type ClickMetricsProps = {
   partnerStats: MetricMap;
@@ -30,63 +31,88 @@ export function ClickMetrics({
   productSeries,
 }: ClickMetricsProps) {
   const [period, setPeriod] = useState<PeriodKey>("week");
+  const [focus, setFocus] = useState<FocusView>("both");
 
   const partnerData = partnerStats[period] ?? [];
   const productData = productStats[period] ?? [];
   const currentPeriod = periods.find((p) => p.key === period) ?? periods[1];
 
-  return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col items-center space-y-4">
-      <div className="w-[90vw] max-w-6xl sm:w-full">
-        <div className="rounded-2xl border border-white/10 bg-black/40 p-4 shadow-lg">
-          <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:items-start sm:justify-between sm:text-left">
-            <div className="space-y-1">
-              <p className="text-xs uppercase tracking-[0.35em] text-white/50">Visao rapida</p>
-              <p className="text-lg font-semibold text-white">Metricas de cliques</p>
-              <p className="text-sm text-white/60">Escolha o periodo e veja os destaques.</p>
-            </div>
-            <div className="hidden flex-nowrap gap-2 overflow-x-auto rounded-full border border-white/10 bg-white/4 p-1 sm:flex">
-              {periods.map((p) => (
-                <button
-                  key={p.key}
-                  type="button"
-                  onClick={() => setPeriod(p.key)}
-                  className={`whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold transition ${
-                    p.key === period
-                      ? "bg-lime-300/20 text-lime-100 shadow-[0_0_0_1px_rgba(190,242,100,0.3)]"
-                      : "text-white/70 hover:bg-white/5"
-                  }`}
-                  aria-pressed={p.key === period}
-                >
-                  {p.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+  const showPartners = focus !== "products";
+  const showProducts = focus !== "partners";
 
-      <div className="grid gap-4 sm:justify-center lg:grid-cols-2 lg:items-start">
-        <div className="mx-auto w-[90vw] max-w-[720px] sm:w-full">
+  return (
+    <div className="space-y-5">
+      <Card className="border-[#eaded5] bg-white shadow-[0_15px_45px_rgba(63,33,25,0.08)]">
+        <CardHeader className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="space-y-1">
+            <CardDescription className="text-xs uppercase tracking-[0.3em] text-[#b02b24]">
+              Visão rápida
+            </CardDescription>
+            <CardTitle className="text-xl text-[#2f1d15]">Métricas de cliques</CardTitle>
+            <p className="text-sm text-[#7a5a4b]">
+              Ajuste o período e escolha se quer focar em parceiros, produtos ou ambos.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {periods.map((p) => (
+              <button
+                key={p.key}
+                type="button"
+                onClick={() => setPeriod(p.key)}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${p.key === period ? "bg-[#b02b24] text-white shadow-[0_10px_28px_rgba(178,45,38,0.18)]" : "border border-[#eaded5] bg-white text-[#7a5a4b] hover:bg-[#fff1ec]"}`}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </CardHeader>
+        <CardContent className="flex flex-wrap gap-2">
+          {(["both", "partners", "products"] as FocusView[]).map((view) => (
+            <button
+              key={view}
+              type="button"
+              onClick={() => setFocus(view)}
+              className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wide transition ${
+                focus === view
+                  ? "border-[#b02b24] bg-[#fff1ec] text-[#b02b24]"
+                  : "border-[#eaded5] text-[#7a5a4b] hover:bg-[#fff1ec]"
+              }`}
+            >
+              {view === "both" ? "Ambos" : view === "partners" ? "Só parceiros" : "Só produtos"}
+            </button>
+          ))}
+          <Badge variant="outline" className="ml-auto">
+            {currentPeriod.helper}
+          </Badge>
+        </CardContent>
+      </Card>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        {showPartners && (
           <MetricCard
             title="Cliques em parceiros"
-            helper="Engajamento dos links de saida."
+            helper="Engajamento dos links de saída."
             data={partnerData}
             periodLabel={currentPeriod.helper}
+            tone="red"
           />
-        </div>
-        <div className="mx-auto w-[90vw] max-w-[720px] sm:w-full">
+        )}
+        {showProducts && (
           <MetricCard
             title="Cliques em produtos"
-            helper="Saidas para ofertas e afiliados."
+            helper="Saídas para ofertas e afiliados."
             data={productData}
             periodLabel={currentPeriod.helper}
+            tone="amber"
           />
-        </div>
-        <div className="mx-auto w-[95vw] max-w-[900px] sm:w-full lg:col-span-2">
-          <DailyChart partnerSeries={partnerSeries} productSeries={productSeries} />
-        </div>
+        )}
       </div>
+
+      <DailyChart
+        focus={focus}
+        partnerSeries={partnerSeries}
+        productSeries={productSeries}
+      />
     </div>
   );
 }
@@ -96,33 +122,44 @@ function MetricCard({
   helper,
   data,
   periodLabel,
+  tone,
 }: {
   title: string;
   helper: string;
   data: ClickStatEntry[];
   periodLabel: string;
+  tone: "red" | "amber";
 }) {
   const max = data[0]?.clicks ?? 1;
+  const barClass = tone === "red" ? "from-[#b02b24] to-[#f5b7ae]" : "from-[#d37b2a] to-[#f3c17e]";
+
   return (
-    <Card className="h-full border-white/10 bg-linear-to-b from-white/4 to-black/70">
+    <Card className="h-full border-[#eaded5] bg-white shadow-[0_15px_45px_rgba(63,33,25,0.08)]">
       <CardHeader>
-        <CardDescription className="uppercase tracking-[0.35em] text-xs text-white/50">
-          Metricas de cliques
+        <CardDescription className="uppercase tracking-[0.3em] text-xs text-[#b02b24]">
+          Métricas de cliques
         </CardDescription>
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <CardTitle className="text-xl text-white">{title}</CardTitle>
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-semibold text-white/80">
+          <CardTitle className="text-xl text-[#2f1d15]">{title}</CardTitle>
+          <span className="rounded-full border border-[#eaded5] bg-[#fff8f3] px-3 py-1 text-[11px] font-semibold text-[#7a5a4b]">
             {periodLabel}
           </span>
         </div>
-        <p className="text-sm text-white/60">{helper}</p>
+        <p className="text-sm text-[#7a5a4b]">{helper}</p>
       </CardHeader>
       <CardContent className="space-y-4">
         {data.length === 0 && (
-          <p className="text-sm text-white/60">Nenhum clique registrado nesse periodo.</p>
+          <p className="text-sm text-[#7a5a4b]">Nenhum clique registrado nesse período.</p>
         )}
         {data.map((item) => (
-          <BarRow key={item.id} label={item.label} badge={item.badge} value={item.clicks} max={max} />
+          <BarRow
+            key={item.id}
+            label={item.label}
+            badge={item.badge}
+            value={item.clicks}
+            max={max}
+            barClass={barClass}
+          />
         ))}
       </CardContent>
     </Card>
@@ -132,9 +169,11 @@ function MetricCard({
 function DailyChart({
   partnerSeries,
   productSeries,
+  focus,
 }: {
   partnerSeries: ClickSeriesPoint[];
   productSeries: ClickSeriesPoint[];
+  focus: FocusView;
 }) {
   const formatter = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short" });
 
@@ -148,53 +187,76 @@ function DailyChart({
   });
 
   const limited = merged.slice(-14);
-  const max = Math.max(...limited.map((d) => Math.max(d.partner, d.product)), 1);
+  const max = useMemo(
+    () =>
+      Math.max(
+        ...limited.map((d) => {
+          if (focus === "partners") return d.partner;
+          if (focus === "products") return d.product;
+          return Math.max(d.partner, d.product);
+        }),
+        1,
+      ),
+    [limited, focus],
+  );
+
+  const showPartners = focus !== "products";
+  const showProducts = focus !== "partners";
 
   return (
-    <Card className="w-full max-w-full border-white/10 bg-black/30">
+    <Card className="w-full border-[#eaded5] bg-white shadow-[0_15px_45px_rgba(63,33,25,0.08)]">
       <CardHeader>
-        <CardDescription className="uppercase tracking-[0.35em] text-xs text-white/50">
-          Cliques diarios (30 dias)
+        <CardDescription className="uppercase tracking-[0.3em] text-xs text-[#b02b24]">
+          Cliques diários (30 dias)
         </CardDescription>
-        <CardTitle className="text-xl text-white">Evolucao diaria</CardTitle>
-        <p className="text-sm text-white/60">
-          Barras lado a lado para parceiros (verde) e produtos (roxo).
+        <CardTitle className="text-xl text-[#2f1d15]">Evolução diária</CardTitle>
+        <p className="text-sm text-[#7a5a4b]">
+          Barras lado a lado para parceiros (vermelho) e produtos (âmbar). Use o filtro acima para
+          destacar apenas o que importa.
         </p>
       </CardHeader>
       <CardContent className="space-y-3">
         {limited.length === 0 ? (
-          <p className="text-sm text-white/60">Sem cliques registrados neste periodo.</p>
+          <p className="text-sm text-[#7a5a4b]">Sem cliques registrados neste período.</p>
         ) : (
           <>
-            <div className="flex items-center gap-3 text-xs text-white/60">
-              <span className="flex items-center gap-1">
-                <span className="h-3 w-3 rounded-full bg-lime-300" />
-                Parceiros
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="h-3 w-3 rounded-full bg-indigo-300" />
-                Produtos
-              </span>
+            <div className="flex items-center gap-3 text-xs text-[#7a5a4b]">
+              {showPartners && (
+                <span className="flex items-center gap-1">
+                  <span className="h-3 w-3 rounded-full bg-[#b02b24]" />
+                  Parceiros
+                </span>
+              )}
+              {showProducts && (
+                <span className="flex items-center gap-1">
+                  <span className="h-3 w-3 rounded-full bg-[#d37b2a]" />
+                  Produtos
+                </span>
+              )}
             </div>
-            <div className="max-w-full overflow-x-auto rounded-xl border border-white/10 bg-black/40 p-3">
+            <div className="max-w-full overflow-x-auto rounded-xl border border-[#eaded5] bg-[#fff8f3] p-3">
               <div className="flex items-end gap-2">
                 {limited.map((d) => {
-                  const pHeight = Math.max(6, Math.round((d.partner / max) * 80));
-                  const prodHeight = Math.max(6, Math.round((d.product / max) * 80));
+                  const pHeight = Math.max(6, Math.round(((showPartners ? d.partner : 0) / max) * 80));
+                  const prodHeight = Math.max(6, Math.round(((showProducts ? d.product : 0) / max) * 80));
                   return (
                     <div
                       key={d.date}
-                      className="flex min-w-14 flex-col items-center gap-1 text-[10px] text-white/60"
+                      className="flex min-w-14 flex-col items-center gap-1 text-[10px] text-[#7a5a4b]"
                     >
                       <div className="flex h-24 w-full items-end justify-center gap-1">
-                        <div
-                          className="w-2.5 rounded-t-sm bg-lime-300"
-                          style={{ height: `${pHeight}%`, minHeight: 6 }}
-                        />
-                        <div
-                          className="w-2.5 rounded-t-sm bg-indigo-300"
-                          style={{ height: `${prodHeight}%`, minHeight: 6 }}
-                        />
+                        {showPartners && (
+                          <div
+                            className="w-2.5 rounded-t-sm bg-[#b02b24]"
+                            style={{ height: `${pHeight}%`, minHeight: 6 }}
+                          />
+                        )}
+                        {showProducts && (
+                          <div
+                            className="w-2.5 rounded-t-sm bg-[#d37b2a]"
+                            style={{ height: `${prodHeight}%`, minHeight: 6 }}
+                          />
+                        )}
                       </div>
                       <span className="truncate text-center leading-tight">{d.date}</span>
                     </div>
@@ -214,29 +276,31 @@ function BarRow({
   value,
   max,
   badge,
+  barClass,
 }: {
   label: string;
   value: number;
   max: number;
   badge?: string | null;
+  barClass: string;
 }) {
   const percent = Math.max(6, max > 0 ? Math.round((value / max) * 100) : 0);
   return (
-    <div className="space-y-2 rounded-xl border border-white/5 bg-white/2 p-3">
-      <div className="flex items-center justify-between gap-2 text-sm text-white">
+    <div className="space-y-2 rounded-xl border border-[#eaded5] bg-[#fff8f3] p-3">
+      <div className="flex items-center justify-between gap-2 text-sm text-[#2f1d15]">
         <div className="flex min-w-0 items-center gap-2">
           <span className="truncate font-medium">{label}</span>
           {badge && (
-            <Badge variant="outline" className="shrink-0 border-white/30 text-[11px] text-white/80">
+            <Badge variant="outline" className="shrink-0 border-[#eaded5] text-[11px] text-[#7a5a4b]">
               {badge}
             </Badge>
           )}
         </div>
-        <span className="text-white/70">{value} cliques</span>
+        <span className="text-[#7a5a4b]">{value} cliques</span>
       </div>
-      <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/5">
+      <div className="relative h-2 w-full overflow-hidden rounded-full bg-[#f3e7de]">
         <div
-          className="absolute inset-y-0 left-0 rounded-full bg-linear-to-r from-lime-300/70 via-lime-200/80 to-lime-100/80"
+          className={`absolute inset-y-0 left-0 rounded-full bg-gradient-to-r ${barClass}`}
           style={{ width: `${percent}%` }}
         />
       </div>

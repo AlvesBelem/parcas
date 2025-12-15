@@ -32,22 +32,20 @@ export function PartnerForm({ categories }: PartnerFormProps) {
   return (
     <form
       action={formAction}
-      className="space-y-6 rounded-3xl border border-white/10 bg-linear-to-b from-zinc-950/80 to-zinc-950/40 p-8 shadow-2xl"
+      className="space-y-6 rounded-3xl border border-[#eaded5] bg-[#fff8f3] p-8 shadow-[0_15px_45px_rgba(63,33,25,0.08)]"
     >
       <div className="space-y-2">
-        <p className="text-sm uppercase tracking-[0.35em] text-white/40">
-          Cadastro rapido
-        </p>
-        <h2 className="text-2xl font-semibold text-white">Cadastrar parceiro</h2>
-        <p className="text-sm text-white/70">
-          Todas as informacoes aparecem automaticamente na home apos a aprovacao.
+        <p className="text-sm uppercase tracking-[0.35em] text-[#b02b24]">Cadastro rápido</p>
+        <h2 className="text-2xl font-semibold text-[#2f1d15]">Cadastrar parceiro</h2>
+        <p className="text-sm text-[#7a5a4b]">
+          Todas as informações aparecem automaticamente na home após a aprovação.
         </p>
       </div>
 
       {!hasCategories ? (
-        <div className="rounded-2xl border border-dashed border-white/20 bg-black/20 p-6 text-sm text-white/70">
-          Cadastre pelo menos uma categoria antes de publicar parceiros. Elas sao exibidas
-          no select e no filtro publico.
+        <div className="rounded-2xl border border-dashed border-[#eaded5] bg-white p-6 text-sm text-[#7a5a4b]">
+          Cadastre pelo menos uma categoria antes de publicar parceiros. Elas são exibidas no select e
+          no filtro público.
         </div>
       ) : (
         <>
@@ -62,10 +60,7 @@ export function PartnerForm({ categories }: PartnerFormProps) {
           </Field>
 
           <Field label="Categoria" name="categoryId">
-            <Select
-              value={selectedCategory}
-              onValueChange={setSelectedCategory}
-            >
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger>
                 <SelectValue placeholder="Selecione uma categoria" />
               </SelectTrigger>
@@ -77,12 +72,7 @@ export function PartnerForm({ categories }: PartnerFormProps) {
                 ))}
               </SelectContent>
             </Select>
-            <input
-              type="hidden"
-              name="categoryId"
-              value={selectedCategory}
-              required
-            />
+            <input type="hidden" name="categoryId" value={selectedCategory} required />
           </Field>
 
           <Field label="Link oficial" name="url">
@@ -111,11 +101,11 @@ export function PartnerForm({ categories }: PartnerFormProps) {
             />
           </Field>
 
-          <Field label="Descricao curta" name="description" optional>
+          <Field label="Descrição curta" name="description" optional>
             <Textarea
               name="description"
               id="description"
-              placeholder="Conte em poucas palavras o beneficio dessa parceria."
+              placeholder="Conte em poucas palavras o benefício dessa parceria."
               maxLength={240}
             />
           </Field>
@@ -125,10 +115,7 @@ export function PartnerForm({ categories }: PartnerFormProps) {
       <div className="flex flex-col gap-3">
         <SubmitButton disabled={!hasCategories} />
         {state.message && (
-          <p
-            className={`text-sm ${state.ok ? "text-lime-300" : "text-red-300"}`}
-            role="status"
-          >
+          <p className={`text-sm ${state.ok ? "text-[#b02b24]" : "text-[#d53838]"}`} role="status">
             {state.message}
           </p>
         )}
@@ -148,12 +135,11 @@ type FieldProps = {
 function Field({ label, name, children, optional, hint }: FieldProps) {
   return (
     <div className="space-y-2">
-      <Label htmlFor={name} className="text-white">
-        {label}{" "}
-        {optional && <span className="text-xs uppercase text-white/40">Opcional</span>}
+      <Label htmlFor={name}>
+        {label} {optional && <span className="text-xs uppercase text-[#a38271]">Opcional</span>}
       </Label>
       {children}
-      {hint && <p className="text-xs text-white/50">{hint}</p>}
+      {hint && <p className="text-xs text-[#a38271]">{hint}</p>}
     </div>
   );
 }

@@ -43,15 +43,16 @@ export function PaginationControls({
               key={item}
               href={buildHref(item)}
               className={cn(
-                "h-9 w-9 rounded-full border border-white/10 text-center text-sm leading-9 text-white/70 transition",
-                item === page && "border-lime-300/60 bg-lime-300/20 text-white",
+                "h-9 w-9 rounded-full border border-[#eaded5] text-center text-sm leading-9 text-[#7a5a4b] transition hover:border-[#d7c6bc] hover:bg-[#fff4f0]",
+                item === page &&
+                  "border-[#b02b24] bg-[#b02b24] text-white shadow-[0_8px_20px_rgba(178,45,38,0.25)]",
               )}
               aria-current={item === page ? "page" : undefined}
             >
               {item}
             </Link>
           ) : (
-            <span key={`ellipsis-${index}`} className="px-1 text-white/50">
+            <span key={`ellipsis-${index}`} className="px-1 text-[#c2a999]">
               &hellip;
             </span>
           ),
