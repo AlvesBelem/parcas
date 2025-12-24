@@ -92,16 +92,16 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
             <input type="hidden" name="categoryId" value={selectedCategory} required />
           </>
         ) : (
-          <p className="rounded-2xl border border-dashed border-white/20 bg-black/20 p-4 text-sm text-white/70">
+          <p className="rounded-2xl border border-dashed border-[#b02a20]/25 bg-[#fff7f2] p-4 text-sm text-neutral-700">
             Cadastre uma categoria de produto antes de editar ofertas.
           </p>
         )}
       </Field>
 
       <div className="space-y-3">
-        <Label>
+        <Label className="text-[#2d1c16]">
           Imagens
-          <span className="ml-2 text-xs uppercase text-white/40">(1 a 5 imagens)</span>
+          <span className="ml-2 text-xs uppercase text-neutral-500">(1 a 5 imagens)</span>
         </Label>
         <div className="space-y-2">
           {imageFields.map((value, index) => (
@@ -113,12 +113,7 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
                 required={index === 0}
               />
               {imageFields.length > 1 && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => removeImageField(index)}
-                >
+                <Button type="button" variant="ghost" size="sm" onClick={() => removeImageField(index)}>
                   Remover
                 </Button>
               )}
@@ -132,7 +127,7 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
         )}
       </div>
 
-      <Field label="Descricao" name="description" optional>
+      <Field label="Descrição" name="description" optional>
         <Textarea
           name="description"
           defaultValue={product.description ?? ""}
@@ -143,7 +138,7 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
       <div className="flex flex-col gap-3">
         <SubmitButton disabled={!hasCategories || !selectedCategory} />
         {state.message && (
-          <p className={`text-sm ${state.ok ? "text-lime-300" : "text-red-300"}`}>{state.message}</p>
+          <p className={`text-sm ${state.ok ? "text-green-700" : "text-red-600"}`}>{state.message}</p>
         )}
       </div>
     </form>
@@ -160,8 +155,8 @@ type FieldProps = {
 function Field({ label, name, children, optional }: FieldProps) {
   return (
     <div className="space-y-2">
-      <Label htmlFor={name}>
-        {label} {optional && <span className="text-xs uppercase text-white/40">(Opcional)</span>}
+      <Label htmlFor={name} className="text-[#2d1c16]">
+        {label} {optional && <span className="text-xs uppercase text-neutral-500">(Opcional)</span>}
       </Label>
       {children}
     </div>
@@ -172,7 +167,7 @@ function SubmitButton({ disabled }: { disabled?: boolean }) {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" className="w-full" disabled={pending || disabled}>
-      {pending ? "Salvando..." : "Salvar alteracoes"}
+      {pending ? "Salvando..." : "Salvar alterações"}
     </Button>
   );
 }

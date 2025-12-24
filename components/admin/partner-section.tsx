@@ -21,13 +21,11 @@ export function PartnerSection({ partners, categories }: PartnerSectionProps) {
 
   return (
     <section className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/10 bg-zinc-950/70 p-5 shadow-2xl shadow-black/30">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-[#b02a20]/15 bg-white/80 p-5 shadow-sm">
         <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-white/40">
-            Vitrine oficial
-          </p>
-          <h2 className="text-2xl font-semibold text-white">Parceiros cadastrados</h2>
-          <p className="text-sm text-white/60">
+          <p className="text-xs uppercase tracking-[0.35em] text-neutral-500">Vitrine oficial</p>
+          <h2 className="text-2xl font-semibold text-[#2d1c16]">Parceiros cadastrados</h2>
+          <p className="text-sm text-neutral-600">
             Cadastre novas lojas homologadas. Edite, pause ou exclua sempre que precisar.
           </p>
         </div>
@@ -39,7 +37,7 @@ export function PartnerSection({ partners, categories }: PartnerSectionProps) {
       <PartnerGrid partners={partners} onEdit={setEditingPartner} />
 
       <div className="sticky bottom-4 z-10 lg:hidden">
-        <div className="rounded-full border border-white/10 bg-black/70 px-4 py-3 shadow-2xl shadow-black/40 backdrop-blur">
+        <div className="rounded-full border border-[#b02a20]/15 bg-white px-4 py-3 shadow-[0_16px_50px_rgba(45,28,22,0.08)] backdrop-blur">
           <Button className="w-full" size="lg" onClick={() => setCreateOpen(true)}>
             + Cadastrar parceiro
           </Button>

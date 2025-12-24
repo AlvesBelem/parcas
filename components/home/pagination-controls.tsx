@@ -10,11 +10,7 @@ type PaginationControlsProps = {
   buildHref: (page: number) => string;
 };
 
-export function PaginationControls({
-  page,
-  totalPages,
-  buildHref,
-}: PaginationControlsProps) {
+export function PaginationControls({ page, totalPages, buildHref }: PaginationControlsProps) {
   if (totalPages <= 1) {
     return null;
   }
@@ -43,15 +39,15 @@ export function PaginationControls({
               key={item}
               href={buildHref(item)}
               className={cn(
-                "h-9 w-9 rounded-full border border-white/10 text-center text-sm leading-9 text-white/70 transition",
-                item === page && "border-lime-300/60 bg-lime-300/20 text-white",
+                "h-9 w-9 rounded-full border border-black/10 text-center text-sm leading-9 text-neutral-700 transition",
+                item === page && "border-[#b02a20]/60 bg-[#fff0e6] text-[#b02a20] font-semibold",
               )}
               aria-current={item === page ? "page" : undefined}
             >
               {item}
             </Link>
           ) : (
-            <span key={`ellipsis-${index}`} className="px-1 text-white/50">
+            <span key={`ellipsis-${index}`} className="px-1 text-neutral-500">
               &hellip;
             </span>
           ),

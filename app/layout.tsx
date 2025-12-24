@@ -28,21 +28,29 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-950 text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-transparent text-[#1f1a17]`}
       >
         <div className="relative min-h-screen overflow-x-hidden">
           <div className="pointer-events-none absolute inset-0">
-            <div className="absolute left-1/2 top-[-10%] h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-lime-400/20 blur-[160px]" />
-            <div className="absolute right-0 top-1/2 h-[260px] w-[260px] translate-x-1/3 rounded-full bg-indigo-500/20 blur-[180px]" />
+            <div className="absolute left-[-10%] top-[-8%] h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle_at_center,_rgba(176,42,32,0.14)_0,_transparent_65%)] blur-[20px]" />
+            <div className="absolute right-[-8%] top-[20%] h-[360px] w-[360px] rounded-full bg-[radial-gradient(circle_at_center,_rgba(243,197,107,0.18)_0,_transparent_60%)] blur-[14px]" />
+            <div className="absolute left-1/2 bottom-[-12%] h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,_rgba(45,28,22,0.16)_0,_transparent_70%)] blur-[26px]" />
           </div>
           <div className="relative">
             <SiteHeader />
-            <main className="mx-auto w-full max-w-[95vw] px-6 py-12">{children}</main>
-            <footer className="border-t border-white/10 bg-zinc-950/80">
-              <div className="mx-auto flex w-full max-w-[95vw] flex-col gap-2 px-6 py-6 text-sm text-white/60 sm:flex-row sm:items-center sm:justify-between">
-                <p>© {new Date().getFullYear()} Nosite - Rede oficial de parceiros.</p>
-                <p className="text-white/40">
-                  Transparência, segurança e confiança em cada indicação.
+            <main className="mx-auto w-full max-w-6xl px-4 pb-14 pt-10 sm:px-6 lg:px-8">
+              {children}
+            </main>
+            <footer className="mt-8 border-t border-black/5 bg-[#b02a20] text-white">
+              <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-4 py-6 text-sm sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+                <div className="space-y-1">
+                  <p className="text-[13px] uppercase tracking-[0.22em] text-white/80">
+                    cpad belém • programa de parceiros
+                  </p>
+                  <p>© {new Date().getFullYear()} CPAD Belém. Rede oficial de parceiros confiáveis.</p>
+                </div>
+                <p className="text-white/80">
+                  Transparência, segurança e atendimento humano em cada recomendação.
                 </p>
               </div>
             </footer>

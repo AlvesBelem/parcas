@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { Sparkles } from "lucide-react";
-import Image from "next/image";
+import { Sparkles, ShieldCheck, ArrowUpRight } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CategoryFilter } from "@/components/home/category-filter";
@@ -43,10 +43,7 @@ export default async function Home({
     fetchProductCategoryOptions(),
   ]);
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(partnerResult.total / partnerResult.perPage),
-  );
+  const totalPages = Math.max(1, Math.ceil(partnerResult.total / partnerResult.perPage));
 
   const buildHref = (pageNumber: number) => {
     const nextParams = new URLSearchParams();
@@ -59,47 +56,78 @@ export default async function Home({
   };
 
   return (
-    <div className="space-y-14">
-      <section
-        id="rede"
-        className="space-y-8 rounded-3xl border border-white/10 bg-linear-to-br from-zinc-950 via-zinc-900 to-black p-8 text-center shadow-2xl shadow-black/30 sm:p-10 sm:text-left"
-      >
-        <div className="flex items-center justify-center">
-          <Image
-            src="/logo_cpad_belem.svg"
-            alt="Logomarca CPAD Belem"
-            width={180}
-            height={180}
-            priority
-            style={{ filter: "brightness(0) invert(1)" }}
-          />
-        </div>
-        <div className="flex flex-col gap-6">
-          <Badge variant="outline" className="mx-auto w-fit sm:mx-0">
-            Rede oficial de parceiros e produtos CPAD Belém
-          </Badge>
-          <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-            Bem-vindo ao Programa de Parcerias e Produtos da CPAD Belém
-          </h1>
-          <p className="mx-auto max-w-3xl text-lg text-white/70 sm:mx-0 sm:text-left">
-            Aqui reunimos lojistas amigos e também produtos afiliados que conhecemos de perto.
-            Tudo passa pela curadoria da CPAD Belém para garantir compras seguras, suporte humano
-            e transparência em cada recomendação.
-          </p>
-
-
-          <div className="flex flex-wrap justify-center gap-4 text-sm text-white/70 sm:justify-start">
-            <FeaturePill text="Documentados, testados e aprovados" />
-            <FeaturePill text="Entrega garantida pelo time CPAD Belém" />
-            <FeaturePill text="Produtos e lojistas com suporte direto" />
+    <div className="space-y-12">
+      <section className="overflow-hidden rounded-[32px] border border-[#b02a20]/20 bg-[#b02a20] text-white shadow-[0_30px_80px_rgba(140,31,24,0.25)]">
+        <div className="grid gap-8 p-8 sm:grid-cols-[1.3fr_1fr] sm:p-10 lg:p-12">
+          <div className="space-y-6">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-white/80">
+              Rede oficial
+              <ShieldCheck className="h-4 w-4" />
+              CPAD Belém
+            </div>
+            <h1 className="text-4xl font-semibold leading-tight sm:text-5xl">
+              Descubra parceiros confiáveis e produtos oficiais com a curadoria CPAD Belém
+            </h1>
+            <p className="max-w-2xl text-lg text-white/85">
+              Um hub seguro de lojas, serviços e itens aprovados pelo nosso time. Tudo em um
+              layout inspirado na experiência de vitrine da Netflix.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Button asChild size="lg" className="shadow-lg shadow-[#8c1f18]/30">
+                <Link href="#categorias">Explorar parceiros</Link>
+              </Button>
+              <Button asChild size="lg" variant="secondary">
+                <Link href="#produtos">Ver produtos oficiais</Link>
+              </Button>
+              <Button asChild size="lg" variant="ghost" className="gap-2 border-white/20 text-white">
+                <Link href="https://cpadbelem.com.br/" target="_blank">
+                  Loja virtual
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {[
+                { value: partnerResult.total, label: "parceiros verificados" },
+                { value: categories.length, label: "categorias ativas" },
+                { value: "100%", label: "links seguros" },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-sm uppercase tracking-[0.18em] text-white/80"
+                >
+                  <p className="text-2xl font-bold text-white">{item.value}</p>
+                  <p>{item.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-            <Button asChild size="lg" className="w-full sm:w-auto">
-              <Link href="#categorias">Explorar parceiros</Link>
-            </Button>
-            <Button asChild variant="secondary" size="lg" className="w-full sm:w-auto">
-              <Link href="#produtos">Ver produtos oficiais</Link>
-            </Button>
+          <div className="relative">
+            <div className="absolute inset-0 translate-x-6 translate-y-6 rounded-[28px] bg-white/10 blur-xl" />
+            <div className="relative overflow-hidden rounded-[28px] border border-white/20 bg-[#fff4ee]/95 p-6 text-[#2d1c16] shadow-[0_20px_80px_rgba(45,28,22,0.25)]">
+              <div className="flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-[#9a231a]">
+                Curadoria CPAD
+                <Sparkles className="h-4 w-4" />
+              </div>
+              <h2 className="mt-3 text-2xl font-semibold leading-tight">
+                A vitrine segura para indicar a clientes e igrejas
+              </h2>
+              <p className="mt-2 text-sm text-neutral-700">
+                Parceiros verificados, produtos acompanhados e métricas para o time interno. Tudo
+                alinhado à identidade CPAD.
+              </p>
+              <div className="mt-5 grid gap-3 rounded-2xl bg-white p-3">
+                <FeaturePill text="Links rastreados com registro de cliques" />
+                <FeaturePill text="Catálogo em fileiras horizontais estilo streaming" />
+                <FeaturePill text="Área admin com visão geral e cadastros rápidos" />
+              </div>
+              <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500">
+                <Badge className="bg-[#fff0e6] text-[#9a231a]">Marketplace seguro</Badge>
+                <Badge variant="outline" className="text-[#9a231a]">
+                  Loja virtual CPAD
+                </Badge>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -107,64 +135,58 @@ export default async function Home({
       <HighlightSection
         id="categorias"
         subtitle="rede viva"
-        title="Parceiros em destaque"
+        title="Parceiros em fileiras, estilo Netflix"
         filter={<CategoryFilter categories={categories} />}
         stats={[
           { value: partnerResult.total, label: "Lojas homologadas" },
           { value: categories.length, label: "Categorias ativas" },
-          { value: "100%", label: "Anti-golpe comprovado" },
+          { value: "Anti-golpe", label: "Verificação humana" },
         ]}
       >
         <PartnerCarousel partners={partnerResult.partners} />
         <div className="flex flex-col items-center gap-4 pt-4">
-          <PaginationControls
-            page={page}
-            totalPages={totalPages}
-            buildHref={buildHref}
-          />
-          <p className="text-sm text-white/50">
-            Pagina {page} de {totalPages} - exibindo ate {DEFAULT_PAGE_SIZE} parceiros por vez.
+          <PaginationControls page={page} totalPages={totalPages} buildHref={buildHref} />
+          <p className="text-sm text-neutral-600">
+            Página {page} de {totalPages} — até {DEFAULT_PAGE_SIZE} parceiros por listagem.
           </p>
         </div>
       </HighlightSection>
 
       <HighlightSection
         id="produtos"
-        subtitle="produtos em destaque"
-        title="Ofertas oficiais dos parceiros"
+        subtitle="vitrine afiliada"
+        title="Produtos oficiais e ofertas recomendadas"
         filter={<ProductCategoryFilter categories={productCategories} />}
         stats={[
           { value: productHighlights.total, label: "Produtos ativos" },
-          { value: productCategories.length, label: "Categorias de produtos" },
-          { value: "100%", label: "Links confiaveis" },
+          { value: productCategories.length, label: "Categorias" },
+          { value: "Links seguros", label: "Acompanhados pela equipe" },
         ]}
       >
         <ProductHighlight products={productHighlights.products} />
       </HighlightSection>
 
-      <section className="grid gap-6 rounded-3xl border border-white/10 bg-zinc-950/70 p-8 md:grid-cols-3">
+      <section className="grid gap-6 rounded-[28px] border border-black/5 bg-white/70 p-8 shadow-[0_24px_70px_rgba(45,28,22,0.08)] md:grid-cols-3">
         {[
           {
-            title: "Validacao transparente",
-            text: "Verificamos CNPJ, historico de atendimento e a plataforma de cada produto antes de liberar qualquer vitrine.",
+            title: "Validação transparente",
+            text: "CNPJ, histórico e plataforma checados antes de qualquer vitrine. Sem links duvidosos.",
           },
           {
-            title: "Curadoria com carinho",
-            text: "Nossa equipe conversa com cada lojista e garante que ele compartilhe dos nossos valores.",
+            title: "Curadoria CPAD",
+            text: "Equipe conversa com cada lojista e acompanha atendimento. Alinhado a valores da CPAD.",
           },
           {
-            title: "Apoio ao lojista e produtor",
-            text: "O admin publica fotos, links e novidades de lojas e produtos direto do painel seguro com login Google.",
+            title: "Apoio contínuo",
+            text: "O admin publica logos, fotos, links e novidades direto do painel seguro com login Google.",
           },
         ].map((feature) => (
           <article
             key={feature.title}
-            className="rounded-3xl border border-white/5 bg-white/5 p-6 text-white/80"
+            className="rounded-2xl border border-[#b02a20]/10 bg-[#fff4ee] p-6 text-[#2d1c16] shadow-[0_16px_40px_rgba(45,28,22,0.08)]"
           >
-            <h3 className="mb-3 text-xl font-semibold text-white">
-              {feature.title}
-            </h3>
-            <p>{feature.text}</p>
+            <h3 className="mb-3 text-xl font-semibold">{feature.title}</h3>
+            <p className="text-sm text-neutral-700">{feature.text}</p>
           </article>
         ))}
       </section>
@@ -181,32 +203,25 @@ type HighlightSectionProps = {
   children: ReactNode;
 };
 
-function HighlightSection({
-  id,
-  subtitle,
-  title,
-  filter,
-  stats,
-  children,
-}: HighlightSectionProps) {
+function HighlightSection({ id, subtitle, title, filter, stats, children }: HighlightSectionProps) {
   return (
     <section
       id={id}
-      className="space-y-8 rounded-3xl border border-white/10 bg-white/5 p-8 text-white"
+      className="space-y-8 rounded-[28px] border border-black/5 bg-white/80 p-8 shadow-[0_24px_70px_rgba(45,28,22,0.08)]"
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-sm uppercase tracking-[0.35em] text-white/40">{subtitle}</p>
-          <h2 className="text-3xl font-semibold">{title}</h2>
+          <p className="text-xs uppercase tracking-[0.32em] text-[#b02a20]/80">{subtitle}</p>
+          <h2 className="text-3xl font-semibold text-[#2d1c16]">{title}</h2>
         </div>
         <div className="w-full max-w-xs">{filter}</div>
       </div>
 
-      <div className="flex flex-wrap gap-6 rounded-3xl border border-dashed border-white/20 bg-black/30 p-6 text-sm text-white/70">
+      <div className="flex flex-wrap gap-4 rounded-2xl border border-dashed border-[#b02a20]/15 bg-[#fff4ee] p-4 text-sm text-neutral-700">
         {stats.map((stat) => (
-          <div key={stat.label}>
-            <p className="text-3xl font-bold text-white">{stat.value}</p>
-            <p>{stat.label}</p>
+          <div key={stat.label} className="rounded-xl bg-white px-4 py-3 shadow-sm shadow-[#8c1f18]/5">
+            <p className="text-2xl font-bold text-[#b02a20]">{stat.value}</p>
+            <p className="text-sm text-neutral-600">{stat.label}</p>
           </div>
         ))}
       </div>
@@ -218,8 +233,8 @@ function HighlightSection({
 
 function FeaturePill({ text }: { text: string }) {
   return (
-    <span className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 sm:w-auto sm:justify-start">
-      <Sparkles className="h-4 w-4 text-lime-200" />
+    <span className="inline-flex w-full items-center gap-2 rounded-full border border-[#b02a20]/15 bg-white px-3 py-2 text-sm text-[#2d1c16] shadow-sm sm:w-auto">
+      <Sparkles className="h-4 w-4 text-[#b02a20]" />
       {text}
     </span>
   );

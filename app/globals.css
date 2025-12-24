@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 @theme inline {
@@ -20,6 +20,14 @@ body {
   min-height: 100vh;
   font-family: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
-  background-color: #030712;
-  color: #f4f4f5;
+  background: radial-gradient(circle at 20% 20%, #f6efe8 0, #f2e8de 35%, #ede2d8 70%, #e6d8cb 100%);
+  color: #1f1a17;
+}
+
+:root {
+  --cpad-red: #b02a20;
+  --cpad-brown: #2d1c16;
+  --cpad-cream: #f6efe8;
+  --cpad-gold: #f3c56b;
+  --cpad-soft: #fff6ee;
 }

@@ -7,10 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import type { ClickStatEntry, ClickSeriesPoint } from "@/lib/data/click-stats";
 
 const periods = [
-  { key: "day", label: "Dia", helper: "Ultimas 24h" },
-  { key: "week", label: "Semana", helper: "Ultimos 7 dias" },
-  { key: "month", label: "Mes", helper: "Ultimos 30 dias" },
-  { key: "year", label: "Ano", helper: "Ultimos 365 dias" },
+  { key: "day", label: "Dia", helper: "Últimas 24h" },
+  { key: "week", label: "Semana", helper: "Últimos 7 dias" },
+  { key: "month", label: "Mês", helper: "Últimos 30 dias" },
+  { key: "year", label: "Ano", helper: "Últimos 365 dias" },
 ] as const;
 
 type PeriodKey = (typeof periods)[number]["key"];
@@ -38,14 +38,14 @@ export function ClickMetrics({
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col items-center space-y-4">
       <div className="w-[90vw] max-w-6xl sm:w-full">
-        <div className="rounded-2xl border border-white/10 bg-black/40 p-4 shadow-lg">
+        <div className="rounded-2xl border border-[#b02a20]/15 bg-white/85 p-4 shadow-sm">
           <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:items-start sm:justify-between sm:text-left">
             <div className="space-y-1">
-              <p className="text-xs uppercase tracking-[0.35em] text-white/50">Visao rapida</p>
-              <p className="text-lg font-semibold text-white">Metricas de cliques</p>
-              <p className="text-sm text-white/60">Escolha o periodo e veja os destaques.</p>
+              <p className="text-xs uppercase tracking-[0.35em] text-neutral-500">Visão rápida</p>
+              <p className="text-lg font-semibold text-[#2d1c16]">Métricas de cliques</p>
+              <p className="text-sm text-neutral-600">Escolha o período e veja os destaques.</p>
             </div>
-            <div className="hidden flex-nowrap gap-2 overflow-x-auto rounded-full border border-white/10 bg-white/4 p-1 sm:flex">
+            <div className="hidden flex-nowrap gap-2 overflow-x-auto rounded-full border border-[#b02a20]/20 bg-[#fff7f2] p-1 sm:flex">
               {periods.map((p) => (
                 <button
                   key={p.key}
@@ -53,8 +53,8 @@ export function ClickMetrics({
                   onClick={() => setPeriod(p.key)}
                   className={`whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold transition ${
                     p.key === period
-                      ? "bg-lime-300/20 text-lime-100 shadow-[0_0_0_1px_rgba(190,242,100,0.3)]"
-                      : "text-white/70 hover:bg-white/5"
+                      ? "bg-[#b02a20] text-white shadow-[0_0_0_1px_rgba(176,42,32,0.35)]"
+                      : "text-[#b02a20] hover:bg-[#fff0e6]"
                   }`}
                   aria-pressed={p.key === period}
                 >
@@ -70,7 +70,7 @@ export function ClickMetrics({
         <div className="mx-auto w-[90vw] max-w-[720px] sm:w-full">
           <MetricCard
             title="Cliques em parceiros"
-            helper="Engajamento dos links de saida."
+            helper="Engajamento dos links de saída."
             data={partnerData}
             periodLabel={currentPeriod.helper}
           />
@@ -78,7 +78,7 @@ export function ClickMetrics({
         <div className="mx-auto w-[90vw] max-w-[720px] sm:w-full">
           <MetricCard
             title="Cliques em produtos"
-            helper="Saidas para ofertas e afiliados."
+            helper="Saídas para ofertas e afiliados."
             data={productData}
             periodLabel={currentPeriod.helper}
           />
@@ -104,22 +104,22 @@ function MetricCard({
 }) {
   const max = data[0]?.clicks ?? 1;
   return (
-    <Card className="h-full border-white/10 bg-linear-to-b from-white/4 to-black/70">
+    <Card className="h-full border-[#b02a20]/10 bg-white">
       <CardHeader>
-        <CardDescription className="uppercase tracking-[0.35em] text-xs text-white/50">
-          Metricas de cliques
+        <CardDescription className="uppercase tracking-[0.35em] text-xs text-neutral-500">
+          Métricas de cliques
         </CardDescription>
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <CardTitle className="text-xl text-white">{title}</CardTitle>
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-semibold text-white/80">
+          <CardTitle className="text-xl text-[#2d1c16]">{title}</CardTitle>
+          <span className="rounded-full border border-[#b02a20]/20 bg-[#fff4ee] px-3 py-1 text-[11px] font-semibold text-[#b02a20]">
             {periodLabel}
           </span>
         </div>
-        <p className="text-sm text-white/60">{helper}</p>
+        <p className="text-sm text-neutral-600">{helper}</p>
       </CardHeader>
       <CardContent className="space-y-4">
         {data.length === 0 && (
-          <p className="text-sm text-white/60">Nenhum clique registrado nesse periodo.</p>
+          <p className="text-sm text-neutral-600">Nenhum clique registrado nesse período.</p>
         )}
         {data.map((item) => (
           <BarRow key={item.id} label={item.label} badge={item.badge} value={item.clicks} max={max} />
@@ -151,32 +151,32 @@ function DailyChart({
   const max = Math.max(...limited.map((d) => Math.max(d.partner, d.product)), 1);
 
   return (
-    <Card className="w-full max-w-full border-white/10 bg-black/30">
+    <Card className="w-full max-w-full border-[#b02a20]/10 bg-white">
       <CardHeader>
-        <CardDescription className="uppercase tracking-[0.35em] text-xs text-white/50">
-          Cliques diarios (30 dias)
+        <CardDescription className="uppercase tracking-[0.35em] text-xs text-neutral-500">
+          Cliques diários (30 dias)
         </CardDescription>
-        <CardTitle className="text-xl text-white">Evolucao diaria</CardTitle>
-        <p className="text-sm text-white/60">
-          Barras lado a lado para parceiros (verde) e produtos (roxo).
+        <CardTitle className="text-xl text-[#2d1c16]">Evolução diária</CardTitle>
+        <p className="text-sm text-neutral-600">
+          Barras lado a lado para parceiros (vermelho) e produtos (dourado).
         </p>
       </CardHeader>
       <CardContent className="space-y-3">
         {limited.length === 0 ? (
-          <p className="text-sm text-white/60">Sem cliques registrados neste periodo.</p>
+          <p className="text-sm text-neutral-600">Sem cliques registrados neste período.</p>
         ) : (
           <>
-            <div className="flex items-center gap-3 text-xs text-white/60">
+            <div className="flex items-center gap-3 text-xs text-neutral-600">
               <span className="flex items-center gap-1">
-                <span className="h-3 w-3 rounded-full bg-lime-300" />
+                <span className="h-3 w-3 rounded-full bg-[#b02a20]" />
                 Parceiros
               </span>
               <span className="flex items-center gap-1">
-                <span className="h-3 w-3 rounded-full bg-indigo-300" />
+                <span className="h-3 w-3 rounded-full bg-[#f3c56b]" />
                 Produtos
               </span>
             </div>
-            <div className="max-w-full overflow-x-auto rounded-xl border border-white/10 bg-black/40 p-3">
+            <div className="max-w-full overflow-x-auto rounded-xl border border-[#b02a20]/10 bg-[#fff7f2] p-3">
               <div className="flex items-end gap-2">
                 {limited.map((d) => {
                   const pHeight = Math.max(6, Math.round((d.partner / max) * 80));
@@ -184,15 +184,15 @@ function DailyChart({
                   return (
                     <div
                       key={d.date}
-                      className="flex min-w-14 flex-col items-center gap-1 text-[10px] text-white/60"
+                      className="flex min-w-14 flex-col items-center gap-1 text-[10px] text-neutral-600"
                     >
                       <div className="flex h-24 w-full items-end justify-center gap-1">
                         <div
-                          className="w-2.5 rounded-t-sm bg-lime-300"
+                          className="w-2.5 rounded-t-sm bg-[#b02a20]"
                           style={{ height: `${pHeight}%`, minHeight: 6 }}
                         />
                         <div
-                          className="w-2.5 rounded-t-sm bg-indigo-300"
+                          className="w-2.5 rounded-t-sm bg-[#f3c56b]"
                           style={{ height: `${prodHeight}%`, minHeight: 6 }}
                         />
                       </div>
@@ -222,21 +222,21 @@ function BarRow({
 }) {
   const percent = Math.max(6, max > 0 ? Math.round((value / max) * 100) : 0);
   return (
-    <div className="space-y-2 rounded-xl border border-white/5 bg-white/2 p-3">
-      <div className="flex items-center justify-between gap-2 text-sm text-white">
+    <div className="space-y-2 rounded-xl border border-[#b02a20]/10 bg-[#fff7f2] p-3">
+      <div className="flex items-center justify-between gap-2 text-sm text-[#2d1c16]">
         <div className="flex min-w-0 items-center gap-2">
           <span className="truncate font-medium">{label}</span>
           {badge && (
-            <Badge variant="outline" className="shrink-0 border-white/30 text-[11px] text-white/80">
+            <Badge variant="outline" className="shrink-0 border-[#b02a20]/30 text-[11px] text-[#b02a20]">
               {badge}
             </Badge>
           )}
         </div>
-        <span className="text-white/70">{value} cliques</span>
+        <span className="text-neutral-600">{value} cliques</span>
       </div>
-      <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/5">
+      <div className="relative h-2 w-full overflow-hidden rounded-full bg-white">
         <div
-          className="absolute inset-y-0 left-0 rounded-full bg-linear-to-r from-lime-300/70 via-lime-200/80 to-lime-100/80"
+          className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-[#b02a20] via-[#c64934] to-[#f3c56b]"
           style={{ width: `${percent}%` }}
         />
       </div>

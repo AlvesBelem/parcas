@@ -21,12 +21,12 @@ export function ProductSection({ products, categories }: ProductSectionProps) {
 
   return (
     <section className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/10 bg-zinc-950/70 p-5 shadow-2xl shadow-black/30">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-[#b02a20]/15 bg-white/80 p-5 shadow-sm">
         <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-white/40">Monetizacao</p>
-          <h2 className="text-2xl font-semibold text-white">Produtos de parceiros</h2>
-          <p className="text-sm text-white/60">
-            Cadastre ofertas afiliadas e gerencie status, edicao e exclusao em um lugar so.
+          <p className="text-xs uppercase tracking-[0.35em] text-neutral-500">Monetização</p>
+          <h2 className="text-2xl font-semibold text-[#2d1c16]">Produtos de parceiros</h2>
+          <p className="text-sm text-neutral-600">
+            Cadastre ofertas afiliadas e gerencie status, edição e exclusão em um lugar só.
           </p>
         </div>
         <Button onClick={() => setCreateOpen(true)} className="w-full sm:w-auto">
@@ -37,7 +37,7 @@ export function ProductSection({ products, categories }: ProductSectionProps) {
       <ProductGrid products={products} onEdit={setEditing} />
 
       <div className="sticky bottom-4 z-10 lg:hidden">
-        <div className="rounded-full border border-white/10 bg-black/70 px-4 py-3 shadow-2xl shadow-black/40 backdrop-blur">
+        <div className="rounded-full border border-[#b02a20]/15 bg-white px-4 py-3 shadow-[0_16px_50px_rgba(45,28,22,0.08)] backdrop-blur">
           <Button className="w-full" size="lg" onClick={() => setCreateOpen(true)}>
             + Cadastrar produto
           </Button>
@@ -57,7 +57,7 @@ export function ProductSection({ products, categories }: ProductSectionProps) {
         open={Boolean(editing)}
         onClose={() => setEditing(null)}
         title="Editar produto"
-        description="Atualize os dados do produto e confirme a mudanca."
+        description="Atualize os dados do produto e confirme a mudança."
       >
         {editing && (
           <ProductEditForm

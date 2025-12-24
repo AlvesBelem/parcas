@@ -48,7 +48,7 @@ export function CategoryEditForm({ category, onSuccess }: CategoryEditFormProps)
         <Input name="name" defaultValue={category.name} required autoComplete="off" />
       </Field>
 
-      <Field label="Descricao interna" name="description" optional>
+      <Field label="Descrição interna" name="description" optional>
         <Textarea
           name="description"
           defaultValue={category.description ?? ""}
@@ -74,7 +74,7 @@ export function CategoryEditForm({ category, onSuccess }: CategoryEditFormProps)
       <div className="flex flex-col gap-3">
         <SubmitButton />
         {state.message && (
-          <p className={`text-sm ${state.ok ? "text-lime-300" : "text-red-300"}`} role="status">
+          <p className={`text-sm ${state.ok ? "text-green-700" : "text-red-600"}`} role="status">
             {state.message}
           </p>
         )}
@@ -93,9 +93,8 @@ type FieldProps = {
 function Field({ label, name, optional, children }: FieldProps) {
   return (
     <div className="space-y-2">
-      <Label htmlFor={name} className="text-white">
-        {label}{" "}
-        {optional && <span className="text-xs uppercase text-white/40">Opcional</span>}
+      <Label htmlFor={name} className="text-[#2d1c16]">
+        {label} {optional && <span className="text-xs uppercase text-neutral-500">Opcional</span>}
       </Label>
       {children}
     </div>
@@ -106,7 +105,7 @@ function SubmitButton() {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" className="w-full" disabled={pending}>
-      {pending ? "Salvando..." : "Salvar alteracoes"}
+      {pending ? "Salvando..." : "Salvar alterações"}
     </Button>
   );
 }

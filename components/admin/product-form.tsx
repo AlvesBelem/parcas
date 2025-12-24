@@ -63,7 +63,11 @@ export function ProductForm({ categories }: ProductFormProps) {
   }
 
   return (
-    <form ref={formRef} action={formAction} className="space-y-6">
+    <form
+      ref={formRef}
+      action={formAction}
+      className="space-y-6 rounded-3xl border border-[#b02a20]/15 bg-white p-8 shadow-[0_18px_60px_rgba(45,28,22,0.08)]"
+    >
       <Field label="Nome do produto" name="name">
         <Input name="name" id="product-name" placeholder="Curso XYZ" required autoComplete="off" />
       </Field>
@@ -79,13 +83,7 @@ export function ProductForm({ categories }: ProductFormProps) {
       </Field>
 
       <Field label="Link oficial" name="url">
-        <Input
-          name="url"
-          id="product-url"
-          type="url"
-          placeholder="https://hotmart.com/produto"
-          required
-        />
+        <Input name="url" id="product-url" type="url" placeholder="https://hotmart.com/produto" required />
       </Field>
       <Field label="Categoria" name="categoryId">
         {hasCategories ? (
@@ -105,16 +103,16 @@ export function ProductForm({ categories }: ProductFormProps) {
             <input type="hidden" name="categoryId" value={selectedCategory} required />
           </>
         ) : (
-          <p className="rounded-2xl border border-dashed border-white/20 bg-black/20 p-4 text-sm text-white/70">
+          <p className="rounded-2xl border border-dashed border-[#b02a20]/25 bg-[#fff7f2] p-4 text-sm text-neutral-700">
             Cadastre uma categoria de produto antes de publicar ofertas.
           </p>
         )}
       </Field>
 
       <div className="space-y-3">
-        <Label>
+        <Label className="text-[#2d1c16]">
           Imagens
-          <span className="ml-2 text-xs uppercase text-white/40">(1 a 5 imagens)</span>
+          <span className="ml-2 text-xs uppercase text-neutral-500">(1 a 5 imagens)</span>
         </Label>
         <div className="space-y-2">
           {imageFields.map((value, index) => (
@@ -127,12 +125,7 @@ export function ProductForm({ categories }: ProductFormProps) {
                 required={index === 0}
               />
               {imageFields.length > 1 && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => removeImageField(index)}
-                >
+                <Button type="button" variant="ghost" size="sm" onClick={() => removeImageField(index)}>
                   Remover
                 </Button>
               )}
@@ -146,11 +139,11 @@ export function ProductForm({ categories }: ProductFormProps) {
         )}
       </div>
 
-      <Field label="Descricao" name="description" optional>
+      <Field label="Descrição" name="description" optional>
         <Textarea
           name="description"
           id="product-description"
-          placeholder="Resumo curto destacando beneficios."
+          placeholder="Resumo curto destacando benefícios."
           maxLength={3000}
           className="resize-none"
         />
@@ -159,7 +152,7 @@ export function ProductForm({ categories }: ProductFormProps) {
       <div className="flex flex-col gap-3">
         <SubmitButton disabled={!hasCategories || !selectedCategory} />
         {(state.message || state.ok === true) && (
-          <p className={`text-sm ${state.ok ? "text-lime-300" : "text-red-300"}`}>
+          <p className={`text-sm ${state.ok ? "text-green-700" : "text-red-600"}`}>
             {state.message || "Produto cadastrado com sucesso!"}
           </p>
         )}
@@ -178,8 +171,8 @@ type FieldProps = {
 function Field({ label, name, children, optional }: FieldProps) {
   return (
     <div className="space-y-2">
-      <Label htmlFor={name}>
-        {label} {optional && <span className="text-xs uppercase text-white/40">(Opcional)</span>}
+      <Label htmlFor={name} className="text-[#2d1c16]">
+        {label} {optional && <span className="text-xs uppercase text-neutral-500">(Opcional)</span>}
       </Label>
       {children}
     </div>
