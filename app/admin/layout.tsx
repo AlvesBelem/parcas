@@ -71,7 +71,7 @@ export default async function AdminLayout({
           </Card>
         </aside>
 
-        <div className="space-y-4 pb-12">{children}</div>
+        <div className="space-y-4 pb-12 min-w-0 w-full lg:pr-4">{children}</div>
       </div>
     </div>
   );
