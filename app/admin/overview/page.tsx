@@ -105,8 +105,8 @@ export default async function AdminOverviewPage() {
 
   return (
     <section className="space-y-6 text-[#3f2b22]">
-      <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:justify-between sm:text-left">
-        <div className="space-y-2">
+      <div className="flex flex-col items-center gap-4 text-center md:flex-row md:flex-wrap md:items-start md:justify-between md:text-left">
+        <div className="space-y-2 md:flex-1 md:min-w-0">
           <p className="flex items-center justify-center gap-2 text-sm text-[#7a5a4b] sm:justify-start">
             <Link href="/" className="inline-flex items-center gap-1 text-[#b02b24]">
               <ArrowLeft className="h-4 w-4" />
@@ -122,7 +122,7 @@ export default async function AdminOverviewPage() {
             Controle rápido do admin. Acesse listas, cadastros e status em um painel único.
           </p>
         </div>
-        <div className="w-full max-w-sm rounded-2xl border border-[#eaded5] bg-white px-4 py-3 text-sm text-[#7a5a4b] shadow-[0_10px_30px_rgba(63,33,25,0.08)] sm:w-auto">
+        <div className="w-full rounded-2xl border border-[#eaded5] bg-white px-4 py-3 text-sm text-[#7a5a4b] shadow-[0_10px_30px_rgba(63,33,25,0.08)] sm:max-w-md md:max-w-xs">
           <p className="text-xs uppercase tracking-[0.3em] text-[#b02b24]">Usuário logado</p>
           <p className="font-semibold text-[#2f1d15]">{userName}</p>
           <p className="text-[#7a5a4b]">{userEmail}</p>

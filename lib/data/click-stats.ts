@@ -124,9 +124,9 @@ function fillSeries(
   });
 
   const result: ClickSeriesPoint[] = [];
-  for (let i = days - 1; i >= 0; i--) {
-    const d = sinceDays(days - i);
-    const key = d.toISOString();
+  for (let offset = days - 1; offset >= 0; offset--) {
+    const targetDay = startOfDay(new Date(Date.now() - offset * 24 * 60 * 60 * 1000));
+    const key = targetDay.toISOString();
     result.push({
       date: key,
       clicks: map.get(key) ?? 0,
