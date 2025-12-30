@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Geist_Mono, Manrope, Playfair_Display } from "next/font/google";
 
 import "./globals.css";
 import { SiteHeader } from "@/components/layout/site-header";
+
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -64,6 +66,7 @@ export default function RootLayout({
             </div>
           </footer>
         </div>
+        <SpeedInsights />
       </body>
     </html>
   );
