@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useEffect, useRef, useState } from "react";
+import { startTransition, useEffect, useMemo, useRef, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
 
@@ -29,8 +29,13 @@ export function CategoryEditForm({
   onSuccess?: () => void;
 }) {
   const router = useRouter();
-  const [state, formAction] = useFormState(updateCategory, initialState);
-  const [scope, setScope] = useState(category.scope);
+  const updateCategoryWithIds = useMemo(
+    () => updateCategory.bind(null, category.partnerId ?? null, category.productCategoryId ?? null),
+    [category.partnerId, category.productCategoryId],
+  );
+
+  const [state, formAction] = useFormState(updateCategoryWithIds, initialState);
+  const [scope, setScope] = useState<"partners" | "products" | "both">(category.scope);
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
@@ -80,7 +85,12 @@ export function CategoryEditForm({
       </Field>
 
       <Field label="Tipo da categoria" name="scope">
-        <Select value={scope} onValueChange={setScope}>
+        <Select
+          value={scope}
+          onValueChange={(value) =>
+            setScope(value as "partners" | "products" | "both")
+          }
+        >
           <SelectTrigger>
             <SelectValue placeholder="Selecione o tipo" />
           </SelectTrigger>

@@ -87,7 +87,6 @@ export default async function Home({
               <Button
                 asChild
                 size="lg"
-                variant="secondary"
                 className="w-full bg-white text-[#b02b24] hover:bg-[#fff4f0] sm:w-auto"
               >
                 <Link href="#categorias">Explorar parceiros</Link>

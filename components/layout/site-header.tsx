@@ -3,12 +3,10 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { Input } from "@/components/ui/input";
-
 const navLinks = [
   { href: "/parceiros", label: "Parceiros" },
   { href: "/produtos", label: "Produtos" },
-  { href: "/#rede", label: "Rede oficial" },
+  { href: "https://cpadbelem.com.br/", label: "Voltar para o site CPAD Belém" },
 ];
 
 export function SiteHeader() {
@@ -31,7 +29,7 @@ export function SiteHeader() {
 
       <div className="bg-white/95 backdrop-blur supports-backdrop-filter:backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-4 py-5 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
             <Link
               href="https://cpadbelem.com.br/"
               className="flex items-center gap-3 rounded-2xl bg-linear-to-r from-[#ffe7d7] via-[#fff3eb] to-[#ffd7c2] px-3 py-2 text-[#7b5140] shadow-[0_10px_26px_rgba(178,45,38,0.16)]"
@@ -53,32 +51,21 @@ export function SiteHeader() {
               </div>
             </Link>
 
-            <div className="hidden flex-1 items-center gap-2 rounded-2xl border border-[#e9c9b8] bg-white px-4 py-2 shadow-[0_12px_30px_rgba(178,45,38,0.12)] lg:flex">
-              <Input
-                placeholder="O que você está buscando?"
-                className="h-12 border-none bg-transparent px-0 shadow-none focus-visible:ring-0"
-              />
-              <span className="rounded-full bg-linear-to-r from-[#b02b24] to-[#e66a4a] px-4 py-2 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(178,45,38,0.26)]">
-                Buscar
-              </span>
-            </div>
+            <nav className="flex items-center gap-4 rounded-2xl border border-[#e9c9b8] bg-white/80 px-4 py-2 text-sm font-semibold text-[#b02b24] shadow-[0_10px_26px_rgba(178,45,38,0.12)]">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-full px-3 py-2 transition hover:bg-[#fff4ef] hover:text-[#8f1f19]"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
           </div>
-        </div>
-
-        <div className="border-t border-[#e9c9b8] bg-linear-to-r from-[#b02b24] via-[#c6352b] to-[#d8583b]">
-          <nav className="mx-auto flex w-full max-w-6xl items-center gap-5 overflow-x-auto px-4 py-2 text-sm font-semibold text-white sm:px-6 lg:px-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="rounded-full px-3 py-2 transition hover:bg-white/15 hover:shadow-[0_8px_18px_rgba(0,0,0,0.12)]"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
         </div>
       </div>
     </header>
   );
 }
+
