@@ -79,7 +79,7 @@ export default async function Home({
               <Button
                 asChild
                 size="lg"
-                variant="outline"
+                variant="primary"
                 className="w-full border border-white/40 bg-[#b02b24] text-white hover:bg-[#8f1f19] sm:w-auto"
               >
                 <Link href="#produtos">Ver produtos oficiais</Link>
