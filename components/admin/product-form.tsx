@@ -143,6 +143,25 @@ export function ProductForm({ categories }: ProductFormProps) {
           required
         />
       </Field>
+      <div className="grid gap-4 sm:grid-cols-[1.3fr_0.7fr]">
+        <Field label="Texto do botão" name="ctaLabel">
+          <Input
+            name="ctaLabel"
+            id="cta-label"
+            placeholder="Ex.: Comprar agora, Falar no WhatsApp"
+            defaultValue="Ir para link oficial"
+            maxLength={80}
+          />
+        </Field>
+        <Field label="Cor do botão" name="ctaColor">
+          <Input
+            name="ctaColor"
+            id="cta-color"
+            type="color"
+            defaultValue="#b02b24"
+          />
+        </Field>
+      </div>
       <Field label="Categoria" name="categoryId">
         {hasCategories ? (
           <>

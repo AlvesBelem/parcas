@@ -104,7 +104,7 @@ function ProductHighlightCard({
 
   const coverImage = gallery[currentImageIndex] ?? "/logo_cpad_belem.svg";
   const isAmazon = product.platform.toLowerCase().includes("amazon");
-  const ctaLabel = isAmazon ? "Adquira na Amazon" : "Ver oferta oficial";
+  const ctaLabel = isAmazon ? "Adquira na Amazon" : "Ver produto/serviço";
 
   return (
     <article className="flex h-full w-full min-h-[430px] flex-col rounded-3xl border border-[#eaded5] bg-white p-4 text-[#3f2b22] shadow-[0_12px_35px_rgba(63,33,25,0.08)]">

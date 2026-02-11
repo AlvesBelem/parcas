@@ -19,6 +19,8 @@ model Partner {
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  ctaLabel    String   @default("Ir para o link oficial")
+  ctaColor    String   @default("#b02b24")
   clickStats  PartnerClickStat[]
 }
 
@@ -48,6 +50,8 @@ model PartnerProduct {
   categoryId  String?
   platform    String
   url         String
+  ctaLabel    String   @default("Ir para o link oficial")
+  ctaColor    String   @default("#b02b24")
   imageUrls   String[] @default([])
   description String?
   clickCount  Int      @default(0)
