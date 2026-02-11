@@ -1,19 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { ExternalLink, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { PartnerSummary } from "@/lib/data/partners";
 
@@ -53,25 +44,17 @@ export function PartnerCard({ partner, className }: PartnerCardProps) {
         </div>
         <CardDescription className="text-[#7a5a4b] text-center sm:text-left">
           {partner.description ??
-            "Parceiro oficial credenciado e pronto para atender você com segurança."}
+            "Parceiro oficial credenciado e pronto para atender voce com seguranca."}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1">
         <ul className="space-y-2 text-sm text-[#7a5a4b] text-center sm:text-left">
           <li>
-            <span className="text-[#2f1d15]">Disponível 24/7</span> com suporte dedicado.
+            <span className="text-[#2f1d15]">Disponivel 24/7</span> com suporte dedicado.
           </li>
-          <li>Entrega segura e monitorada pela equipe CPAD Belém.</li>
+          <li>Entrega segura e monitorada pela equipe CPAD Belem.</li>
         </ul>
       </CardContent>
-      <CardFooter>
-        <Button asChild className="w-full">
-          <Link href="/parceiros">
-            Ver parceiro
-            <ExternalLink className="h-4 w-4" />
-          </Link>
-        </Button>
-      </CardFooter>
     </Card>
   );
 }

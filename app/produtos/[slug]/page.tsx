@@ -93,7 +93,7 @@ export default async function ProductDetailPage({ params }: PageParams) {
             <ShieldCheck className="h-4 w-4" />
             Link verificado pela CPAD Belém
           </div>
-          <p className="text-base leading-relaxed text-[#4c3429]">
+          <p className="text-base leading-relaxed text-[#4c3429] text-justify">
             {product.description ?? "Oferta oficial cadastrada pelos administradores."}
           </p>
           <div className="space-y-2 text-sm text-[#7a5a4b]">

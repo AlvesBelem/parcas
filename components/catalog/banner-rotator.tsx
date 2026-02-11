@@ -53,7 +53,7 @@ export function BannerRotator({ items, intervalMs = 5200 }: BannerRotatorProps) 
   };
 
   return (
-    <section className="relative overflow-hidden rounded-[34px] border border-[#e6d5c9] bg-linear-to-br from-[#fff5ee] via-[#ffe9db] to-[#ffd9c7] text-[#2f1d15] shadow-[0_25px_70px_rgba(63,33,25,0.18)]">
+    <section className="relative overflow-hidden rounded-[34px] border border-[#e6d5c9] bg-linear-to-br from-[#fff5ee] via-[#ffe9db] to-[#ffd9c7] text-[#2f1d15] shadow-[0_25px_70px_rgba(63,33,25,0.18)] min-h-[460px]">
       <DecoGlow />
 
       <div className="relative grid gap-8 px-6 py-9 text-center sm:px-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:text-left">
@@ -70,16 +70,14 @@ export function BannerRotator({ items, intervalMs = 5200 }: BannerRotatorProps) 
           </div>
 
           <h3
-            className="text-3xl font-semibold leading-tight text-[#2f1d15] drop-shadow-sm sm:text-4xl"
+            className="text-3xl font-semibold leading-tight text-[#2f1d15] drop-shadow-sm sm:text-4xl line-clamp-2 min-h-[64px]"
             style={{ fontFamily: "var(--font-playfair)" }}
           >
             {current.title}
           </h3>
-          {current.caption && (
-            <p className="mx-auto max-w-2xl text-base text-[#5a3e32] lg:mx-0 line-clamp-3">
-              {current.caption}
-            </p>
-          )}
+          <p className="mx-auto max-w-2xl text-base text-[#5a3e32] lg:mx-0 line-clamp-3 min-h-[72px]">
+            {current.caption ?? ""}
+          </p>
 
           <div className="flex flex-wrap items-center justify-center gap-2 text-[12px] font-semibold text-[#9b5b45] lg:justify-start">
             {highlightTags.map((tag) => (
