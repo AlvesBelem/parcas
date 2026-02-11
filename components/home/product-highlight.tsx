@@ -59,7 +59,7 @@ export function ProductHighlight({ products }: ProductHighlightProps) {
           >
             <button
               type="button"
-              className="absolute right-3 top-3 cursor-pointer rounded-full bg-white/90 px-3 py-1 text-sm font-semibold text-[#2f1d15] shadow hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="absolute right-3 top-3 cursor-pointer rounded-full bg-white/90 px-3 py-1 text-sm font-semibold text-[#2f1d15] shadow hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               onClick={(event) => {
                 event.stopPropagation();
                 setPreview(null);
@@ -67,7 +67,7 @@ export function ProductHighlight({ products }: ProductHighlightProps) {
             >
               Fechar
             </button>
-            <div className="relative h-[70vh] w-full min-h-[320px]">
+            <div className="relative h-[70vh] w-full min-h-80">
               <Image
                 src={preview.src}
                 alt={preview.alt}
@@ -103,15 +103,13 @@ function ProductHighlightCard({
   }, [gallery.length]);
 
   const coverImage = gallery[currentImageIndex] ?? "/logo_cpad_belem.svg";
-  const isAmazon = product.platform.toLowerCase().includes("amazon");
-  const ctaLabel = isAmazon ? "Adquira na Amazon" : "Ver produto/serviço";
 
   return (
     <article className="flex h-full w-full min-h-[430px] flex-col rounded-3xl border border-[#eaded5] bg-white p-4 text-[#3f2b22] shadow-[0_12px_35px_rgba(63,33,25,0.08)]">
       <div className="flex-1 space-y-3">
         <button
           type="button"
-          className="relative h-44 w-full cursor-pointer overflow-hidden rounded-2xl border border-[#f3e7de] bg-[#fff8f3] transition hover:scale-[1.01] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b02b24]"
+          className="relative h-44 w-full cursor-pointer overflow-hidden rounded-2xl border border-[#f3e7de] bg-[#fff8f3] transition hover:scale-[1.01] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b02b24]"
           onClick={() => onPreview({ src: coverImage, alt: product.name })}
           aria-label={`Ampliar imagem de ${product.name}`}
         >
@@ -165,13 +163,9 @@ function ProductHighlightCard({
         </p>
       </div>
       <div className="mt-auto pt-3">
-        <Button asChild className="w-full" variant="primary">
-          <Link
-            href={`/produtos/${product.slug}`}
-            prefetch={false}
-            className="inline-flex w-full items-center justify-center gap-2"
-          >
-            {ctaLabel}
+        <Button asChild className="w-full bg-[#b02b24] hover:bg-[#8f1f19] text-white">
+          <Link href="/produtos" prefetch={false} className="inline-flex w-full items-center justify-center gap-2">
+            Ver produtos/serviços
             <ExternalLink className="h-4 w-4" />
           </Link>
         </Button>

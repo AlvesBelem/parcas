@@ -187,18 +187,17 @@ function DailyChart({
   });
 
   const limited = merged.slice(-14);
-  const max = useMemo(
-    () =>
-      Math.max(
-        ...limited.map((d) => {
-          if (focus === "partners") return d.partner;
-          if (focus === "products") return d.product;
-          return Math.max(d.partner, d.product);
-        }),
-        1,
-      ),
-    [limited, focus],
-  );
+  const limitedDesc = limited.slice().reverse();
+  const max = useMemo(() => {
+    return Math.max(
+      ...limitedDesc.map((d) => {
+        if (focus === "partners") return d.partner;
+        if (focus === "products") return d.product;
+        return Math.max(d.partner, d.product);
+      }),
+      1,
+    );
+  }, [limitedDesc, focus]);
 
   const showPartners = focus !== "products";
   const showProducts = focus !== "partners";
@@ -236,7 +235,7 @@ function DailyChart({
             </div>
             <div className="max-w-full overflow-x-auto rounded-xl border border-[#eaded5] bg-[#fff8f3] p-3">
               <div className="flex items-end gap-2">
-                {limited.map((d) => {
+                {limitedDesc.map((d) => {
                   const pHeight = Math.max(6, Math.round(((showPartners ? d.partner : 0) / max) * 80));
                   const prodHeight = Math.max(6, Math.round(((showProducts ? d.product : 0) / max) * 80));
                   return (
@@ -257,6 +256,11 @@ function DailyChart({
                             style={{ height: `${prodHeight}%`, minHeight: 6 }}
                           />
                         )}
+                      </div>
+                      <div className="flex items-center gap-1 text-[10px] font-semibold">
+                        {showPartners && <span className="text-[#b02b24]">{d.partner}</span>}
+                        {showPartners && showProducts && <span className="text-[#c9b5aa]">/</span>}
+                        {showProducts && <span className="text-[#d37b2a]">{d.product}</span>}
                       </div>
                       <span className="truncate text-center leading-tight">{d.date}</span>
                     </div>
