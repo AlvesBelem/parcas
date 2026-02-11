@@ -5,12 +5,9 @@ import { ShieldCheck, Sparkles, TicketPercent, Truck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CategoryFilter } from "@/components/home/category-filter";
 import { PartnerCarousel } from "@/components/home/partner-carousel";
-import { PaginationControls } from "@/components/home/pagination-controls";
 import { ProductHighlight } from "@/components/home/product-highlight";
-import { ProductCategoryFilter } from "@/components/home/product-category-filter";
-import { DEFAULT_PAGE_SIZE, fetchPartners } from "@/lib/data/partners";
+import { fetchPartners } from "@/lib/data/partners";
 import { fetchCategoryOptions } from "@/lib/data/categories";
 import { fetchPartnerProducts } from "@/lib/data/products";
 import { fetchProductCategoryOptions } from "@/lib/data/product-categories";
@@ -19,6 +16,8 @@ type SearchParams =
   | Record<string, string | string[] | undefined>
   | Promise<Record<string, string | string[] | undefined>>;
 
+const SHOWCASE_SIZE = 3;
+
 export default async function Home({
   searchParams,
 }: {
@@ -26,35 +25,21 @@ export default async function Home({
 }) {
   const params = await resolveSearchParams(searchParams);
   const categorySlug = extractParam(params.category);
-  const page = Math.max(Number(extractParam(params.page)) || 1, 1);
-
   const productCategory = extractParam(params.productCategory);
   const [partnerResult, categories, productHighlights, productCategories] = await Promise.all([
     fetchPartners({
       categorySlug: categorySlug ?? undefined,
-      page,
-      perPage: DEFAULT_PAGE_SIZE,
+      page: 1,
+      perPage: SHOWCASE_SIZE,
     }),
     fetchCategoryOptions(),
     fetchPartnerProducts({
       page: 1,
-      perPage: 6,
+      perPage: SHOWCASE_SIZE,
       categorySlug: productCategory ?? undefined,
     }),
     fetchProductCategoryOptions(),
   ]);
-
-  const totalPages = Math.max(1, Math.ceil(partnerResult.total / partnerResult.perPage));
-
-  const buildHref = (pageNumber: number) => {
-    const nextParams = new URLSearchParams();
-    if (categorySlug) {
-      nextParams.set("category", categorySlug);
-    }
-    nextParams.set("page", pageNumber.toString());
-    const query = nextParams.toString();
-    return query ? `/?${query}` : "/";
-  };
 
   return (
     <div className="space-y-12 sm:space-y-16">
@@ -87,15 +72,15 @@ export default async function Home({
               <Button
                 asChild
                 size="lg"
-                className="w-full bg-white text-[#b02b24] hover:bg-[#fff4f0] sm:w-auto"
+                className="w-full border border-white/25 bg-[#d64538] text-white shadow-lg hover:bg-[#c13b30] sm:w-auto"
               >
                 <Link href="#categorias">Explorar parceiros</Link>
               </Button>
               <Button
                 asChild
                 size="lg"
-                variant="ghost"
-                className="w-full border border-white/30 bg-white/10 text-white hover:bg-white/20 sm:w-auto"
+                variant="outline"
+                className="w-full border border-white/40 bg-[#b02b24] text-white hover:bg-[#8f1f19] sm:w-auto"
               >
                 <Link href="#produtos">Ver produtos oficiais</Link>
               </Button>
@@ -139,34 +124,48 @@ export default async function Home({
         id="categorias"
         subtitle="Rede viva"
         title="Parceiros em destaque"
-        filter={<CategoryFilter categories={categories} />}
+        filter={
+          <Button
+            asChild
+            className="w-full bg-[#b02b24] text-white shadow-sm hover:bg-[#8f1f19] sm:w-auto"
+          >
+            <Link href="/parceiros">Ver parceiros</Link>
+          </Button>
+        }
         stats={[
           { value: partnerResult.total, label: "Lojas homologadas" },
           { value: categories.length, label: "Categorias ativas" },
           { value: "Monitorados", label: "Links auditados" },
-        ]}
+      ]}
       >
         <PartnerCarousel partners={partnerResult.partners} />
-        <div className="flex flex-col items-center gap-4 pt-4">
-          <PaginationControls page={page} totalPages={totalPages} buildHref={buildHref} />
-          <p className="text-sm text-[#856553]">
-            Página {page} de {totalPages} — exibindo até {DEFAULT_PAGE_SIZE} parceiros.
-          </p>
-        </div>
+        <p className="pt-4 text-center text-sm text-[#856553] sm:text-left">
+          Mostrando os 3 últimos parceiros cadastrados.
+        </p>
       </HighlightSection>
 
       <HighlightSection
         id="produtos"
         subtitle="Ofertas oficiais"
         title="Produtos com a cara da CPAD"
-        filter={<ProductCategoryFilter categories={productCategories} />}
+        filter={
+          <Button
+            asChild
+            className="w-full bg-[#b02b24] text-white shadow-sm hover:bg-[#8f1f19] sm:w-auto"
+          >
+            <Link href="/produtos">Ver produtos e serviços</Link>
+          </Button>
+        }
         stats={[
           { value: productHighlights.total, label: "Produtos ativos" },
           { value: productCategories.length, label: "Categorias" },
           { value: "100%", label: "Redirecionamento seguro" },
-        ]}
+      ]}
       >
         <ProductHighlight products={productHighlights.products} />
+        <p className="pt-4 text-center text-sm text-[#856553] sm:text-left">
+          Mostrando os 3 últimos produtos e serviços cadastrados.
+        </p>
       </HighlightSection>
 
       <section className="grid gap-6 rounded-3xl border border-[#eaded5] bg-white p-6 shadow-[0_15px_45px_rgba(63,33,25,0.08)] md:grid-cols-3">
@@ -213,7 +212,9 @@ export default async function Home({
               placeholder="Seu e-mail"
               className="h-12 w-full rounded-2xl border border-[#eaded5] px-4 text-sm shadow-[0_8px_25px_rgba(63,33,25,0.05)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f1b4aa]"
             />
-            <Button className="h-12 sm:w-40">Quero receber</Button>
+            <Button className="h-12 bg-[#b02b24] text-white hover:bg-[#8f1f19] sm:w-40">
+              Quero receber
+            </Button>
           </div>
         </div>
       </section>
@@ -253,7 +254,7 @@ function HighlightSection({
             {title}
           </h2>
         </div>
-        <div className="w-full max-w-xs">{filter}</div>
+        <div className="w-full max-w-xs sm:w-auto sm:justify-self-end">{filter}</div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-3">

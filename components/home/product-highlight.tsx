@@ -1,13 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ExternalLink } from "lucide-react";
 
 import type { PartnerProductSummary } from "@/lib/data/products";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 
 type ProductHighlightProps = {
   products: PartnerProductSummary[];
@@ -68,14 +65,15 @@ export function ProductHighlight({ products }: ProductHighlightProps) {
               Fechar
             </button>
             <div className="relative h-[70vh] w-full min-h-80">
-              <Image
-                src={preview.src}
-                alt={preview.alt}
-                fill
-                sizes="100vw"
-                className="object-contain"
-                unoptimized
-              />
+          <Image
+            src={preview.src}
+            alt={preview.alt}
+            fill
+            sizes="100vw"
+            className="object-contain"
+            unoptimized
+            loading="lazy"
+          />
             </div>
           </div>
         </div>
@@ -105,7 +103,7 @@ function ProductHighlightCard({
   const coverImage = gallery[currentImageIndex] ?? "/logo_cpad_belem.svg";
 
   return (
-    <article className="flex h-full w-full min-h-[430px] flex-col rounded-3xl border border-[#eaded5] bg-white p-4 text-[#3f2b22] shadow-[0_12px_35px_rgba(63,33,25,0.08)]">
+    <article className="flex h-full w-full min-h-107.5 flex-col rounded-3xl border border-[#eaded5] bg-white p-4 text-[#3f2b22] shadow-[0_12px_35px_rgba(63,33,25,0.08)]">
       <div className="flex-1 space-y-3">
         <button
           type="button"
@@ -120,10 +118,11 @@ function ProductHighlightCard({
             className="object-contain bg-[#fff8f3]"
             sizes="(max-width:768px) 100vw, 33vw"
             unoptimized
+            loading="lazy"
           />
         </button>
         {gallery.length > 1 && (
-          <div className="flex min-h-[52px] items-center gap-2 overflow-x-auto pb-1">
+          <div className="flex min-h-13 items-center gap-2 overflow-x-auto pb-1">
             {gallery.map((image, index) => {
               const active = index === currentImageIndex;
               return (
@@ -141,6 +140,7 @@ function ProductHighlightCard({
                     className="object-contain bg-[#fff8f3]"
                     sizes="48px"
                     unoptimized
+                    loading="lazy"
                   />
                 </button>
               );
@@ -161,14 +161,6 @@ function ProductHighlightCard({
             140,
           )}
         </p>
-      </div>
-      <div className="mt-auto pt-3">
-        <Button asChild className="w-full bg-[#b02b24] hover:bg-[#8f1f19] text-white">
-          <Link href="/produtos" prefetch={false} className="inline-flex w-full items-center justify-center gap-2">
-            Ver produtos/serviços
-            <ExternalLink className="h-4 w-4" />
-          </Link>
-        </Button>
       </div>
     </article>
   );
