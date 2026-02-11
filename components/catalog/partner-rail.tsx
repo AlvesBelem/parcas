@@ -5,6 +5,7 @@ import { ExternalLink } from "lucide-react";
 import type { PartnerSummary } from "@/lib/data/partners";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 type PartnerRailProps = {
   title: string;
@@ -29,12 +30,12 @@ export function PartnerRail({ title, partners }: PartnerRailProps) {
               key={partner.id}
               className="relative w-[260px] shrink-0 overflow-hidden rounded-3xl border border-[#eaded5] bg-white shadow-[0_14px_44px_rgba(63,33,25,0.1)] transition hover:-translate-y-1"
             >
-              <div className="relative h-32 w-full bg-[#fff8f3]">
+              <div className="relative h-48 w-full bg-[#fff8f3]">
                 <Image
                   src={partner.logoUrl}
                   alt={partner.name}
                   fill
-                  className="object-contain p-6"
+                  className="object-contain p-8"
                   sizes="260px"
                   unoptimized
                 />
@@ -44,21 +45,14 @@ export function PartnerRail({ title, partners }: PartnerRailProps) {
                   <h4 className="text-lg font-semibold truncate">{partner.name}</h4>
                   <Badge>{partner.category}</Badge>
                 </div>
-                <p className="line-clamp-3 text-sm text-[#7a5a4b]">
+                <p className="text-sm leading-relaxed text-[#7a5a4b]">
                   {partner.description ?? "Parceiro oficial com suporte direto da CPAD Belém."}
                 </p>
                 <div className="flex items-center justify-between text-xs text-[#a38271]">
                   <span>{new Intl.DateTimeFormat("pt-BR").format(new Date(partner.createdAt))}</span>
                   <span>{partner.clickCount} cliques</span>
                 </div>
-                <Link
-                  href={`/out/partner/${partner.slug}`}
-                  prefetch={false}
-                  className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#b02b24] px-3 py-2 text-sm font-semibold text-white shadow-[0_10px_28px_rgba(178,45,38,0.2)] hover:bg-[#8f1f19]"
-                >
-                  Visitar
-                  <ExternalLink className="h-4 w-4" />
-                </Link>
+                <PartnerLinkButton partner={partner} />
               </div>
             </article>
           ))}
@@ -66,5 +60,25 @@ export function PartnerRail({ title, partners }: PartnerRailProps) {
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
     </section>
+  );
+}
+
+function PartnerLinkButton({ partner }: { partner: PartnerSummary }) {
+  const partnerLink = partner.url || `/out/partner/${partner.slug}`;
+  const isExternal = partnerLink.startsWith("http");
+
+  return (
+    <Link
+      href={partnerLink}
+      prefetch={false}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
+      className={cn(
+        "mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#b02b24] px-3 py-2 text-sm font-semibold text-white shadow-[0_10px_28px_rgba(178,45,38,0.2)] hover:bg-[#8f1f19]"
+      )}
+    >
+      Visitar site
+      <ExternalLink className="h-4 w-4" />
+    </Link>
   );
 }

@@ -8,6 +8,8 @@ export type PartnerProductSummary = {
   slug: string;
   platform: string;
   url: string;
+  ctaLabel: string;
+  ctaColor: string;
   imageUrls: string[];
   description?: string | null;
   clickCount: number;

@@ -29,6 +29,17 @@ export const createProductSchema = z.object({
     .string({ required_error: "Informe o link do produto." })
     .url("Use um link valido para o produto."),
   imageUrls: imageSchema,
+  ctaLabel: z
+    .string()
+    .trim()
+    .max(80, "Use no maximo 80 caracteres no texto do botao.")
+    .default("Ir para link oficial")
+    .or(z.literal("").transform(() => "Ir para link oficial")),
+  ctaColor: z
+    .string()
+    .trim()
+    .regex(/^#([0-9A-Fa-f]{6})$/, "Informe uma cor hexadecimal no formato #RRGGBB.")
+    .default("#b02b24"),
   description: z
     .string()
     .max(3000, "Use no maximo 3000 caracteres.")

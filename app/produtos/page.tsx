@@ -35,7 +35,7 @@ export default async function ProductsCatalogPage() {
       <header className="space-y-4">
         <p className="text-xs uppercase tracking-[0.3em] text-[#b02b24]">Catálogo</p>
         <h1 className="text-4xl font-semibold text-[#2f1d15]" style={{ fontFamily: "var(--font-playfair)" }}>
-          Produtos por categoria
+          Produtos/Serviços por categorias
         </h1>
         <p className="text-[#7a5a4b]">
           Trilha no estilo catálogo para navegar produtos oficiais por categoria, com banners rotativos para lançamentos e campanhas.

@@ -27,6 +27,8 @@ export default async function ProductDetailPage({ params }: PageParams) {
   const coverImage = product.imageUrls[0] ?? "/logo_cpad_belem.svg";
   const otherImages = product.imageUrls.slice(1, 6);
   const ctaHref = `/out/product/${product.slug}`;
+  const ctaLabel = product.ctaLabel?.trim() || "Ir para o link oficial";
+  const ctaColor = product.ctaColor?.trim() || "#b02b24";
 
   return (
     <main className="space-y-10">
@@ -89,7 +91,7 @@ export default async function ProductDetailPage({ params }: PageParams) {
         <div className="space-y-4 rounded-3xl border border-[#f1e5dc] bg-[#fff8f3] p-5 text-[#3f2b22]">
           <div className="flex items-center gap-2 text-sm text-[#b02b24]">
             <ShieldCheck className="h-4 w-4" />
-            Link verificado pela CPAD Belem
+            Link verificado pela CPAD Belém
           </div>
           <p className="text-base leading-relaxed text-[#4c3429]">
             {product.description ?? "Oferta oficial cadastrada pelos administradores."}
@@ -108,9 +110,14 @@ export default async function ProductDetailPage({ params }: PageParams) {
               {new Intl.DateTimeFormat("pt-BR").format(new Date(product.createdAt))}
             </p>
           </div>
-          <Button asChild size="lg" className="w-full">
+          <Button
+            asChild
+            size="lg"
+            className="w-full text-white"
+            style={{ backgroundColor: ctaColor, borderColor: ctaColor }}
+          >
             <Link href={ctaHref} prefetch={false} className="inline-flex w-full items-center justify-center gap-2">
-              Ir para o link oficial
+              {ctaLabel}
               <ExternalLink className="h-4 w-4" />
             </Link>
           </Button>

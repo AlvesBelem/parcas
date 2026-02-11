@@ -129,6 +129,24 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
       <Field label="Link oficial" name="url">
         <Input name="url" type="url" defaultValue={product.url} required />
       </Field>
+      <div className="grid gap-4 sm:grid-cols-[1.3fr_0.7fr]">
+        <Field label="Texto do botão" name="ctaLabel">
+          <Input
+            name="ctaLabel"
+            id="cta-label"
+            defaultValue={product.ctaLabel || "Ir para link oficial"}
+            maxLength={80}
+          />
+        </Field>
+        <Field label="Cor do botão" name="ctaColor">
+          <Input
+            name="ctaColor"
+            id="cta-color"
+            type="color"
+            defaultValue={product.ctaColor || "#b02b24"}
+          />
+        </Field>
+      </div>
       <Field label="Categoria" name="categoryId">
         {hasCategories ? (
           <>
