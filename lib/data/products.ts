@@ -92,3 +92,25 @@ export async function fetchPartnerProducts({
     perPage: take,
   };
 }
+
+export async function fetchPartnerProductBySlug(
+  slug: string,
+  { includeInactive = false }: { includeInactive?: boolean } = {},
+): Promise<PartnerProductSummary | null> {
+  const where: Prisma.PartnerProductWhereUniqueInput = { slug };
+
+  const product = await prisma.partnerProduct.findUnique({
+    where,
+    include: {
+      category: { select: { id: true, name: true, slug: true } },
+    },
+  });
+
+  if (!product) return null;
+  if (!includeInactive && !product.active) return null;
+
+  return {
+    ...product,
+    imageUrls: product.imageUrls ?? [],
+  };
+}
