@@ -63,7 +63,7 @@ function buildBannerItems(products: Awaited<ReturnType<typeof fetchPartnerProduc
   const baseItems: BannerItem[] = products.map((product) => ({
     id: product.id,
     title: product.name,
-    href: `/out/product/${product.slug}`,
+    href: `/produtos/${product.slug}`,
     imageUrl: product.imageUrls[0] ?? "/logo_cpad_belem.svg",
     badge: "Produto novo",
     caption: product.description ?? "Oferta oficial com link verificado pela CPAD Belém.",

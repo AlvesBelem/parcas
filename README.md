@@ -34,6 +34,7 @@ Aplicacao em Next.js 16 (App Router) que apresenta um catalogo estilo streaming 
    - `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET`: credenciais do OAuth (callback `http://localhost:3000`).
    - `AUTH_SECRET`: gere com `npx auth secret`.
    - `ADMIN_EMAILS`: lista separada por virgula com os e-mails que acessam o painel.
+   - `BLOB_READ_WRITE_TOKEN`: token de escrita do Vercel Blob para uploads de imagens pelo admin.
 
 3. **Execute as migracoes Prisma**
 

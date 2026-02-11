@@ -57,7 +57,7 @@ export function ProductRail({ title, products }: ProductRailProps) {
                     <span>{product.clickCount} cliques</span>
                   </div>
                   <Link
-                    href={`/out/product/${product.slug}`}
+                    href={`/produtos/${product.slug}`}
                     prefetch={false}
                     className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#b02b24] px-3 py-2 text-sm font-semibold text-white shadow-[0_10px_28px_rgba(178,45,38,0.2)] hover:bg-[#8f1f19]"
                   >
