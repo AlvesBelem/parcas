@@ -175,7 +175,11 @@ function DailyChart({
   productSeries: ClickSeriesPoint[];
   focus: FocusView;
 }) {
-  const formatter = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short" });
+  const formatter = new Intl.DateTimeFormat("pt-BR", {
+    day: "2-digit",
+    month: "short",
+    timeZone: "UTC",
+  });
 
   const merged = partnerSeries.map((p, idx) => {
     const product = productSeries[idx];
