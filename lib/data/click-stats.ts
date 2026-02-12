@@ -119,20 +119,21 @@ function fillSeries(
 ): ClickSeriesPoint[] {
   const map = new Map<string, number>();
 
-  const toLocalStart = (value: Date) => {
+  // Normalize sempre em UTC para evitar deslocamentos de fuso/servidor
+  const toUtcStart = (value: Date) => {
     const d = new Date(value);
-    d.setHours(0, 0, 0, 0);
+    d.setUTCHours(0, 0, 0, 0);
     return d;
   };
 
   rows.forEach((row) => {
-    const key = toLocalStart(row.date).toISOString();
+    const key = toUtcStart(row.date).toISOString();
     map.set(key, (map.get(key) ?? 0) + (row._sum.count ?? 0));
   });
 
   const result: ClickSeriesPoint[] = [];
   for (let offset = days - 1; offset >= 0; offset--) {
-    const targetDay = toLocalStart(new Date(Date.now() - offset * 24 * 60 * 60 * 1000));
+    const targetDay = toUtcStart(new Date(Date.now() - offset * 24 * 60 * 60 * 1000));
     const key = targetDay.toISOString();
     result.push({
       date: key,
