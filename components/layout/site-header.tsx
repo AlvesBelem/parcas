@@ -3,7 +3,7 @@
 import { type FormEvent, useId, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, Heart, Menu, Search, UserRound, X } from "lucide-react";
+import { Heart, Menu, Search, UserRound, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -84,20 +84,6 @@ export function SiteHeader() {
         </button>
       </div>
 
-      <div className="hidden bg-[var(--color-wine)] text-white lg:block">
-        <div className="mx-auto flex h-11 w-full max-w-[1440px] items-stretch px-8">
-          <Link
-            href="/parceiros"
-            className="mr-9 inline-flex items-center gap-3 border-r border-white/15 pr-9 text-sm font-semibold transition hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-[var(--color-gold-light)]"
-          >
-            <Menu className="h-5 w-5" aria-hidden />
-            Todas as Categorias
-            <ChevronDown className="h-4 w-4" aria-hidden />
-          </Link>
-          <DesktopNavigation />
-        </div>
-      </div>
-
       <div
         id="site-navigation"
         className={cn(
@@ -149,33 +135,6 @@ export function SiteHeader() {
         </div>
       </div>
     </header>
-  );
-}
-
-function DesktopNavigation() {
-  return (
-    <nav className="flex min-w-0 items-stretch" aria-label="Navegação principal">
-      {navigation.map((item) =>
-        item.pending ? (
-          <span
-            key={item.label}
-            className="inline-flex items-center px-5 text-xs font-semibold text-white/65"
-            aria-disabled="true"
-            title="Página em preparação"
-          >
-            {item.label}
-          </span>
-        ) : (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="inline-flex items-center border-b-2 border-transparent px-5 text-xs font-semibold text-white transition hover:border-[var(--color-gold-light)] hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-[var(--color-gold-light)]"
-          >
-            {item.label}
-          </Link>
-        ),
-      )}
-    </nav>
   );
 }
 
