@@ -45,7 +45,7 @@ export default async function ProductsCatalogPage({
   const nonEmpty = productsByCategory.filter((group) => group.products.length > 0);
 
   return (
-    <main className="space-y-10">
+    <section className="space-y-10">
       <header className="space-y-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div className="space-y-2">
@@ -80,7 +80,7 @@ export default async function ProductsCatalogPage({
           </p>
         )}
       </div>
-    </main>
+    </section>
   );
 }
 
@@ -91,7 +91,7 @@ function buildBannerItems(products: Awaited<ReturnType<typeof fetchPartnerProduc
     href: `/produtos/${product.slug}`,
     imageUrl: product.imageUrls[0] ?? "/logo_cpad_belem.svg",
     badge: "Produto novo",
-    caption: product.description ?? "Oferta oficial com link verificado pela CPAD Belém.",
+    caption: product.description ?? "Conheça este item no catálogo de parceiros CPAD Belém.",
   }));
 
   const customPromos: BannerItem[] = [

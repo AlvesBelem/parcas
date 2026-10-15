@@ -35,7 +35,7 @@ export function BannerRotator({ items, intervalMs = 5200 }: BannerRotatorProps) 
   if (!safeItems.length) return null;
 
   const current = safeItems[index];
-  const highlightTags = ["Curadoria humana", "Entrega monitorada", "Clique auditado"];
+  const highlightTags = ["Empresas parceiras", "Produtos e serviços", "Contato direto"];
   const treatAsLogo = Boolean(
     current.imageUrl?.toLowerCase().match(/logo|marca|icon|svg/),
   );
@@ -65,7 +65,7 @@ export function BannerRotator({ items, intervalMs = 5200 }: BannerRotatorProps) 
             </span>
             <span className="inline-flex items-center gap-1 rounded-full border border-[#cfe8d4] bg-[#e9f7ef] px-3 py-1 text-[#1b7b41] shadow-sm">
               <ShieldCheck className="h-3.5 w-3.5" />
-              Verificado
+              Em destaque
             </span>
           </div>
 
@@ -131,7 +131,7 @@ export function BannerRotator({ items, intervalMs = 5200 }: BannerRotatorProps) 
             </div>
             <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-[#f3c6b5] bg-white px-4 py-3 text-sm text-[#3f2b22] shadow-[0_18px_40px_rgba(63,33,25,0.18)] backdrop-blur">
               <p className="font-semibold">{current.title}</p>
-              <p className="text-xs text-[#7a5a4b]">Link auditado e clique seguro com a equipe CPAD Belém.</p>
+              <p className="text-xs text-[#7a5a4b]">Acesse os canais de atendimento cadastrados pelo parceiro.</p>
             </div>
           </div>
         </div>

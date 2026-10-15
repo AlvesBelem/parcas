@@ -19,14 +19,14 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex h-11 w-full items-center justify-between gap-2 rounded-2xl border border-[#e6dad2] bg-white px-4 text-sm text-[#3f2b22] placeholder:text-[#9c7d6c] shadow-[0_8px_25px_rgba(63,33,25,0.05)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f1b4aa] disabled:cursor-not-allowed disabled:opacity-60",
+      "flex h-11 w-full items-center justify-between gap-2 rounded-lg border border-[var(--color-border-strong)] bg-white px-4 text-sm text-[var(--color-text)] shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] disabled:cursor-not-allowed disabled:opacity-60",
       className,
     )}
     {...props}
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ChevronDown className="h-4 w-4 text-[#9c7d6c]" />
+      <ChevronDown className="h-4 w-4 text-[var(--color-text-subtle)]" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));
@@ -40,20 +40,20 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        "z-50 min-w-32 overflow-hidden rounded-2xl border border-[#eaded5] bg-white text-[#3f2b22] shadow-[0_20px_60px_rgba(63,33,25,0.16)]",
+        "z-50 min-w-32 overflow-hidden rounded-lg border border-[var(--color-border)] bg-white text-[var(--color-text)] shadow-[var(--shadow-raised)]",
         position === "popper" && "translate-y-1",
         className,
       )}
       position={position}
       {...props}
     >
-      <SelectPrimitive.ScrollUpButton className="flex h-8 cursor-default items-center justify-center bg-[#f7ede7] text-[#3f2b22]">
+      <SelectPrimitive.ScrollUpButton className="flex h-8 cursor-default items-center justify-center bg-[var(--color-surface)] text-[var(--color-text)]">
         <ChevronUp className="h-4 w-4" />
       </SelectPrimitive.ScrollUpButton>
       <SelectPrimitive.Viewport className="p-2">
         {children}
       </SelectPrimitive.Viewport>
-      <SelectPrimitive.ScrollDownButton className="flex h-8 cursor-default items-center justify-center bg-[#f7ede7] text-[#3f2b22]">
+      <SelectPrimitive.ScrollDownButton className="flex h-8 cursor-default items-center justify-center bg-[var(--color-surface)] text-[var(--color-text)]">
         <ChevronDown className="h-4 w-4" />
       </SelectPrimitive.ScrollDownButton>
     </SelectPrimitive.Content>
@@ -67,7 +67,7 @@ const SelectLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Label
     ref={ref}
-    className={cn("px-2 py-1.5 text-xs font-semibold text-[#8b6452]", className)}
+    className={cn("px-2 py-1.5 text-xs font-semibold text-[var(--color-text-muted)]", className)}
     {...props}
   />
 ));
@@ -80,14 +80,14 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-default select-none items-center rounded-xl px-3 py-2 text-sm font-medium text-[#3f2b22] focus:bg-[#fdf0ec] focus:text-[#9e231d] data-disabled:pointer-events-none data-disabled:opacity-50",
+      "relative flex w-full cursor-default select-none items-center rounded-md px-3 py-2 text-sm font-medium text-[var(--color-text)] focus:bg-[var(--color-surface)] focus:text-[var(--color-wine)] data-disabled:pointer-events-none data-disabled:opacity-50",
       className,
     )}
     {...props}
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <div className="h-2 w-2 rounded-full bg-[#b22d26]" />
+        <div className="h-2 w-2 rounded-full bg-[var(--color-wine)]" />
       </SelectPrimitive.ItemIndicator>
     </span>
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
@@ -101,7 +101,7 @@ const SelectSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Separator
     ref={ref}
-    className={cn("my-2 h-px bg-[#eaded5]", className)}
+    className={cn("my-2 h-px bg-[var(--color-border)]", className)}
     {...props}
   />
 ));

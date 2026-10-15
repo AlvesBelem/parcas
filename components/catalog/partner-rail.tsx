@@ -46,7 +46,7 @@ export function PartnerRail({ title, partners }: PartnerRailProps) {
                   <Badge>{partner.category}</Badge>
                 </div>
                 <p className="text-sm leading-relaxed text-[#7a5a4b]">
-                  {partner.description ?? "Parceiro oficial com suporte direto da CPAD Belém."}
+                  {partner.description ?? "Conheça este parceiro no diretório CPAD Belém."}
                 </p>
                 <div className="flex items-center justify-between text-xs text-[#a38271]">
                   <span>{new Intl.DateTimeFormat("pt-BR").format(new Date(partner.createdAt))}</span>

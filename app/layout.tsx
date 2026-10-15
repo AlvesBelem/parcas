@@ -3,8 +3,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Geist_Mono, Manrope, Playfair_Display } from "next/font/google";
 
 import "./globals.css";
+import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -25,9 +25,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CPAD Belém | Rede de Parceiros e Loja Oficial",
-  description:
-    "Catálogo oficial dos parceiros e produtos da CPAD Belém. Conteúdo curado, cliques seguros e vitrine alinhada ao site principal.",
+  title: "Parceiros CPAD Belém | Diretório de parceiros",
+  description: "Conheça empresas, produtos e serviços parceiros da CPAD Belém.",
 };
 
 export default function RootLayout({
@@ -37,34 +36,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body
-        className={`${manrope.variable} ${playfair.variable} ${geistMono.variable} antialiased bg-transparent text-[#2f1d15]`}
-      >
-        <div className="relative min-h-screen overflow-x-hidden">
+      <body className={`${manrope.variable} ${playfair.variable} ${geistMono.variable} antialiased`}>
+        <div className="flex min-h-screen flex-col overflow-x-clip">
           <SiteHeader />
-          <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+          <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
             {children}
           </main>
-          <footer className="mt-10 bg-[#b02b24] text-white">
-            <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-8 sm:px-6 lg:px-8 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="text-sm uppercase tracking-[0.22em] text-white/80">
-                  CPAD Belém • Rede oficial
-                </p>
-                <p className="text-lg font-semibold">Conte com nosso time para compras seguras.</p>
-              </div>
-              <div className="text-sm text-white/90">
-                <p>📞 (91) 98127-1407</p>
-                <p>✉️ parcerias@cpadbelem.com.br</p>
-              </div>
-            </div>
-            <div className="bg-[#9a241f]">
-              <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-4 text-sm text-white/80 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-                <p>© {new Date().getFullYear()} CPAD Belém. Todos os direitos reservados.</p>
-                <p>Transparência e suporte humano em cada clique.</p>
-              </div>
-            </div>
-          </footer>
+          <SiteFooter />
         </div>
         <SpeedInsights />
       </body>

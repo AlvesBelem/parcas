@@ -51,7 +51,7 @@ export function ProductRail({ title, products }: ProductRailProps) {
                     <Badge variant="outline">{product.category?.name ?? "Sem categoria"}</Badge>
                   </div>
                   <p className="line-clamp-3 text-sm text-[#7a5a4b]">
-                    {product.description ?? "Oferta oficial com link verificado."}
+                    {product.description ?? "Item disponível no catálogo de parceiros."}
                   </p>
                   <div className="flex items-center justify-between text-xs text-[#a38271]">
                     <span>{new Intl.DateTimeFormat("pt-BR").format(new Date(product.createdAt))}</span>

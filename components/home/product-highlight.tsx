@@ -157,7 +157,7 @@ function ProductHighlightCard({
         </h3>
         <p className="min-h-[3.6em] text-sm text-[#7a5a4b]">
           {truncate(
-            product.description ?? "Produto autorizado pelos parceiros oficiais da rede.",
+            product.description ?? "Item cadastrado no catálogo de parceiros.",
             140,
           )}
         </p>

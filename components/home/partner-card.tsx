@@ -1,60 +1,69 @@
-"use client";
-
 import Image from "next/image";
-import { ShieldCheck } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, ExternalLink, Tag } from "lucide-react";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { PartnerSummary } from "@/lib/data/partners";
 
 type PartnerCardProps = {
   partner: PartnerSummary;
   className?: string;
+  compact?: boolean;
 };
 
-export function PartnerCard({ partner, className }: PartnerCardProps) {
+export function PartnerCard({ partner, className, compact = false }: PartnerCardProps) {
   return (
-    <Card
+    <article
       className={cn(
-        "flex h-full flex-col border border-[#eaded5] bg-white text-[#3f2b22] shadow-[0_12px_35px_rgba(63,33,25,0.08)]",
+        "group flex h-full flex-col overflow-hidden border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)] transition duration-200 hover:-translate-y-1 hover:shadow-[var(--shadow-raised)]",
         className,
       )}
     >
-      <CardHeader className="space-y-4 text-center sm:text-left">
-        <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:text-left">
-          <div className="relative mx-auto h-20 w-20 shrink-0 overflow-hidden rounded-3xl border border-[#f3e7de] bg-[#fff8f3] p-2 sm:mx-0">
-            <Image
-              src={partner.logoUrl}
-              alt={partner.name}
-              fill
-              className="object-contain"
-              sizes="80px"
-              unoptimized
-            />
-          </div>
-          <div className="space-y-1">
-            <CardTitle className="text-xl text-[#2f1d15]">{partner.name}</CardTitle>
-            <Badge className="mx-auto sm:mx-0">{partner.category}</Badge>
-          </div>
+      <div className={cn("relative overflow-hidden bg-[var(--color-surface-warm)]", compact ? "h-28" : "h-36")}>
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(117,11,42,0.12),transparent_58%,rgba(195,148,77,0.2))]" />
+        <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 border border-white/65 bg-white/90 px-2.5 py-1 text-[11px] font-bold text-[var(--color-wine)] shadow-sm backdrop-blur">
+          <Tag className="h-3 w-3" aria-hidden />
+          {partner.category}
+        </span>
+      </div>
+
+      <div className={cn("relative flex flex-1 flex-col px-5 pb-5", compact ? "pt-9" : "pt-11")}>
+        <div className={cn("absolute left-5 flex items-center justify-center overflow-hidden rounded-full border-4 border-white bg-white shadow-[0_8px_22px_rgba(58,35,25,0.12)]", compact ? "-top-9 h-16 w-16" : "-top-11 h-20 w-20")}>
+          <Image
+            src={partner.logoUrl}
+            alt={`Marca ${partner.name}`}
+            fill
+            className="object-contain p-2"
+            sizes={compact ? "64px" : "80px"}
+            unoptimized
+          />
         </div>
-        <div className="flex items-center justify-center gap-2 text-xs uppercase tracking-wide text-[#b02b24] sm:justify-start">
-          <ShieldCheck className="h-4 w-4" />
-          Parceiro verificado
+
+        <h3 className="pr-6 font-[family-name:var(--font-playfair)] text-xl font-bold leading-tight text-[var(--color-text)]">
+          <Link href={`/parceiros/${partner.slug}`} className="outline-offset-4 hover:text-[var(--color-wine)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-focus)]">
+            {partner.name}
+          </Link>
+        </h3>
+        <p className="mt-2 line-clamp-3 text-sm leading-5 text-[var(--color-text-muted)]">
+          {partner.description ?? "Informações e canal de atendimento disponíveis no diretório."}
+        </p>
+
+        <div className="mt-auto grid grid-cols-2 gap-2 pt-5">
+          <Link
+            href={`/parceiros/${partner.slug}`}
+            className="inline-flex min-h-10 items-center justify-center gap-1.5 border border-[var(--color-wine)] px-3 text-xs font-bold text-[var(--color-wine)] transition hover:bg-[var(--color-wine)] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+          >
+            Conhecer <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+          </Link>
+          <Link
+            href={`/out/partner/${partner.slug}`}
+            prefetch={false}
+            className="inline-flex min-h-10 items-center justify-center gap-1.5 bg-[var(--color-wine)] px-3 text-xs font-bold text-white transition hover:bg-[var(--color-wine-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+          >
+            Visitar <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+          </Link>
         </div>
-        <CardDescription className="text-[#7a5a4b] text-center sm:text-left">
-          {partner.description ??
-            "Parceiro oficial credenciado e pronto para atender voce com seguranca."}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="flex-1">
-        <ul className="space-y-2 text-sm text-[#7a5a4b] text-center sm:text-left">
-          <li>
-            <span className="text-[#2f1d15]">Disponivel 24/7</span> com suporte dedicado.
-          </li>
-          <li>Entrega segura e monitorada pela equipe CPAD Belem.</li>
-        </ul>
-      </CardContent>
-    </Card>
+      </div>
+    </article>
   );
 }

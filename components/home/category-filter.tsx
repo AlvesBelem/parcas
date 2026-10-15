@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useTransition } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import {
   Select,
@@ -23,6 +23,7 @@ type FilterOption = {
 
 export function CategoryFilter({ categories }: CategoryFilterProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [pending, startTransition] = useTransition();
 
@@ -47,7 +48,7 @@ export function CategoryFilter({ categories }: CategoryFilterProps) {
     }
     params.set("page", "1");
     startTransition(() => {
-      router.replace(`/?${params.toString()}`);
+      router.replace(`${pathname}?${params.toString()}`);
     });
   }
 

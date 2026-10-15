@@ -31,7 +31,7 @@ export default async function ProductDetailPage({ params }: PageParams) {
   const ctaColor = product.ctaColor?.trim() || "#b02b24";
 
   return (
-    <main className="space-y-10">
+    <section className="space-y-10">
       <div className="flex flex-col gap-3">
         <Link
           href="/produtos"
@@ -91,10 +91,10 @@ export default async function ProductDetailPage({ params }: PageParams) {
         <div className="space-y-4 rounded-3xl border border-[#f1e5dc] bg-[#fff8f3] p-5 text-[#3f2b22]">
           <div className="flex items-center gap-2 text-sm text-[#b02b24]">
             <ShieldCheck className="h-4 w-4" />
-            Link verificado pela CPAD Belém
+            Link externo informado pelo parceiro
           </div>
           <p className="text-base leading-relaxed text-[#4c3429] text-justify">
-            {product.description ?? "Oferta oficial cadastrada pelos administradores."}
+            {product.description ?? "Item cadastrado no catálogo de parceiros."}
           </p>
           <div className="space-y-2 text-sm text-[#7a5a4b]">
             <p>
@@ -123,6 +123,6 @@ export default async function ProductDetailPage({ params }: PageParams) {
           </Button>
         </div>
       </section>
-    </main>
+    </section>
   );
 }

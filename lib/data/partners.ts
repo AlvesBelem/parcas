@@ -19,11 +19,13 @@ export const DEFAULT_PAGE_SIZE = 8;
 
 export async function fetchPartners({
   categorySlug,
+  search,
   page = 1,
   perPage = DEFAULT_PAGE_SIZE,
   includeInactive = false,
 }: {
   categorySlug?: string | null;
+  search?: string | null;
   page?: number;
   perPage?: number;
   includeInactive?: boolean;
@@ -57,6 +59,15 @@ export async function fetchPartners({
     where.active = true;
   }
 
+  const searchTerm = search?.trim().slice(0, 100);
+  if (searchTerm) {
+    where.OR = [
+      { name: { contains: searchTerm, mode: "insensitive" } },
+      { category: { contains: searchTerm, mode: "insensitive" } },
+      { description: { contains: searchTerm, mode: "insensitive" } },
+    ];
+  }
+
   const [partners, total] = await Promise.all([
     prisma.partner.findMany({
       where,
@@ -75,4 +86,13 @@ export async function fetchPartners({
     page: currentPage,
     perPage: take,
   };
+}
+
+export async function fetchPartnerBySlug(slug: string) {
+  return prisma.partner.findFirst({
+    where: {
+      slug,
+      active: true,
+    },
+  });
 }
