@@ -91,6 +91,45 @@ export async function fetchTopProductClicks(
     .filter((item) => item.clicks > 0);
 }
 
+export async function fetchTopServiceClicks(
+  days: number,
+  take = 5,
+): Promise<ClickStatEntry[]> {
+  const since = sinceDays(days);
+  const grouped = await prisma.serviceClickStat.groupBy({
+    by: ["serviceId"],
+    where: { date: { gte: since } },
+    _sum: { count: true },
+    orderBy: { _sum: { count: "desc" } },
+    take,
+  });
+
+  const ids = grouped.map((group) => group.serviceId);
+  if (!ids.length) return [];
+
+  const services = await prisma.service.findMany({
+    where: { id: { in: ids } },
+    select: {
+      id: true,
+      name: true,
+      category: { select: { name: true } },
+    },
+  });
+  const map = new Map(services.map((service) => [service.id, service]));
+
+  return grouped
+    .map((group) => {
+      const service = map.get(group.serviceId);
+      return {
+        id: group.serviceId,
+        label: service?.name ?? "Serviço",
+        badge: service?.category.name ?? "",
+        clicks: group._sum.count ?? 0,
+      };
+    })
+    .filter((item) => item.clicks > 0);
+}
+
 export async function fetchPartnerClickSeries(days: number): Promise<ClickSeriesPoint[]> {
   const since = sinceDays(days);
   const rows = await prisma.partnerClickStat.groupBy({
@@ -105,6 +144,17 @@ export async function fetchPartnerClickSeries(days: number): Promise<ClickSeries
 export async function fetchProductClickSeries(days: number): Promise<ClickSeriesPoint[]> {
   const since = sinceDays(days);
   const rows = await prisma.productClickStat.groupBy({
+    by: ["date"],
+    where: { date: { gte: since } },
+    _sum: { count: true },
+    orderBy: { date: "asc" },
+  });
+  return fillSeries(days, rows);
+}
+
+export async function fetchServiceClickSeries(days: number): Promise<ClickSeriesPoint[]> {
+  const since = sinceDays(days);
+  const rows = await prisma.serviceClickStat.groupBy({
     by: ["date"],
     where: { date: { gte: since } },
     _sum: { count: true },

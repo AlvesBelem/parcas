@@ -15,16 +15,18 @@ const periods = [
 
 type PeriodKey = (typeof periods)[number]["key"];
 type MetricMap = Record<PeriodKey, ClickStatEntry[]>;
-type Focus = "both" | "partners" | "products";
+type Focus = "both" | "partners" | "products" | "services";
 
 type ClickMetricsProps = {
   partnerStats: MetricMap;
   productStats: MetricMap;
+  serviceStats: MetricMap;
   partnerSeries: ClickSeriesPoint[];
   productSeries: ClickSeriesPoint[];
+  serviceSeries: ClickSeriesPoint[];
 };
 
-export function ClickMetrics({ partnerStats, productStats, partnerSeries, productSeries }: ClickMetricsProps) {
+export function ClickMetrics({ partnerStats, productStats, serviceStats, partnerSeries, productSeries, serviceSeries }: ClickMetricsProps) {
   const [period, setPeriod] = useState<PeriodKey>("week");
   const [focus, setFocus] = useState<Focus>("both");
   const currentPeriod = periods.find((item) => item.key === period) ?? periods[1];
@@ -36,7 +38,7 @@ export function ClickMetrics({ partnerStats, productStats, partnerSeries, produc
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-wine)]">Acessos externos</p>
             <h2 id="metrics-title" className="mt-1 font-[family-name:var(--font-playfair)] text-3xl text-[var(--color-text)]">Métricas de cliques</h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--color-text-muted)]">Dados registrados quando alguém segue um link para um parceiro ou produto.</p>
+            <p className="mt-2 text-sm leading-6 text-[var(--color-text-muted)]">Dados registrados quando alguém segue um link para um parceiro, produto ou serviço.</p>
           </div>
           <div className="flex flex-wrap gap-2" aria-label="Período das métricas">
             {periods.map((item) => <FilterButton key={item.key} active={period === item.key} onClick={() => setPeriod(item.key)}>{item.label}</FilterButton>)}
@@ -47,16 +49,18 @@ export function ClickMetrics({ partnerStats, productStats, partnerSeries, produc
           <FilterButton active={focus === "both"} onClick={() => setFocus("both")}>Todos</FilterButton>
           <FilterButton active={focus === "partners"} onClick={() => setFocus("partners")}>Parceiros</FilterButton>
           <FilterButton active={focus === "products"} onClick={() => setFocus("products")}>Produtos</FilterButton>
+          <FilterButton active={focus === "services"} onClick={() => setFocus("services")}>Serviços</FilterButton>
           <Badge variant="outline" className="ml-auto">{currentPeriod.helper}</Badge>
         </div>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-2">
-        {focus !== "products" && <MetricList title="Cliques em parceiros" detail="Canais de atendimento das lojas." data={partnerStats[period]} tone="wine" />}
-        {focus !== "partners" && <MetricList title="Cliques em produtos" detail="Links externos dos itens cadastrados." data={productStats[period]} tone="gold" />}
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {focus === "both" || focus === "partners" ? <MetricList title="Cliques em parceiros" detail="Canais de atendimento das lojas." data={partnerStats[period]} tone="wine" /> : null}
+        {focus === "both" || focus === "products" ? <MetricList title="Cliques em produtos" detail="Links externos dos itens cadastrados." data={productStats[period]} tone="gold" /> : null}
+        {focus === "both" || focus === "services" ? <MetricList title="Cliques em serviços" detail="Links externos dos serviços cadastrados." data={serviceStats[period]} tone="service" /> : null}
       </div>
 
-      <DailyChart focus={focus} partnerSeries={partnerSeries} productSeries={productSeries} />
+      <DailyChart focus={focus} partnerSeries={partnerSeries} productSeries={productSeries} serviceSeries={serviceSeries} />
     </section>
   );
 }
@@ -65,9 +69,9 @@ function FilterButton({ active, onClick, children }: { active: boolean; onClick:
   return <button type="button" onClick={onClick} className={`min-h-9 border px-3 text-xs font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] ${active ? "border-[var(--color-wine)] bg-[var(--color-wine)] text-white" : "border-[var(--color-border)] bg-white text-[var(--color-text-muted)] hover:border-[var(--color-wine)] hover:text-[var(--color-wine)]"}`}>{children}</button>;
 }
 
-function MetricList({ title, detail, data, tone }: { title: string; detail: string; data: ClickStatEntry[]; tone: "wine" | "gold" }) {
+function MetricList({ title, detail, data, tone }: { title: string; detail: string; data: ClickStatEntry[]; tone: "wine" | "gold" | "service" }) {
   const maximum = data[0]?.clicks ?? 1;
-  const barClass = tone === "wine" ? "bg-[var(--color-wine)]" : "bg-[var(--color-gold)]";
+  const barClass = tone === "wine" ? "bg-[var(--color-wine)]" : tone === "gold" ? "bg-[var(--color-gold)]" : "bg-[#2F6E55]";
   return (
     <section className="border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)]">
       <div className="border-b border-[var(--color-border)] px-5 py-4"><h3 className="font-[family-name:var(--font-playfair)] text-2xl text-[var(--color-text)]">{title}</h3><p className="mt-1 text-sm text-[var(--color-text-muted)]">{detail}</p></div>
@@ -87,12 +91,12 @@ function BarRow({ item, maximum, barClass }: { item: ClickStatEntry; maximum: nu
   </div>;
 }
 
-function DailyChart({ focus, partnerSeries, productSeries }: { focus: Focus; partnerSeries: ClickSeriesPoint[]; productSeries: ClickSeriesPoint[] }) {
+function DailyChart({ focus, partnerSeries, productSeries, serviceSeries }: { focus: Focus; partnerSeries: ClickSeriesPoint[]; productSeries: ClickSeriesPoint[]; serviceSeries: ClickSeriesPoint[] }) {
   const points = useMemo(() => {
     const formatter = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", timeZone: "UTC" });
-    return partnerSeries.map((partner, index) => ({ date: formatter.format(new Date(partner.date)).replace(".", ""), partner: partner.clicks, product: productSeries[index]?.clicks ?? 0 })).slice(-14);
-  }, [partnerSeries, productSeries]);
-  const highest = Math.max(...points.map((point) => focus === "partners" ? point.partner : focus === "products" ? point.product : Math.max(point.partner, point.product)), 1);
+    return partnerSeries.map((partner, index) => ({ date: formatter.format(new Date(partner.date)).replace(".", ""), partner: partner.clicks, product: productSeries[index]?.clicks ?? 0, service: serviceSeries[index]?.clicks ?? 0 })).slice(-14);
+  }, [partnerSeries, productSeries, serviceSeries]);
+  const highest = Math.max(...points.map((point) => focus === "partners" ? point.partner : focus === "products" ? point.product : focus === "services" ? point.service : Math.max(point.partner, point.product, point.service)), 1);
 
   return (
     <section className="border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)]">
@@ -102,8 +106,9 @@ function DailyChart({ focus, partnerSeries, productSeries }: { focus: Focus; par
           <h3 className="mt-1 font-[family-name:var(--font-playfair)] text-2xl text-[var(--color-text)]">Evolução diária</h3>
         </div>
         <div className="flex items-center gap-3 text-xs text-[var(--color-text-muted)]">
-          {focus !== "products" && <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 bg-[var(--color-wine)]" />Parceiros</span>}
-          {focus !== "partners" && <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 bg-[var(--color-gold)]" />Produtos</span>}
+          {(focus === "both" || focus === "partners") && <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 bg-[var(--color-wine)]" />Parceiros</span>}
+          {(focus === "both" || focus === "products") && <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 bg-[var(--color-gold)]" />Produtos</span>}
+          {(focus === "both" || focus === "services") && <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 bg-[#2F6E55]" />Serviços</span>}
         </div>
       </div>
       <div className="overflow-x-auto p-5">
@@ -112,11 +117,13 @@ function DailyChart({ focus, partnerSeries, productSeries }: { focus: Focus; par
             {points.map((point) => {
               const partnerHeight = `${Math.max(4, (point.partner / highest) * 100)}%`;
               const productHeight = `${Math.max(4, (point.product / highest) * 100)}%`;
+              const serviceHeight = `${Math.max(4, (point.service / highest) * 100)}%`;
               return (
                 <div key={point.date} className="flex min-w-10 flex-1 flex-col items-center gap-2">
-                  <div className="flex h-32 w-full items-end justify-center gap-1.5 border-b border-[var(--color-border)]">
-                    {focus !== "products" && <span title={`${point.partner} cliques de parceiros`} className="w-2.5 bg-[var(--color-wine)]" style={{ height: partnerHeight }} />}
-                    {focus !== "partners" && <span title={`${point.product} cliques de produtos`} className="w-2.5 bg-[var(--color-gold)]" style={{ height: productHeight }} />}
+                  <div className="flex h-32 w-full items-end justify-center gap-1 border-b border-[var(--color-border)]">
+                    {(focus === "both" || focus === "partners") && <span title={`${point.partner} cliques de parceiros`} className="w-2.5 bg-[var(--color-wine)]" style={{ height: partnerHeight }} />}
+                    {(focus === "both" || focus === "products") && <span title={`${point.product} cliques de produtos`} className="w-2.5 bg-[var(--color-gold)]" style={{ height: productHeight }} />}
+                    {(focus === "both" || focus === "services") && <span title={`${point.service} cliques de serviços`} className="w-2.5 bg-[#2F6E55]" style={{ height: serviceHeight }} />}
                   </div>
                   <span className="text-[10px] text-[var(--color-text-subtle)]">{point.date}</span>
                 </div>

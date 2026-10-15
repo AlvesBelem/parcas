@@ -59,7 +59,7 @@ export default async function PartnerProfilePage({ params }: PartnerProfilePageP
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg">
-                <Link href={`/out/partner/${partner.slug}`} prefetch={false}>
+                <Link href={`/out/partner/${partner.slug}`} prefetch={false} target="_blank" rel="noopener noreferrer">
                   Visitar canal oficial <ExternalLink className="h-4 w-4" aria-hidden />
                 </Link>
               </Button>

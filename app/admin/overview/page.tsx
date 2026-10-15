@@ -8,8 +8,10 @@ import { fetchCategoriesWithStats } from "@/lib/data/categories";
 import {
   fetchPartnerClickSeries,
   fetchProductClickSeries,
+  fetchServiceClickSeries,
   fetchTopPartnerClicks,
   fetchTopProductClicks,
+  fetchTopServiceClicks,
 } from "@/lib/data/click-stats";
 import { fetchPartners } from "@/lib/data/partners";
 import { fetchPartnerProducts } from "@/lib/data/products";
@@ -17,15 +19,17 @@ import { fetchServices } from "@/lib/data/services";
 
 export default async function AdminOverviewPage() {
   const session = await auth();
-  const [categories, partnerResult, productResult, serviceResult, partnerClicks, productClicks, partnerSeries, productSeries] = await Promise.all([
+  const [categories, partnerResult, productResult, serviceResult, partnerClicks, productClicks, serviceClicks, partnerSeries, productSeries, serviceSeries] = await Promise.all([
     fetchCategoriesWithStats(),
     fetchPartners({ page: 1, perPage: 50, includeInactive: true }),
     fetchPartnerProducts({ page: 1, perPage: 50, includeInactive: true }),
     fetchServices({ page: 1, perPage: 50, includeInactive: true }),
     Promise.all([fetchTopPartnerClicks(1), fetchTopPartnerClicks(7), fetchTopPartnerClicks(30), fetchTopPartnerClicks(365)]),
     Promise.all([fetchTopProductClicks(1), fetchTopProductClicks(7), fetchTopProductClicks(30), fetchTopProductClicks(365)]),
+    Promise.all([fetchTopServiceClicks(1), fetchTopServiceClicks(7), fetchTopServiceClicks(30), fetchTopServiceClicks(365)]),
     fetchPartnerClickSeries(30),
     fetchProductClickSeries(30),
+    fetchServiceClickSeries(30),
   ]);
 
   const stats = [
@@ -37,6 +41,7 @@ export default async function AdminOverviewPage() {
 
   const partnerStats = { day: partnerClicks[0], week: partnerClicks[1], month: partnerClicks[2], year: partnerClicks[3] } as const;
   const productStats = { day: productClicks[0], week: productClicks[1], month: productClicks[2], year: productClicks[3] } as const;
+  const serviceStats = { day: serviceClicks[0], week: serviceClicks[1], month: serviceClicks[2], year: serviceClicks[3] } as const;
   const userName = session?.user?.name ?? "Administrador";
 
   return (
@@ -87,7 +92,7 @@ export default async function AdminOverviewPage() {
         </div>
       </section>
 
-      <ClickMetrics partnerStats={partnerStats} productStats={productStats} partnerSeries={partnerSeries} productSeries={productSeries} />
+      <ClickMetrics partnerStats={partnerStats} productStats={productStats} serviceStats={serviceStats} partnerSeries={partnerSeries} productSeries={productSeries} serviceSeries={serviceSeries} />
     </section>
   );
 }
