@@ -210,6 +210,21 @@ Após a recomposição das dependências, as validações pendentes foram execut
 - `npx tsc --noEmit`
 - `npm run lint`
 - `npm run build`
+
+## 17. Execução da Fase 3 — banner programado no catálogo
+
+- Criada a entidade aditiva `FeaturedBanner`, com alvo polimórfico para loja, produto ou serviço e período obrigatório de início e término.
+- O catálogo público em `/parceiros` substitui o hero institucional pelo banner quando existe uma programação ativa; com mais de um destaque, apresenta um carrossel de rotação automática a cada sete segundos e controles para navegar ou pausar. Sem programação, mantém o hero padrão.
+- As listas administrativas de parceiros, produtos e serviços passaram a oferecer a ação **Adicionar ao banner**, com modal de agendamento e indicação visual dos itens programados.
+- Diversos itens podem ser agendados para o mesmo período e entram na rotação do banner. O servidor impede apenas programas sobrepostos para o mesmo item; a programação existente pode ser removida pelo mesmo modal.
+- A migração `20261015170000_add_featured_banners` foi aplicada com sucesso. Ela cria uma nova enumeração, tabela e índices, sem alterar registros existentes.
+
+### Validações
+
+- `npx prisma validate`
+- `npx tsc --noEmit`
+- `npm run lint`
+- `npm run build`
 - `git diff --check`
 
 ## 14. Execução da Fase 3 — diretório público

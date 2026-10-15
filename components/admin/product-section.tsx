@@ -10,15 +10,20 @@ import { ProductEditForm } from "@/components/admin/product-edit-form";
 import { ProductForm } from "@/components/admin/product-form";
 import { ProductGrid } from "@/components/admin/product-grid";
 import { Button } from "@/components/ui/button";
+import { FeaturedBannerForm, type FeaturedBannerTargetInput } from "@/components/admin/featured-banner-form";
+import type { FeaturedBannerSchedule } from "@/lib/data/featured-banners";
 
 type ProductSectionProps = {
   products: PartnerProductSummary[];
   categories: ProductCategoryOption[];
+  featuredBanners: FeaturedBannerSchedule[];
 };
 
-export function ProductSection({ products, categories }: ProductSectionProps) {
+export function ProductSection({ products, categories, featuredBanners }: ProductSectionProps) {
   const [createOpen, setCreateOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<PartnerProductSummary | null>(null);
+  const [bannerTarget, setBannerTarget] = useState<FeaturedBannerTargetInput | null>(null);
+  const bannerSchedule = bannerTarget ? featuredBanners.find((banner) => banner.targetType === bannerTarget.targetType && banner.targetId === bannerTarget.targetId) : undefined;
 
   return (
     <section className="space-y-6">
@@ -36,7 +41,7 @@ export function ProductSection({ products, categories }: ProductSectionProps) {
         <p className="text-sm leading-6 text-[var(--color-text-muted)]"><strong className="font-semibold text-[var(--color-text)]">{products.length} itens carregados.</strong> Publique somente links, descrições e imagens que possam ser confirmados pela equipe.</p>
       </div>
 
-      <ProductGrid products={products} onEdit={setEditingProduct} />
+      <ProductGrid products={products} onEdit={setEditingProduct} featuredBanners={featuredBanners} onFeature={(target) => setBannerTarget(target)} />
 
       <div className="sticky bottom-4 z-10 lg:hidden">
         <Button className="w-full shadow-[var(--shadow-raised)]" size="lg" onClick={() => setCreateOpen(true)}><PackagePlus className="h-4 w-4" aria-hidden /> Cadastrar produto</Button>
@@ -47,6 +52,9 @@ export function ProductSection({ products, categories }: ProductSectionProps) {
       </AdminModal>
       <AdminModal open={Boolean(editingProduct)} onClose={() => setEditingProduct(null)} title="Editar produto" description="Revise os dados e confirme para salvar.">
         {editingProduct && <ProductEditForm key={editingProduct.id} product={editingProduct} categories={categories} onSuccess={() => setEditingProduct(null)} />}
+      </AdminModal>
+      <AdminModal open={Boolean(bannerTarget)} onClose={() => setBannerTarget(null)} title="Programar banner" description="Defina o período em que este produto terá destaque na abertura do catálogo.">
+        {bannerTarget && <FeaturedBannerForm target={bannerTarget} schedule={bannerSchedule} onSuccess={() => setBannerTarget(null)} />}
       </AdminModal>
     </section>
   );

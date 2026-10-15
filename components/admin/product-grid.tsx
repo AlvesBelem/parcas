@@ -3,19 +3,23 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink, Pencil, Power, Trash2, X } from "lucide-react";
+import { ExternalLink, Pencil, Power, Sparkles, Trash2, X } from "lucide-react";
 
 import type { PartnerProductSummary } from "@/lib/data/products";
 import { deleteProduct, toggleProductStatus } from "@/lib/actions/product-actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import type { FeaturedBannerTargetInput } from "@/components/admin/featured-banner-form";
+import type { FeaturedBannerSchedule } from "@/lib/data/featured-banners";
 
 type ProductGridProps = {
   products: PartnerProductSummary[];
   onEdit: (product: PartnerProductSummary) => void;
+  featuredBanners: FeaturedBannerSchedule[];
+  onFeature: (target: FeaturedBannerTargetInput, schedule?: FeaturedBannerSchedule) => void;
 };
 
-export function ProductGrid({ products, onEdit }: ProductGridProps) {
+export function ProductGrid({ products, onEdit, featuredBanners, onFeature }: ProductGridProps) {
   const [preview, setPreview] = useState<{ src: string; alt: string } | null>(null);
 
   useEffect(() => {
@@ -39,6 +43,7 @@ export function ProductGrid({ products, onEdit }: ProductGridProps) {
         <div className="divide-y divide-[var(--color-border)]">
           {products.map((product) => {
             const coverImage = product.imageUrls[0] ?? "/logo_cpad_belem.svg";
+            const bannerSchedule = featuredBanners.find((banner) => banner.targetType === "PRODUCT" && banner.targetId === product.id);
             return (
               <article key={product.id} className="grid gap-4 p-5 xl:grid-cols-[auto_minmax(0,1fr)_auto] xl:items-center">
                 <button type="button" className="relative h-16 w-16 overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)] p-2 transition hover:border-[var(--color-gold)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" onClick={() => setPreview({ src: coverImage, alt: product.name })} aria-label={`Ampliar imagem de ${product.name}`}>
@@ -50,12 +55,14 @@ export function ProductGrid({ products, onEdit }: ProductGridProps) {
                     <Badge>{product.platform}</Badge>
                     <Badge variant="outline">{product.category?.name ?? "Sem categoria"}</Badge>
                     <Badge variant="outline">{product.active ? "Ativo" : "Pausado"}</Badge>
+                    {bannerSchedule ? <Badge className="border-[var(--color-gold)] bg-[var(--color-surface-warm)] text-[var(--color-wine)]">No banner</Badge> : null}
                   </div>
                   <p className="mt-2 line-clamp-2 max-w-3xl text-sm leading-6 text-[var(--color-text-muted)]">{product.description ?? "Sem descrição cadastrada."}</p>
                   <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[var(--color-text-subtle)]"><span>Cadastrado em {formatDate(product.createdAt)}</span><span>{product.clickCount} cliques externos registrados</span></div>
                 </div>
                 <div className="flex flex-wrap gap-2 xl:justify-end">
                   <Button type="button" variant="secondary" size="sm" onClick={() => onEdit(product)}><Pencil className="h-3.5 w-3.5" aria-hidden /> Editar</Button>
+                  <Button type="button" variant="secondary" size="sm" onClick={() => onFeature({ targetType: "PRODUCT", targetId: product.id, name: product.name }, bannerSchedule)} disabled={!product.active && !bannerSchedule}><Sparkles className="h-3.5 w-3.5" aria-hidden /> {bannerSchedule ? "Banner agendado" : "Adicionar ao banner"}</Button>
                   <form action={toggleProductStatus}><input type="hidden" name="productId" value={product.id} /><input type="hidden" name="nextStatus" value={(!product.active).toString()} /><Button type="submit" variant="ghost" size="sm" className="border border-[var(--color-border)]"><Power className="h-3.5 w-3.5" aria-hidden /> {product.active ? "Pausar" : "Ativar"}</Button></form>
                   <form action={deleteProduct}><input type="hidden" name="productId" value={product.id} /><Button type="submit" variant="ghost" size="icon" className="border border-[var(--color-border)] text-[var(--color-wine)] hover:bg-red-50" aria-label={`Excluir ${product.name}`} onClick={(event) => { if (!confirm(`Deseja excluir o produto “${product.name}”? Essa ação não pode ser desfeita.`)) event.preventDefault(); }}><Trash2 className="h-4 w-4" aria-hidden /></Button></form>
                   <Link href={product.url} target="_blank" rel="noopener noreferrer" className="inline-flex h-9 items-center justify-center gap-1.5 border border-[var(--color-wine)] px-3 text-xs font-bold text-[var(--color-wine)] transition hover:bg-[var(--color-wine)] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Abrir <ExternalLink className="h-3.5 w-3.5" aria-hidden /></Link>

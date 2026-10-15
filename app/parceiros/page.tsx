@@ -8,6 +8,7 @@ import {
   CatalogResultsHeader,
   type CatalogCategory,
 } from "@/components/catalog/catalog-layout";
+import { FeaturedCatalogBanner } from "@/components/catalog/featured-catalog-banner";
 import { ProductCard } from "@/components/catalog/product-card";
 import { ServiceCard } from "@/components/catalog/service-card";
 import { PaginationControls } from "@/components/home/pagination-controls";
@@ -20,6 +21,7 @@ import type { PartnerProductSummary } from "@/lib/data/products";
 import { fetchPartnerProducts } from "@/lib/data/products";
 import { fetchServiceCategoryOptions, fetchServices } from "@/lib/data/services";
 import type { ServiceSummary } from "@/lib/data/services";
+import { fetchActiveFeaturedBanners } from "@/lib/data/featured-banners";
 
 type SearchParams = Record<string, string | string[] | undefined> | Promise<Record<string, string | string[] | undefined>>;
 type CatalogKind = "partners" | "products" | "services";
@@ -34,7 +36,7 @@ const CATALOG_PAGE_SIZE = 12;
 const CATALOG_FETCH_LIMIT = 1000;
 
 const typeOptions = [
-  { value: "all", label: "Tudo no catálogo" },
+  { value: "all", label: "Todos os itens" },
   { value: "partners", label: "Lojas parceiras" },
   { value: "products", label: "Produtos afiliados" },
   { value: "services", label: "Serviços" },
@@ -53,7 +55,7 @@ export default async function PartnersDirectoryPage({ searchParams }: { searchPa
   const categoryFilter = parseCategoryFilter(getParam(params.category));
   const page = parsePage(getParam(params.page));
 
-  const [partnerCategories, productCategories, serviceCategories, partnerResult, productResult, serviceResult] = await Promise.all([
+  const [partnerCategories, productCategories, serviceCategories, partnerResult, productResult, serviceResult, featuredBanners] = await Promise.all([
     fetchCategoryOptions(),
     fetchProductCategoryOptions(),
     fetchServiceCategoryOptions(),
@@ -75,6 +77,7 @@ export default async function PartnersDirectoryPage({ searchParams }: { searchPa
       search,
       categorySlug: categoryFilter?.kind === "services" ? categoryFilter.slug : undefined,
     }),
+    fetchActiveFeaturedBanners(),
   ]);
 
   const categoryOptions = createCategoryOptions(partnerCategories, productCategories, serviceCategories);
@@ -86,13 +89,17 @@ export default async function PartnersDirectoryPage({ searchParams }: { searchPa
 
   return (
     <div className="-mx-4 -mt-8 sm:-mx-6 sm:-mt-10 lg:-mx-8 lg:-mt-12">
-      <CatalogHero
-        breadcrumb="Parceiros CPAD Belém"
-        eyebrow="Parceiros CPAD Belém"
-        title="Lojas, produtos"
-        highlight="e serviços"
-        description="Encontre empresas, produtos afiliados e serviços da comunidade em um único catálogo."
-      />
+      {featuredBanners.length ? (
+        <FeaturedCatalogBanner banners={featuredBanners} />
+      ) : (
+        <CatalogHero
+          breadcrumb="Parceiros CPAD Belém"
+          eyebrow="Parceiros CPAD Belém"
+          title="Lojas, produtos"
+          highlight="e serviços"
+          description="Encontre empresas, produtos afiliados e serviços da comunidade em um único catálogo."
+        />
+      )}
       <CatalogPageLayout
         sidebar={
           <CatalogFilterPanel
@@ -111,7 +118,7 @@ export default async function PartnersDirectoryPage({ searchParams }: { searchPa
       >
         <CatalogResultsHeader
           eyebrow="Resultados do catálogo"
-          title={selectedCategory?.label ?? (type === "all" ? "Tudo no catálogo" : typeLabels[type])}
+          title={selectedCategory?.label ?? (type === "all" ? "Resultados" : typeLabels[type])}
           total={entries.length}
           singular="item encontrado"
           plural="itens encontrados"

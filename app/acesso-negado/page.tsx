@@ -16,14 +16,14 @@ export default async function AccessDeniedPage() {
 
   return (
     <section className="mx-auto max-w-xl py-8 sm:py-14">
-      <div className="border border-[var(--color-border)] bg-white p-7 text-center shadow-[var(--shadow-raised)] sm:p-10">
-        <span className="mx-auto flex h-14 w-14 items-center justify-center border border-[var(--color-gold)] bg-[var(--color-surface-warm)] text-[var(--color-wine)]">
+      <div className="border border-(--color-border) bg-white p-7 text-center shadow-(--shadow-raised) sm:p-10">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center border border-(--color-gold) bg-(--color-surface-warm) text-(--color-wine)">
           <LockKeyhole className="h-6 w-6" aria-hidden />
         </span>
-        <p className="mt-6 text-xs font-bold uppercase tracking-[0.22em] text-[var(--color-wine)]">Acesso administrativo</p>
-        <h1 className="mt-2 font-[family-name:var(--font-playfair)] text-4xl text-[var(--color-text)]">Esta conta não possui acesso ao painel.</h1>
-        <p className="mt-4 text-sm leading-6 text-[var(--color-text-muted)]">
-          Você entrou como <strong className="font-semibold text-[var(--color-text)]">{session.user?.email ?? "conta sem e-mail"}</strong>. Peça a inclusão deste e-mail em <code className="bg-[var(--color-surface)] px-1.5 py-0.5 text-[var(--color-wine)]">ADMIN_EMAILS</code> ou entre com uma conta autorizada.
+        <p className="mt-6 text-xs font-bold uppercase tracking-[0.22em] text-(--color-wine)">Acesso administrativo</p>
+        <h1 className="mt-2 font-(family-name:--font-playfair) text-4xl text-(--color-text)">Esta conta não possui acesso ao painel.</h1>
+        <p className="mt-4 text-sm leading-6 text-(--color-text-muted)">
+          Você entrou como <strong className="font-semibold text-(--color-text)">{session.user?.email ?? "conta sem e-mail"}</strong>. Peça a inclusão deste e-mail em <code className="bg-(--color-surface) px-1.5 py-0.5 text-(--color-wine)">ADMIN_EMAILS</code> ou entre com uma conta autorizada.
         </p>
         <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
           <form action={handleSignOut}>

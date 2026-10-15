@@ -207,6 +207,7 @@ export async function deleteProduct(formData: FormData) {
   if (!productId) return;
 
   await prisma.$transaction([
+    prisma.featuredBanner.deleteMany({ where: { targetType: "PRODUCT", targetId: productId } }),
     prisma.productClickStat.deleteMany({ where: { productId } }),
     prisma.partnerProduct.delete({ where: { id: productId } }),
   ]);

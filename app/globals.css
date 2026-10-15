@@ -63,3 +63,46 @@ body {
   background: var(--color-gold-light);
   color: var(--color-wine-dark);
 }
+
+@keyframes whatsapp-partner-pulse {
+  0%,
+  78%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  84% {
+    transform: translateY(-4px) scale(1.025);
+  }
+
+  90% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.whatsapp-partner-cta {
+  animation: whatsapp-partner-pulse 5s ease-in-out infinite;
+}
+
+@keyframes featured-banner-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.featured-banner-content {
+  animation: featured-banner-content-in 350ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-partner-cta,
+  .featured-banner-content {
+    animation: none;
+  }
+}

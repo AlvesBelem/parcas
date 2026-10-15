@@ -5,6 +5,7 @@ import { Geist_Mono, Manrope, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { WhatsAppPartnerCta } from "@/components/layout/whatsapp-partner-cta";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -43,6 +44,7 @@ export default function RootLayout({
             {children}
           </main>
           <SiteFooter />
+          <WhatsAppPartnerCta />
         </div>
         <SpeedInsights />
       </body>

@@ -72,7 +72,11 @@ export async function deleteService(formData: FormData) {
   if (!(await requireAdmin())) return;
   const serviceId = String(formData.get("serviceId") ?? "");
   if (!serviceId) return;
-  await prisma.$transaction([prisma.serviceClickStat.deleteMany({ where: { serviceId } }), prisma.service.delete({ where: { id: serviceId } })]);
+  await prisma.$transaction([
+    prisma.featuredBanner.deleteMany({ where: { targetType: "SERVICE", targetId: serviceId } }),
+    prisma.serviceClickStat.deleteMany({ where: { serviceId } }),
+    prisma.service.delete({ where: { id: serviceId } }),
+  ]);
   revalidateServices();
 }
 

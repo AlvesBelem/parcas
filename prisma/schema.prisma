@@ -131,6 +131,26 @@ model ServiceClickStat {
   @@unique([serviceId, date])
 }
 
+enum FeaturedBannerTarget {
+  PARTNER
+  PRODUCT
+  SERVICE
+}
+
+model FeaturedBanner {
+  id         String               @id @default(cuid())
+  targetType FeaturedBannerTarget
+  targetId   String
+  startsAt   DateTime
+  endsAt     DateTime
+  active     Boolean              @default(true)
+  createdAt  DateTime             @default(now())
+  updatedAt  DateTime             @updatedAt
+
+  @@index([active, startsAt, endsAt])
+  @@index([targetType, targetId])
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?

@@ -197,9 +197,11 @@ export async function deletePartner(formData: FormData) {
   }
 
   try {
-    await prisma.partner.delete({
-      where: { id: partnerId },
-    });
+    await prisma.$transaction([
+      prisma.featuredBanner.deleteMany({ where: { targetType: "PARTNER", targetId: partnerId } }),
+      prisma.partnerClickStat.deleteMany({ where: { partnerId } }),
+      prisma.partner.delete({ where: { id: partnerId } }),
+    ]);
   } catch (error) {
     console.error("Erro ao excluir parceiro:", error);
     return;

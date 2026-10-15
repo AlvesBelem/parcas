@@ -10,15 +10,20 @@ import { PartnerEditForm } from "@/components/admin/partner-edit-form";
 import { PartnerGrid } from "@/components/admin/partner-grid";
 import { PartnerForm } from "@/components/partner-form";
 import { Button } from "@/components/ui/button";
+import { FeaturedBannerForm, type FeaturedBannerTargetInput } from "@/components/admin/featured-banner-form";
+import type { FeaturedBannerSchedule } from "@/lib/data/featured-banners";
 
 type PartnerSectionProps = {
   partners: PartnerSummary[];
   categories: CategoryOption[];
+  featuredBanners: FeaturedBannerSchedule[];
 };
 
-export function PartnerSection({ partners, categories }: PartnerSectionProps) {
+export function PartnerSection({ partners, categories, featuredBanners }: PartnerSectionProps) {
   const [createOpen, setCreateOpen] = useState(false);
   const [editingPartner, setEditingPartner] = useState<PartnerSummary | null>(null);
+  const [bannerTarget, setBannerTarget] = useState<FeaturedBannerTargetInput | null>(null);
+  const bannerSchedule = bannerTarget ? featuredBanners.find((banner) => banner.targetType === bannerTarget.targetType && banner.targetId === bannerTarget.targetId) : undefined;
 
   return (
     <section className="space-y-6">
@@ -36,7 +41,7 @@ export function PartnerSection({ partners, categories }: PartnerSectionProps) {
         <p className="text-sm leading-6 text-[var(--color-text-muted)]"><strong className="font-semibold text-[var(--color-text)]">{partners.length} registros carregados.</strong> A disponibilidade pública é controlada pelo status ativo de cada parceiro.</p>
       </div>
 
-      <PartnerGrid partners={partners} onEdit={setEditingPartner} />
+      <PartnerGrid partners={partners} onEdit={setEditingPartner} featuredBanners={featuredBanners} onFeature={(target) => setBannerTarget(target)} />
 
       <div className="sticky bottom-4 z-10 lg:hidden">
         <Button className="w-full shadow-[var(--shadow-raised)]" size="lg" onClick={() => setCreateOpen(true)}><Plus className="h-4 w-4" aria-hidden /> Cadastrar parceiro</Button>
@@ -47,6 +52,9 @@ export function PartnerSection({ partners, categories }: PartnerSectionProps) {
       </AdminModal>
       <AdminModal open={Boolean(editingPartner)} onClose={() => setEditingPartner(null)} title="Editar parceiro" description="Revise os dados de exibição antes de salvar.">
         {editingPartner && <PartnerEditForm key={editingPartner.id} partner={editingPartner} categories={categories} onSuccess={() => setEditingPartner(null)} />}
+      </AdminModal>
+      <AdminModal open={Boolean(bannerTarget)} onClose={() => setBannerTarget(null)} title="Programar banner" description="Defina o período em que este parceiro terá destaque na abertura do catálogo.">
+        {bannerTarget && <FeaturedBannerForm target={bannerTarget} schedule={bannerSchedule} onSuccess={() => setBannerTarget(null)} />}
       </AdminModal>
     </section>
   );
