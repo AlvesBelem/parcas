@@ -29,9 +29,9 @@ export function SiteFooter() {
             <Link className="w-fit transition hover:text-white" href="/produtos">
               Produtos
             </Link>
-            <span className="text-white/45" aria-disabled="true">
-              Serviços — em breve
-            </span>
+            <Link className="w-fit transition hover:text-white" href="/servicos">
+              Serviços
+            </Link>
           </nav>
         </div>
         <div>

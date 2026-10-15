@@ -36,11 +36,13 @@ export async function fetchPartnerProducts({
   perPage = DEFAULT_PRODUCT_PAGE_SIZE,
   includeInactive = false,
   categorySlug,
+  search,
 }: {
   page?: number;
   perPage?: number;
   includeInactive?: boolean;
   categorySlug?: string | null;
+  search?: string | null;
 } = {}): Promise<PartnerProductQueryResult> {
   const currentPage = Math.max(page, 1);
   const take = perPage;
@@ -61,6 +63,16 @@ export async function fetchPartnerProducts({
         },
       },
     };
+  }
+
+  if (search?.trim()) {
+    const term = search.trim();
+    where.OR = [
+      { name: { contains: term, mode: "insensitive" } },
+      { description: { contains: term, mode: "insensitive" } },
+      { platform: { contains: term, mode: "insensitive" } },
+      { category: { is: { name: { contains: term, mode: "insensitive" } } } },
+    ];
   }
 
   const [products, total] = await Promise.all([

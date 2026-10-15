@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { createProduct } from "@/lib/actions/product-actions";
 import { getInitialFormState } from "@/lib/actions/form-action-state";
+import { getMarketplace, marketplaces } from "@/lib/marketplaces";
 import type { ProductCategoryOption } from "@/lib/data/product-categories";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,6 +33,7 @@ export function ProductForm({ categories }: ProductFormProps) {
   const [imageFields, setImageFields] = useState<string[]>([""]);
   const [uploading, setUploading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(categories[0]?.id ?? "");
+  const [selectedPlatform, setSelectedPlatform] = useState("Shopee");
   const hasCategories = categories.length > 0;
   const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -42,6 +44,7 @@ export function ProductForm({ categories }: ProductFormProps) {
     startTransition(() => {
       setImageFields([""]);
       setSelectedCategory(categories[0]?.id ?? "");
+      setSelectedPlatform("Shopee");
     });
     router.refresh();
   }, [state.ok, categories, router]);
@@ -118,20 +121,21 @@ export function ProductForm({ categories }: ProductFormProps) {
     <form
       ref={formRef}
       action={formAction}
-      className="space-y-6 rounded-3xl border border-[#eaded5] bg-[#fff8f3] p-8 shadow-[0_15px_45px_rgba(63,33,25,0.08)]"
+      className="space-y-6"
     >
       <Field label="Nome do produto" name="name">
         <Input name="name" id="product-name" placeholder="Curso XYZ" required autoComplete="off" />
       </Field>
 
       <Field label="Plataforma" name="platform">
-        <Input
-          name="platform"
-          id="platform"
-          placeholder="Hotmart, Kiwify, Amazon..."
-          required
-          autoComplete="off"
-        />
+        <Select value={selectedPlatform} onValueChange={setSelectedPlatform}>
+          <SelectTrigger><SelectValue placeholder="Selecione o marketplace" /></SelectTrigger>
+          <SelectContent>
+            {marketplaces.map((marketplace) => <SelectItem key={marketplace.id} value={marketplace.id}>{marketplace.label}</SelectItem>)}
+            <SelectItem value="Outro">Outra plataforma</SelectItem>
+          </SelectContent>
+        </Select>
+        <input type="hidden" name="platform" value={selectedPlatform} />
       </Field>
 
       <Field label="Link oficial" name="url">
@@ -143,6 +147,11 @@ export function ProductForm({ categories }: ProductFormProps) {
           required
         />
       </Field>
+      {getMarketplace(selectedPlatform) ? (
+        <div className="border border-[var(--color-border)] bg-[var(--color-surface)] p-4 text-sm text-[var(--color-text-muted)]">
+          O botão será configurado automaticamente como <strong className="font-semibold text-[var(--color-text)]">{getMarketplace(selectedPlatform)?.ctaLabel}</strong>, com as cores oficiais do marketplace.
+        </div>
+      ) : (
       <div className="grid gap-4 sm:grid-cols-[1.3fr_0.7fr]">
         <Field label="Texto do botão" name="ctaLabel">
           <Input
@@ -162,6 +171,7 @@ export function ProductForm({ categories }: ProductFormProps) {
           />
         </Field>
       </div>
+      )}
       <Field label="Categoria" name="categoryId">
         {hasCategories ? (
           <>

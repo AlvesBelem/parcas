@@ -39,7 +39,7 @@ export default function RootLayout({
       <body className={`${manrope.variable} ${playfair.variable} ${geistMono.variable} antialiased`}>
         <div className="flex min-h-screen flex-col overflow-x-clip">
           <SiteHeader />
-          <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
+          <main className="mx-auto w-full max-w-360 flex-1 px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
             {children}
           </main>
           <SiteFooter />

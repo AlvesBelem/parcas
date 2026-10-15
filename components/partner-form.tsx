@@ -32,16 +32,8 @@ export function PartnerForm({ categories }: PartnerFormProps) {
   return (
     <form
       action={formAction}
-      className="space-y-6 rounded-3xl border border-[#eaded5] bg-[#fff8f3] p-8 shadow-[0_15px_45px_rgba(63,33,25,0.08)]"
+      className="space-y-6"
     >
-      <div className="space-y-2">
-        <p className="text-sm uppercase tracking-[0.35em] text-[#b02b24]">Cadastro rápido</p>
-        <h2 className="text-2xl font-semibold text-[#2f1d15]">Cadastrar parceiro</h2>
-        <p className="text-sm text-[#7a5a4b]">
-          Todas as informações aparecem automaticamente na home após a aprovação.
-        </p>
-      </div>
-
       {!hasCategories ? (
         <div className="rounded-2xl border border-dashed border-[#eaded5] bg-white p-6 text-sm text-[#7a5a4b]">
           Cadastre pelo menos uma categoria antes de publicar parceiros. Elas são exibidas no select e

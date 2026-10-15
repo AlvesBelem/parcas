@@ -5,6 +5,7 @@ import { useFormState, useFormStatus } from "react-dom";
 
 import { updateProduct } from "@/lib/actions/product-actions";
 import { getInitialFormState } from "@/lib/actions/form-action-state";
+import { getMarketplace, marketplaces } from "@/lib/marketplaces";
 import type { PartnerProductSummary } from "@/lib/data/products";
 import type { ProductCategoryOption } from "@/lib/data/product-categories";
 import { Input } from "@/components/ui/input";
@@ -38,6 +39,7 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
   const [selectedCategory, setSelectedCategory] = useState(
     product.category?.id ?? categories[0]?.id ?? "",
   );
+  const [selectedPlatform, setSelectedPlatform] = useState(product.platform);
   const hasCategories = categories.length > 0;
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -118,17 +120,30 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
   return (
     <form
       action={formAction}
-      className="space-y-6 rounded-3xl border border-[#eaded5] bg-[#fff8f3] p-8 shadow-[0_15px_45px_rgba(63,33,25,0.08)]"
+      className="space-y-6"
     >
       <Field label="Nome do produto" name="name">
         <Input name="name" defaultValue={product.name} required />
       </Field>
       <Field label="Plataforma" name="platform">
-        <Input name="platform" defaultValue={product.platform} required />
+        <Select value={selectedPlatform} onValueChange={setSelectedPlatform}>
+          <SelectTrigger><SelectValue placeholder="Selecione o marketplace" /></SelectTrigger>
+          <SelectContent>
+            {marketplaces.map((marketplace) => <SelectItem key={marketplace.id} value={marketplace.id}>{marketplace.label}</SelectItem>)}
+            {!getMarketplace(product.platform) && <SelectItem value={product.platform}>{product.platform} (personalizada)</SelectItem>}
+            <SelectItem value="Outro">Outra plataforma</SelectItem>
+          </SelectContent>
+        </Select>
+        <input type="hidden" name="platform" value={selectedPlatform} />
       </Field>
       <Field label="Link oficial" name="url">
         <Input name="url" type="url" defaultValue={product.url} required />
       </Field>
+      {getMarketplace(selectedPlatform) ? (
+        <div className="border border-[var(--color-border)] bg-[var(--color-surface)] p-4 text-sm text-[var(--color-text-muted)]">
+          Este produto usará <strong className="font-semibold text-[var(--color-text)]">{getMarketplace(selectedPlatform)?.ctaLabel}</strong> e a identidade visual oficial do marketplace.
+        </div>
+      ) : (
       <div className="grid gap-4 sm:grid-cols-[1.3fr_0.7fr]">
         <Field label="Texto do botão" name="ctaLabel">
           <Input
@@ -147,6 +162,7 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
           />
         </Field>
       </div>
+      )}
       <Field label="Categoria" name="categoryId">
         {hasCategories ? (
           <>

@@ -8,6 +8,7 @@ import { ArrowLeft, ExternalLink, ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { fetchPartnerProductBySlug } from "@/lib/data/products";
+import { getMarketplaceCta } from "@/lib/marketplaces";
 
 type PageParams = {
   params: Promise<{ slug: string }>;
@@ -27,8 +28,11 @@ export default async function ProductDetailPage({ params }: PageParams) {
   const coverImage = product.imageUrls[0] ?? "/logo_cpad_belem.svg";
   const otherImages = product.imageUrls.slice(1, 6);
   const ctaHref = `/out/product/${product.slug}`;
-  const ctaLabel = product.ctaLabel?.trim() || "Ir para o link oficial";
-  const ctaColor = product.ctaColor?.trim() || "#b02b24";
+  const cta = getMarketplaceCta({
+    platform: product.platform,
+    fallbackLabel: product.ctaLabel,
+    fallbackColor: product.ctaColor,
+  });
 
   return (
     <section className="space-y-10">
@@ -113,11 +117,11 @@ export default async function ProductDetailPage({ params }: PageParams) {
           <Button
             asChild
             size="lg"
-            className="w-full text-white"
-            style={{ backgroundColor: ctaColor, borderColor: ctaColor }}
+            className="w-full"
+            style={{ backgroundColor: cta.color, borderColor: cta.color, color: cta.textColor }}
           >
             <Link href={ctaHref} prefetch={false} className="inline-flex w-full items-center justify-center gap-2">
-              {ctaLabel}
+              {cta.label}
               <ExternalLink className="h-4 w-4" />
             </Link>
           </Button>

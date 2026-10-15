@@ -222,3 +222,31 @@ Sem alterar o schema ou os dados existentes, a vitrine pública foi adaptada ao 
 - Os cards não exibem localização, preços, entregas ou selos de verificação, pois esses dados não existem ou não possuem regra de validação na base atual.
 
 O próximo incremento de dados continua condicionado à curadoria manual que relacionará cada item legado de `PartnerProduct` ao seu `Partner`. Nenhuma associação será inferida automaticamente.
+
+## 15. Execução da Fase 3 — acesso administrativo e painel
+
+- O acesso público à área administrativa agora aponta para `/api/auth/signin?callbackUrl=%2Fadmin%2Foverview`; após o Google OAuth, o retorno solicitado é o painel administrativo.
+- O callback de redirecionamento aceita somente URLs relativas ou de mesma origem. Destinos externos não são aceitos.
+- A autorização continua dependente de `ADMIN_EMAILS`. Uma conta autenticada, mas não autorizada, é enviada para `/acesso-negado`, que informa o e-mail em uso e permite trocar de conta sem expor a lista administrativa.
+- Painel, navegação, listas, modais, estados vazios e métricas foram adaptados ao design system CPAD, com layout fluido para celular, tablet e desktop.
+
+### Validações
+
+- Fluxo sem sessão verificado localmente: `/admin/overview` responde com redirecionamento `307` para o login e preserva o `callbackUrl` do painel.
+- `npx tsc --noEmit`, `npm run lint` e `npm run build` concluídos com sucesso.
+
+## 16. Execução da Fase 3 — catálogos de produtos e serviços
+
+- Produtos afiliados continuam vinculados a `ProductCategory`; o catálogo público está em `/produtos`, com filtro por categoria e página de detalhe.
+- Criado o catálogo independente de serviços em `/servicos`, incluindo categorias próprias, página de detalhe e rastreamento de cliques em `/out/service/[slug]`.
+- O painel administrativo ganhou a seção **Serviços**, onde categorias e serviços podem ser cadastrados e gerenciados.
+- Os marketplaces Shopee, Amazon, Mercado Livre, Magalu e AliExpress aplicam automaticamente a chamada e as cores de marca ao produto. Para plataformas não listadas, o administrador pode definir CTA e cor próprios.
+- A migração aditiva `20261015150000_add_services_catalog` foi aplicada com sucesso. Ela apenas cria as tabelas de serviços e não altera dados legados.
+
+### Validações
+
+- `npx prisma generate`
+- `npx prisma validate`
+- `npx tsc --noEmit`
+- `npm run lint`
+- `npm run build`

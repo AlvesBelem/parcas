@@ -29,10 +29,10 @@ const authResult = NextAuth({
       if (url.startsWith("/")) {
         return `${baseUrl}${url}`;
       }
-      if (url.startsWith(baseUrl)) {
+      if (new URL(url).origin === new URL(baseUrl).origin) {
         return url;
       }
-      return `${baseUrl}/admin/overview`;
+      return baseUrl;
     },
   },
 });

@@ -52,17 +52,9 @@ export function CategoryEditForm({
     <form
       ref={formRef}
       action={formAction}
-      className="space-y-6 rounded-3xl border border-[#eaded5] bg-[#fff8f3] p-8"
+      className="space-y-6"
     >
       <input type="hidden" name="id" value={category.id} />
-      <div className="space-y-2">
-        <p className="text-sm uppercase tracking-[0.35em] text-[#b02b24]">Edição rápida</p>
-        <h2 className="text-2xl font-semibold text-[#2f1d15]">Editar categoria</h2>
-        <p className="text-sm text-[#7a5a4b]">
-          Atualize nome, descrição e tipo sem sair do painel.
-        </p>
-      </div>
-
       <Field label="Nome da categoria" name="name">
         <Input
           name="name"

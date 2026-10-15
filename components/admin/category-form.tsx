@@ -39,16 +39,8 @@ export function CategoryForm() {
     <form
       ref={formRef}
       action={formAction}
-      className="space-y-6 rounded-3xl border border-[#eaded5] bg-[#fff8f3] p-8"
+      className="space-y-6"
     >
-      <div className="space-y-2">
-        <p className="text-sm uppercase tracking-[0.35em] text-[#b02b24]">Bases do catálogo</p>
-        <h2 className="text-2xl font-semibold text-[#2f1d15]">Cadastrar categoria</h2>
-        <p className="text-sm text-[#7a5a4b]">
-          Estas categorias alimentam o filtro público de parceiros, produtos afiliados ou ambos.
-        </p>
-      </div>
-
       <Field label="Nome da categoria" name="name">
         <Input
           name="name"

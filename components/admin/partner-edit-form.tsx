@@ -56,7 +56,7 @@ export function PartnerEditForm({
   return (
     <form
       action={formAction}
-      className="space-y-6 rounded-3xl border border-[#eaded5] bg-[#fff8f3] p-8 shadow-[0_15px_45px_rgba(63,33,25,0.08)]"
+      className="space-y-6"
     >
       <Field label="Nome da loja" name="name">
         <Input name="name" id="edit-name" defaultValue={partner.name} required autoComplete="off" />

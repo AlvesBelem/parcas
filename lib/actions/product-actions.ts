@@ -8,6 +8,7 @@ import { Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
 import { generateUniqueSlug } from "@/lib/utils";
+import { getMarketplaceCta } from "@/lib/marketplaces";
 import {
   createProductSchema,
   type CreateProductInput,
@@ -65,12 +66,17 @@ export async function createProduct(
       existingSlugs
     );
 
+    const marketplaceCta = getMarketplaceCta({
+      platform: parsed.data.platform,
+      fallbackLabel: parsed.data.ctaLabel,
+      fallbackColor: parsed.data.ctaColor,
+    });
     const data: Prisma.PartnerProductUncheckedCreateInput = {
       name: parsed.data.name,
       platform: parsed.data.platform,
       url: parsed.data.url,
-      ctaLabel: parsed.data.ctaLabel,
-      ctaColor: parsed.data.ctaColor,
+      ctaLabel: marketplaceCta.label,
+      ctaColor: marketplaceCta.color,
       imageUrls: parsed.data.imageUrls,
       description: parsed.data.description,
       slug: uniqueSlug,
@@ -141,12 +147,17 @@ export async function updateProduct(
       existingSlugs
     );
 
+    const marketplaceCta = getMarketplaceCta({
+      platform: parsed.data.platform,
+      fallbackLabel: parsed.data.ctaLabel,
+      fallbackColor: parsed.data.ctaColor,
+    });
     const data: Prisma.PartnerProductUncheckedUpdateInput = {
       name: parsed.data.name,
       platform: parsed.data.platform,
       url: parsed.data.url,
-      ctaLabel: parsed.data.ctaLabel,
-      ctaColor: parsed.data.ctaColor,
+      ctaLabel: marketplaceCta.label,
+      ctaColor: marketplaceCta.color,
       imageUrls: parsed.data.imageUrls,
       description: parsed.data.description,
       slug: uniqueSlug,

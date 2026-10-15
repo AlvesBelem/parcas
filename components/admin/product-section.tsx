@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { PackagePlus, PackageSearch } from "lucide-react";
 
 import type { PartnerProductSummary } from "@/lib/data/products";
 import type { ProductCategoryOption } from "@/lib/data/product-categories";
-import { Button } from "@/components/ui/button";
-import { ProductGrid } from "@/components/admin/product-grid";
-import { ProductForm } from "@/components/admin/product-form";
-import { ProductEditForm } from "@/components/admin/product-edit-form";
 import { AdminModal } from "@/components/admin/admin-modal";
+import { ProductEditForm } from "@/components/admin/product-edit-form";
+import { ProductForm } from "@/components/admin/product-form";
+import { ProductGrid } from "@/components/admin/product-grid";
+import { Button } from "@/components/ui/button";
 
 type ProductSectionProps = {
   products: PartnerProductSummary[];
@@ -20,53 +21,32 @@ export function ProductSection({ products, categories }: ProductSectionProps) {
   const [editingProduct, setEditingProduct] = useState<PartnerProductSummary | null>(null);
 
   return (
-    <section className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-[#eaded5] bg-white p-5 shadow-[0_15px_45px_rgba(63,33,25,0.08)]">
-        <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-[#b02b24]">Ofertas oficiais</p>
-          <h2 className="text-2xl font-semibold text-[#2f1d15]">Produtos afiliados</h2>
-          <p className="text-sm text-[#7a5a4b]">
-            Inclua links auditados, banners e descrições alinhadas à vitrine CPAD.
-          </p>
+    <section className="space-y-6">
+      <header className="flex flex-col gap-5 border-b border-[var(--color-border)] pb-6 sm:flex-row sm:items-end sm:justify-between">
+        <div className="max-w-2xl">
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[var(--color-wine)]">Catálogo legado</p>
+          <h1 className="mt-2 font-[family-name:var(--font-playfair)] text-4xl text-[var(--color-text)] sm:text-5xl">Produtos</h1>
+          <p className="mt-2 text-sm leading-6 text-[var(--color-text-muted)]">Organize os itens publicados e seus links externos. A associação de produto com parceiro será tratada na próxima migração de dados.</p>
         </div>
-        <Button onClick={() => setCreateOpen(true)} className="w-full sm:w-auto">
-          Cadastrar produto
-        </Button>
+        <Button onClick={() => setCreateOpen(true)} className="w-full sm:w-auto"><PackagePlus className="h-4 w-4" aria-hidden /> Cadastrar produto</Button>
+      </header>
+
+      <div className="grid gap-4 border border-[var(--color-border)] bg-[var(--color-surface-warm)] p-5 sm:grid-cols-[auto_1fr] sm:items-center">
+        <span className="flex h-11 w-11 items-center justify-center border border-[var(--color-gold)] bg-white text-[var(--color-wine)]"><PackageSearch className="h-5 w-5" aria-hidden /></span>
+        <p className="text-sm leading-6 text-[var(--color-text-muted)]"><strong className="font-semibold text-[var(--color-text)]">{products.length} itens carregados.</strong> Publique somente links, descrições e imagens que possam ser confirmados pela equipe.</p>
       </div>
 
       <ProductGrid products={products} onEdit={setEditingProduct} />
 
       <div className="sticky bottom-4 z-10 lg:hidden">
-        <div className="rounded-full border border-[#eaded5] bg-white px-4 py-3 shadow-[0_18px_55px_rgba(63,33,25,0.12)] backdrop-blur">
-          <Button className="w-full" size="lg" onClick={() => setCreateOpen(true)}>
-            + Cadastrar produto
-          </Button>
-        </div>
+        <Button className="w-full shadow-[var(--shadow-raised)]" size="lg" onClick={() => setCreateOpen(true)}><PackagePlus className="h-4 w-4" aria-hidden /> Cadastrar produto</Button>
       </div>
 
-      <AdminModal
-        open={createOpen}
-        onClose={() => setCreateOpen(false)}
-        title="Cadastrar produto"
-        description="Cadastre imagens, link oficial e selecione a categoria para filtrar na vitrine."
-      >
+      <AdminModal open={createOpen} onClose={() => setCreateOpen(false)} title="Cadastrar produto" description="Inclua imagens, o link externo e a categoria do item.">
         <ProductForm categories={categories} />
       </AdminModal>
-
-      <AdminModal
-        open={Boolean(editingProduct)}
-        onClose={() => setEditingProduct(null)}
-        title="Editar produto"
-        description="Atualize dados e mantenha a cara do site principal."
-      >
-        {editingProduct && (
-          <ProductEditForm
-            key={editingProduct.id}
-            product={editingProduct}
-            categories={categories}
-            onSuccess={() => setEditingProduct(null)}
-          />
-        )}
+      <AdminModal open={Boolean(editingProduct)} onClose={() => setEditingProduct(null)} title="Editar produto" description="Revise os dados e confirme para salvar.">
+        {editingProduct && <ProductEditForm key={editingProduct.id} product={editingProduct} categories={categories} onSuccess={() => setEditingProduct(null)} />}
       </AdminModal>
     </section>
   );
