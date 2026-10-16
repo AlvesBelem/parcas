@@ -5,6 +5,7 @@ import { ArrowLeft, ExternalLink, Globe2, MessageCircle, Tag } from "lucide-reac
 import { notFound } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { FormattedDescription } from "@/components/catalog/formatted-description";
 import { fetchPartnerBySlug } from "@/lib/data/partners";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
@@ -55,9 +56,11 @@ export default async function PartnerProfilePage({ params }: PartnerProfilePageP
             <h1 className="mt-5 font-(family-name:--font-playfair) text-5xl leading-[0.98] tracking-[-0.03em] text-(--color-text) sm:text-6xl">
               {partner.name}
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-(--color-text-muted)">
-              {partner.description ?? "Consulte os canais de atendimento cadastrados para conhecer este parceiro."}
-            </p>
+            <FormattedDescription
+              title="Sobre a loja"
+              description={partner.description ?? "Consulte os canais de atendimento cadastrados para conhecer este parceiro."}
+              className="mt-6 max-w-2xl"
+            />
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg">

@@ -7,6 +7,7 @@ import { ArrowLeft, ExternalLink, MessageCircle, ShieldCheck } from "lucide-reac
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { FormattedDescription } from "@/components/catalog/formatted-description";
 import { fetchPartnerProductBySlug } from "@/lib/data/products";
 import { getMarketplaceCta } from "@/lib/marketplaces";
 import { getWhatsAppLink } from "@/lib/whatsapp";
@@ -100,7 +101,7 @@ export default async function ProductDetailPage({ params }: PageParams) {
             <ShieldCheck className="h-4 w-4" />
             Link externo informado pelo parceiro
           </div>
-          <ProductDescription description={description} />
+          <FormattedDescription title="Sobre este produto" description={description} />
           <div className="space-y-2 text-sm text-[#7a5a4b]">
             <p>
               <span className="font-semibold text-[#2f1d15]">Plataforma: </span>
@@ -139,51 +140,4 @@ export default async function ProductDetailPage({ params }: PageParams) {
       </section>
     </section>
   );
-}
-
-function ProductDescription({ description }: { description: string }) {
-  const blocks = formatDescription(description);
-
-  return (
-    <section className="border-y border-[#eaded5] py-5" aria-labelledby="product-description-title">
-      <h2 id="product-description-title" className="font-[family-name:var(--font-playfair)] text-2xl text-[#2f1d15]">
-        Sobre este produto
-      </h2>
-      <div className="mt-3 space-y-3 text-left text-[15px] leading-7 text-[#4c3429]">
-        {blocks.map((block, index) => {
-          if (block.kind === "bullet") {
-            return (
-              <div key={`${block.text}-${index}`} className="flex gap-3 rounded-xl border border-[#f1e5dc] bg-white/70 px-4 py-3">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#b02b24]" aria-hidden />
-                <p>{block.text}</p>
-              </div>
-            );
-          }
-
-          return (
-            <p key={`${block.text}-${index}`} className={block.kind === "highlight" ? "font-semibold text-[#2f1d15]" : undefined}>
-              {block.text}
-            </p>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function formatDescription(description: string) {
-  return description
-    .replace(/\r\n?/g, "\n")
-    .replace(/[ \t]+(?=[✓◆•])/gu, "\n")
-    .replace(/[ \t]+(?=[🚀💻📱🌐])/gu, "\n")
-    .split(/\n+/)
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line) => {
-      if (/^[✓◆•]/u.test(line)) {
-        return { kind: "bullet" as const, text: line.replace(/^[✓◆•]\s*/u, "") };
-      }
-
-      return { kind: /^[🚀💻📱🌐]/u.test(line) ? "highlight" as const : "paragraph" as const, text: line };
-    });
 }
