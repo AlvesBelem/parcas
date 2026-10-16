@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Wrench } from "lucide-react";
 
 import {
@@ -11,10 +12,30 @@ import { ServiceCard } from "@/components/catalog/service-card";
 import { PaginationControls } from "@/components/home/pagination-controls";
 import { fetchServiceCategoryOptions, fetchServices } from "@/lib/data/services";
 import { fetchActiveFeaturedBanners, getFeaturedTargetIds, prioritizeFeatured } from "@/lib/data/featured-banners";
+import { absoluteUrl, siteConfig } from "@/lib/seo";
 
 type SearchParams = Record<string, string | string[] | undefined> | Promise<Record<string, string | string[] | undefined>>;
 const SERVICES_PER_PAGE = 50;
 const CATALOG_FETCH_LIMIT = 1000;
+
+export async function generateMetadata({ searchParams }: { searchParams?: SearchParams }): Promise<Metadata> {
+  const params = await resolveSearchParams(searchParams);
+  const hasQueryVariant = Boolean(getParam(params.q) || getParam(params.category) || parsePage(getParam(params.page)) > 1);
+
+  return {
+    title: "Serviços parceiros",
+    description: "Encontre profissionais e empresas de serviços parceiros da CPAD Belém por categoria e canal de atendimento.",
+    alternates: { canonical: "/servicos" },
+    robots: { index: !hasQueryVariant, follow: true },
+    openGraph: {
+      type: "website",
+      url: absoluteUrl("/servicos"),
+      title: "Serviços parceiros | CPAD Belém",
+      description: "Profissionais e empresas de serviços parceiros da CPAD Belém.",
+      images: [{ url: absoluteUrl(siteConfig.socialImagePath), alt: "Serviços parceiros CPAD Belém" }],
+    },
+  };
+}
 
 export default async function ServicesPage({ searchParams }: { searchParams?: SearchParams }) {
   const params = await resolveSearchParams(searchParams);

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { ShoppingBag } from "lucide-react";
 
 import {
@@ -12,10 +13,30 @@ import { PaginationControls } from "@/components/home/pagination-controls";
 import { fetchProductCategoryOptions } from "@/lib/data/product-categories";
 import { fetchPartnerProducts } from "@/lib/data/products";
 import { fetchActiveFeaturedBanners, getFeaturedTargetIds, prioritizeFeatured } from "@/lib/data/featured-banners";
+import { absoluteUrl, siteConfig } from "@/lib/seo";
 
 type SearchParams = Record<string, string | string[] | undefined> | Promise<Record<string, string | string[] | undefined>>;
 const PRODUCTS_PER_PAGE = 50;
 const CATALOG_FETCH_LIMIT = 1000;
+
+export async function generateMetadata({ searchParams }: { searchParams?: SearchParams }): Promise<Metadata> {
+  const params = await resolveSearchParams(searchParams);
+  const hasQueryVariant = Boolean(getParam(params.q) || getParam(params.category) || getParam(params.productCategory) || parsePage(getParam(params.page)) > 1);
+
+  return {
+    title: "Produtos afiliados",
+    description: "Explore produtos afiliados por categoria e acesse os marketplaces e canais oficiais informados pelos parceiros CPAD Belém.",
+    alternates: { canonical: "/produtos" },
+    robots: { index: !hasQueryVariant, follow: true },
+    openGraph: {
+      type: "website",
+      url: absoluteUrl("/produtos"),
+      title: "Produtos afiliados | Parceiros CPAD Belém",
+      description: "Produtos afiliados por categoria com links para marketplaces e canais oficiais.",
+      images: [{ url: absoluteUrl(siteConfig.socialImagePath), alt: "Produtos afiliados CPAD Belém" }],
+    },
+  };
+}
 
 export default async function ProductsCatalogPage({ searchParams }: { searchParams?: SearchParams }) {
   const params = await resolveSearchParams(searchParams);

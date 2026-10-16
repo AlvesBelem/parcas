@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -8,13 +9,39 @@ import { ArrowLeft, ExternalLink, MessageCircle, ShieldCheck } from "lucide-reac
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FormattedDescription } from "@/components/catalog/formatted-description";
+import { JsonLd } from "@/components/seo/json-ld";
 import { fetchPartnerProductBySlug } from "@/lib/data/products";
 import { getMarketplaceCta } from "@/lib/marketplaces";
+import { absoluteUrl, metaDescription, siteConfig, urlOrAbsoluteUrl } from "@/lib/seo";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
 type PageParams = {
   params: Promise<{ slug: string }>;
 };
+
+export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await fetchPartnerProductBySlug(slug);
+  if (!product) return { title: "Produto não encontrado | Parceiros CPAD Belém" };
+
+  const canonicalPath = `/produtos/${product.slug}`;
+  const description = metaDescription(product.description, `${product.name}: produto afiliado disponível no catálogo de parceiros CPAD Belém.`);
+  const image = urlOrAbsoluteUrl(product.imageUrls[0], siteConfig.socialImagePath);
+
+  return {
+    title: { absolute: `${product.name} | Produtos afiliados CPAD Belém` },
+    description,
+    alternates: { canonical: canonicalPath },
+    openGraph: {
+      type: "website",
+      url: canonicalPath,
+      title: `${product.name} | Produtos afiliados CPAD Belém`,
+      description,
+      images: [{ url: image, alt: product.name }],
+    },
+    twitter: { card: "summary_large_image", title: product.name, description, images: [image] },
+  };
+}
 
 export default async function ProductDetailPage({ params }: PageParams) {
   const { slug } = await params;
@@ -37,9 +64,40 @@ export default async function ProductDetailPage({ params }: PageParams) {
   });
   const whatsappHref = getWhatsAppLink(product.whatsappNumber, "product");
   const description = product.description ?? "Item cadastrado no catálogo de parceiros.";
+  const canonicalPath = `/produtos/${product.slug}`;
+  const canonicalUrl = absoluteUrl(canonicalPath);
+  const schemaDescription = metaDescription(description, `${product.name}: produto afiliado disponível no catálogo de parceiros CPAD Belém.`);
 
   return (
     <section className="space-y-10">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Product",
+              "@id": `${canonicalUrl}#product`,
+              name: product.name,
+              description: schemaDescription,
+              image: product.imageUrls.map((image) => urlOrAbsoluteUrl(image, siteConfig.socialImagePath)),
+              url: canonicalUrl,
+              category: product.category?.name ?? "Sem categoria",
+              brand: { "@type": "Brand", name: product.platform },
+              sameAs: product.url,
+            },
+            {
+              "@type": "WebPage",
+              "@id": canonicalUrl,
+              url: canonicalUrl,
+              name: `${product.name} | Produtos afiliados CPAD Belém`,
+              description: schemaDescription,
+              inLanguage: siteConfig.language,
+              isPartOf: { "@id": `${absoluteUrl("/")}#website` },
+              mainEntity: { "@id": `${canonicalUrl}#product` },
+            },
+          ],
+        }}
+      />
       <div className="flex flex-col gap-3">
         <Link
           href="/produtos"

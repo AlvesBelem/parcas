@@ -15,7 +15,6 @@ const targetLabels = {
 
 export function FeaturedCatalogBanner({ banners }: { banners: FeaturedCatalogBanner[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isHoverPaused, setIsHoverPaused] = useState(false);
   const [isManuallyPaused, setIsManuallyPaused] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const activeBannerIndex = Math.min(activeIndex, Math.max(banners.length - 1, 0));
@@ -30,12 +29,12 @@ export function FeaturedCatalogBanner({ banners }: { banners: FeaturedCatalogBan
   }, []);
 
   useEffect(() => {
-    if (banners.length < 2 || isHoverPaused || isManuallyPaused || prefersReducedMotion) return;
+    if (banners.length < 2 || isManuallyPaused || prefersReducedMotion) return;
     const interval = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % banners.length);
     }, 7000);
     return () => window.clearInterval(interval);
-  }, [banners.length, isHoverPaused, isManuallyPaused, prefersReducedMotion]);
+  }, [banners.length, isManuallyPaused, prefersReducedMotion]);
 
   if (!banner) return null;
 
@@ -43,7 +42,7 @@ export function FeaturedCatalogBanner({ banners }: { banners: FeaturedCatalogBan
   const move = (direction: -1 | 1) => setActiveIndex((current) => (current + direction + banners.length) % banners.length);
 
   return (
-    <section className="relative isolate overflow-hidden bg-[var(--color-wine-dark)] px-4 py-8 text-white sm:px-6 sm:py-11 lg:px-8 lg:py-14" aria-roledescription="carrossel" aria-label="Destaques do catálogo" onMouseEnter={() => setIsHoverPaused(true)} onMouseLeave={() => setIsHoverPaused(false)}>
+    <section className="relative isolate overflow-hidden bg-[var(--color-wine-dark)] px-4 py-8 text-white sm:px-6 sm:py-11 lg:px-8 lg:py-14" aria-roledescription="carrossel" aria-label="Destaques do catálogo">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_78%_12%,rgba(241,199,125,0.34),transparent_24%),linear-gradient(115deg,transparent_0%,rgba(255,255,255,0.07)_52%,transparent_53%)]" />
       <div key={banner.id} className="featured-banner-content mx-auto grid max-w-[1440px] gap-8 md:min-h-[390px] md:grid-cols-[minmax(0,1fr)_minmax(280px,0.78fr)] md:items-center md:gap-10 lg:min-h-[410px] lg:grid-cols-[minmax(0,0.9fr)_minmax(390px,460px)] lg:gap-14">
         <div>

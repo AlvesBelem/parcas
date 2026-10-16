@@ -16,6 +16,7 @@ export type PartnerProductSummary = {
   clickCount: number;
   active: boolean;
   createdAt: Date;
+  updatedAt: Date;
   category: {
     id: string;
     name: string;

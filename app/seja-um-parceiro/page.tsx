@@ -20,9 +20,26 @@ import {
   UsersRound,
 } from "lucide-react";
 
+import { JsonLd } from "@/components/seo/json-ld";
+import { absoluteUrl, siteConfig } from "@/lib/seo";
+
 export const metadata: Metadata = {
-  title: "Seja um Parceiro | CPAD Belém",
-  description: "Conheça o Programa de Parceiros CPAD Belém e leve sua empresa para uma vitrine digital com propósito.",
+  title: "Seja um Parceiro",
+  description: "Conheça o Programa de Parceiros CPAD Belém: vitrine digital, cadastro assistido e opções de visibilidade para sua empresa.",
+  alternates: { canonical: "/seja-um-parceiro" },
+  openGraph: {
+    type: "website",
+    url: absoluteUrl("/seja-um-parceiro"),
+    title: "Seja um Parceiro | CPAD Belém",
+    description: "Entenda como participar do Programa de Parceiros CPAD Belém e dar mais visibilidade à sua empresa.",
+    images: [{ url: absoluteUrl("/programa-parceiros-ilustracao.png"), alt: "Programa de Parceiros CPAD Belém" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Seja um Parceiro | CPAD Belém",
+    description: "Entenda como participar do Programa de Parceiros CPAD Belém.",
+    images: [absoluteUrl("/programa-parceiros-ilustracao.png")],
+  },
 };
 
 const whatsappHref = `https://wa.me/55919991271407?text=${encodeURIComponent("Quero me tornar um parceiro, como funciona?")}`;
@@ -105,6 +122,41 @@ const faqs = [
 export default function SejaUmParceiroPage() {
   return (
     <div className="space-y-16 pb-4 sm:space-y-20">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebPage",
+              "@id": absoluteUrl("/seja-um-parceiro"),
+              url: absoluteUrl("/seja-um-parceiro"),
+              name: "Seja um Parceiro | CPAD Belém",
+              description: metadata.description,
+              inLanguage: siteConfig.language,
+              isPartOf: { "@id": `${absoluteUrl("/")}#website` },
+            },
+            {
+              "@type": "FAQPage",
+              mainEntity: faqs.map(({ question, answer }) => ({
+                "@type": "Question",
+                name: question,
+                acceptedAnswer: { "@type": "Answer", text: answer },
+              })),
+            },
+            {
+              "@type": "HowTo",
+              name: "Como participar do Programa de Parceiros CPAD Belém",
+              description: "Etapas para contratar e publicar uma vitrine no Programa de Parceiros CPAD Belém.",
+              step: onboardingSteps.map(({ number, title, text }) => ({
+                "@type": "HowToStep",
+                position: Number(number),
+                name: title,
+                text,
+              })),
+            },
+          ],
+        }}
+      />
       <section className="overflow-hidden rounded-3xl border border-(--color-border) bg-(--color-surface-warm) shadow-(--shadow-card)">
         <div className="grid lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
           <div className="relative z-10 flex flex-col justify-center bg-[linear-gradient(145deg,var(--color-wine-dark),var(--color-wine)_62%,#95133a)] px-6 py-12 text-white sm:px-10 sm:py-16 lg:px-12 lg:py-20">

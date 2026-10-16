@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { ShieldCheck } from "lucide-react";
 
@@ -7,6 +8,11 @@ import { Button } from "@/components/ui/button";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { AdminMobileMenu } from "@/components/admin/admin-mobile-menu";
 import { AdminThemeToggle } from "@/components/admin/admin-theme-toggle";
+
+export const metadata: Metadata = {
+  title: "Administração",
+  robots: { index: false, follow: false },
+};
 
 const navItems = [
   { label: "Visão geral", href: "/admin/overview", icon: "overview" },

@@ -8,6 +8,8 @@ import "./globals.css";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { WhatsAppPartnerCta } from "@/components/layout/whatsapp-partner-cta";
+import { JsonLd } from "@/components/seo/json-ld";
+import { absoluteUrl, siteConfig, siteUrl } from "@/lib/seo";
 
 const sans = DM_Sans({
   variable: "--font-manrope",
@@ -41,8 +43,51 @@ const adminThemeBootstrap = `(function () {
 })();`;
 
 export const metadata: Metadata = {
-  title: "Parceiros CPAD Belém | Diretório de parceiros",
-  description: "Conheça empresas, produtos e serviços parceiros da CPAD Belém.",
+  metadataBase: new URL(siteUrl),
+  applicationName: siteConfig.name,
+  title: {
+    default: "Parceiros CPAD Belém | Lojas, produtos e serviços",
+    template: "%s | Parceiros CPAD Belém",
+  },
+  description: siteConfig.description,
+  keywords: [
+    "parceiros CPAD Belém",
+    "lojas parceiras em Belém",
+    "produtos cristãos em Belém",
+    "serviços em Belém",
+    "empresas cristãs em Belém",
+  ],
+  alternates: {
+    types: {
+      "text/plain": absoluteUrl("/llms.txt"),
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale,
+    url: absoluteUrl("/parceiros"),
+    siteName: siteConfig.name,
+    title: "Parceiros CPAD Belém | Lojas, produtos e serviços",
+    description: siteConfig.description,
+    images: [{ url: absoluteUrl(siteConfig.socialImagePath), width: 1600, height: 500, alt: "Parceiros CPAD Belém" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Parceiros CPAD Belém | Lojas, produtos e serviços",
+    description: siteConfig.description,
+    images: [absoluteUrl(siteConfig.socialImagePath)],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
 };
 
 export default async function RootLayout({
@@ -60,6 +105,36 @@ export default async function RootLayout({
         <Script id="admin-theme-bootstrap" strategy="beforeInteractive">
           {adminThemeBootstrap}
         </Script>
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "Organization",
+                "@id": `${absoluteUrl("/")}#organization`,
+                name: siteConfig.name,
+                url: absoluteUrl("/parceiros"),
+                logo: absoluteUrl(siteConfig.logoPath),
+                description: siteConfig.description,
+                contactPoint: {
+                  "@type": "ContactPoint",
+                  contactType: "customer support",
+                  telephone: "+55-91-98127-1407",
+                  email: "parcerias@cpadbelem.com.br",
+                  availableLanguage: "Portuguese",
+                },
+              },
+              {
+                "@type": "WebSite",
+                "@id": `${absoluteUrl("/")}#website`,
+                url: absoluteUrl("/parceiros"),
+                name: siteConfig.name,
+                inLanguage: siteConfig.language,
+                publisher: { "@id": `${absoluteUrl("/")}#organization` },
+              },
+            ],
+          }}
+        />
         <div className="flex min-h-screen flex-col overflow-x-clip">
           <SiteHeader />
           <main className="mx-auto w-full max-w-360 flex-1 px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">

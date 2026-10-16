@@ -6,7 +6,9 @@ import { notFound } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { FormattedDescription } from "@/components/catalog/formatted-description";
+import { JsonLd } from "@/components/seo/json-ld";
 import { fetchPartnerBySlug } from "@/lib/data/partners";
+import { absoluteUrl, metaDescription, siteConfig, urlOrAbsoluteUrl } from "@/lib/seo";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
 type PartnerProfilePageProps = {
@@ -18,9 +20,22 @@ export async function generateMetadata({ params }: PartnerProfilePageProps): Pro
   const partner = await fetchPartnerBySlug(slug);
   if (!partner) return { title: "Parceiro não encontrado | CPAD Belém" };
 
+  const canonicalPath = `/parceiros/${partner.slug}`;
+  const description = metaDescription(partner.description, `Informações de ${partner.name} no diretório de parceiros CPAD Belém.`);
+  const image = urlOrAbsoluteUrl(partner.logoUrl, siteConfig.socialImagePath);
+
   return {
-    title: `${partner.name} | Parceiros CPAD Belém`,
-    description: partner.description ?? `Informações de ${partner.name} no diretório de parceiros CPAD Belém.`,
+    title: { absolute: `${partner.name} | Parceiros CPAD Belém` },
+    description,
+    alternates: { canonical: canonicalPath },
+    openGraph: {
+      type: "website",
+      url: canonicalPath,
+      title: `${partner.name} | Parceiros CPAD Belém`,
+      description,
+      images: [{ url: image, alt: `Marca ${partner.name}` }],
+    },
+    twitter: { card: "summary_large_image", title: partner.name, description, images: [image] },
   };
 }
 
@@ -31,9 +46,38 @@ export default async function PartnerProfilePage({ params }: PartnerProfilePageP
 
   const joinedAt = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" }).format(partner.createdAt);
   const whatsappHref = getWhatsAppLink(partner.whatsappNumber, "partner");
+  const canonicalPath = `/parceiros/${partner.slug}`;
+  const canonicalUrl = absoluteUrl(canonicalPath);
+  const description = metaDescription(partner.description, `Informações de ${partner.name} no diretório de parceiros CPAD Belém.`);
 
   return (
     <div className="-mx-4 -mt-8 sm:-mx-6 sm:-mt-10 lg:-mx-8 lg:-mt-12">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": `${canonicalUrl}#partner`,
+              name: partner.name,
+              url: canonicalUrl,
+              logo: urlOrAbsoluteUrl(partner.logoUrl, siteConfig.logoPath),
+              description,
+              sameAs: partner.url ? [partner.url] : undefined,
+            },
+            {
+              "@type": "WebPage",
+              "@id": canonicalUrl,
+              url: canonicalUrl,
+              name: `${partner.name} | Parceiros CPAD Belém`,
+              description,
+              inLanguage: siteConfig.language,
+              isPartOf: { "@id": `${absoluteUrl("/")}#website` },
+              mainEntity: { "@id": `${canonicalUrl}#partner` },
+            },
+          ],
+        }}
+      />
       <section className="border-b border-(--color-border) bg-(--color-surface) px-4 py-6 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-280">
           <Link

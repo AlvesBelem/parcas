@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { LayoutGrid } from "lucide-react";
 
 import {
@@ -22,6 +23,7 @@ import { fetchPartnerProducts } from "@/lib/data/products";
 import { fetchServiceCategoryOptions, fetchServices } from "@/lib/data/services";
 import type { ServiceSummary } from "@/lib/data/services";
 import { fetchActiveFeaturedBanners } from "@/lib/data/featured-banners";
+import { absoluteUrl, siteConfig } from "@/lib/seo";
 
 type SearchParams = Record<string, string | string[] | undefined> | Promise<Record<string, string | string[] | undefined>>;
 type CatalogKind = "partners" | "products" | "services";
@@ -47,6 +49,25 @@ const typeLabels: Record<CatalogKind, string> = {
   products: "Produtos afiliados",
   services: "Serviços",
 };
+
+export async function generateMetadata({ searchParams }: { searchParams?: SearchParams }): Promise<Metadata> {
+  const params = await resolveSearchParams(searchParams);
+  const hasQueryVariant = Boolean(getParam(params.q) || getParam(params.type) || getParam(params.category) || parsePage(getParam(params.page)) > 1);
+
+  return {
+    title: "Lojas, produtos e serviços",
+    description: "Encontre lojas parceiras, produtos afiliados e serviços da comunidade no diretório CPAD Belém.",
+    alternates: { canonical: "/parceiros" },
+    robots: { index: !hasQueryVariant, follow: true },
+    openGraph: {
+      type: "website",
+      url: absoluteUrl("/parceiros"),
+      title: "Lojas, produtos e serviços | Parceiros CPAD Belém",
+      description: "Encontre lojas parceiras, produtos afiliados e serviços da comunidade no diretório CPAD Belém.",
+      images: [{ url: absoluteUrl(siteConfig.socialImagePath), alt: "Catálogo Parceiros CPAD Belém" }],
+    },
+  };
+}
 
 export default async function PartnersDirectoryPage({ searchParams }: { searchParams?: SearchParams }) {
   const params = await resolveSearchParams(searchParams);
