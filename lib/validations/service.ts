@@ -13,7 +13,7 @@ const optionalWhatsAppNumber = z
   .string()
   .optional()
   .transform(normalizeWhatsAppNumber)
-  .refine(isValidWhatsAppNumber, "Informe o WhatsApp com DDI e DDD. Ex.: 5591999999999.");
+  .refine(isValidWhatsAppNumber, "Informe o WhatsApp com DDD. Ex.: 91999999999.");
 
 export const serviceSchema = z.object({
   name: z.string().trim().min(3, "Informe o nome do serviço.").max(160, "Use no máximo 160 caracteres."),

@@ -147,9 +147,9 @@ export function ProductForm({ categories }: ProductFormProps) {
           required
         />
       </Field>
-      <Field label="WhatsApp" name="whatsappNumber" optional>
-        <Input name="whatsappNumber" id="product-whatsappNumber" type="tel" inputMode="tel" autoComplete="tel" placeholder="5591999999999" />
-        <p className="text-xs text-[#a38271]">Informe DDI e DDD para exibir o botão de WhatsApp.</p>
+      <Field label="WhatsApp (DDD + número)" name="whatsappNumber" optional>
+        <Input name="whatsappNumber" id="product-whatsappNumber" type="tel" inputMode="tel" autoComplete="tel" placeholder="91999999999" />
+        <p className="text-xs text-[#a38271]">O código do Brasil (55) é incluído automaticamente.</p>
       </Field>
       {getMarketplace(selectedPlatform) ? (
         <div className="border border-[var(--color-border)] bg-[var(--color-surface)] p-4 text-sm text-[var(--color-text-muted)]">

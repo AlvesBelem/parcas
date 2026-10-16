@@ -6,7 +6,7 @@ const optionalWhatsAppNumber = z
   .string()
   .optional()
   .transform(normalizeWhatsAppNumber)
-  .refine(isValidWhatsAppNumber, "Informe o WhatsApp com DDI e DDD. Ex.: 5591999999999.");
+  .refine(isValidWhatsAppNumber, "Informe o WhatsApp com DDD. Ex.: 91999999999.");
 
 export const createPartnerSchema = z.object({
   name: z

@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { normalizeWhatsAppNumber } from "@/lib/whatsapp";
 import {
   Select,
   SelectContent,
@@ -90,8 +91,8 @@ export function PartnerEditForm({
         <Input name="url" id="edit-url" type="url" defaultValue={partner.url} required />
       </Field>
 
-      <Field label="WhatsApp" name="whatsappNumber" optional hint="Informe DDI e DDD. Ex.: 5591999999999.">
-        <Input name="whatsappNumber" id="edit-whatsappNumber" type="tel" inputMode="tel" autoComplete="tel" defaultValue={partner.whatsappNumber ?? ""} />
+      <Field label="WhatsApp (DDD + número)" name="whatsappNumber" optional hint="O código do Brasil (55) é incluído automaticamente. Ex.: 91999999999.">
+        <Input name="whatsappNumber" id="edit-whatsappNumber" type="tel" inputMode="tel" autoComplete="tel" defaultValue={normalizeWhatsAppNumber(partner.whatsappNumber) ?? ""} />
       </Field>
 
       <Field

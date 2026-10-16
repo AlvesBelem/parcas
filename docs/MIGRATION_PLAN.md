@@ -213,8 +213,8 @@ Após a recomposição das dependências, as validações pendentes foram execut
 
 ## 18. Execução da Fase 3 — contatos por WhatsApp
 
-- As entidades de parceiros, produtos e serviços receberam o campo opcional `whatsappNumber`, normalizado para dígitos com DDI e DDD.
-- Os formulários administrativos permitem configurar o número e validam de 10 a 15 dígitos.
+- As entidades de parceiros, produtos e serviços receberam o campo opcional `whatsappNumber`, normalizado para DDD e número; o DDI brasileiro `55` é aplicado automaticamente.
+- Os formulários administrativos permitem configurar de 10 a 11 dígitos.
 - Quando configurado, a vitrine pública exibe o botão **Falar no WhatsApp** nos cards e nas páginas de detalhe. O link abre em nova aba com mensagem contextualizada e pronta para envio.
 - A migração aditiva `20261016110000_add_whatsapp_numbers` foi aplicada sem modificar os cadastros existentes.
 

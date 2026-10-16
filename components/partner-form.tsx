@@ -79,13 +79,13 @@ export function PartnerForm({ categories }: PartnerFormProps) {
             />
           </Field>
 
-          <Field label="WhatsApp" name="whatsappNumber" optional hint="Informe DDI e DDD. Ex.: 5591999999999.">
+          <Field label="WhatsApp (DDD + número)" name="whatsappNumber" optional hint="O código do Brasil (55) é incluído automaticamente. Ex.: 91999999999.">
             <Input
               name="whatsappNumber"
               id="whatsappNumber"
               type="tel"
               inputMode="tel"
-              placeholder="5591999999999"
+              placeholder="91999999999"
               autoComplete="tel"
             />
           </Field>
