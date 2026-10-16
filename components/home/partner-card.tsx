@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, ExternalLink, Tag } from "lucide-react";
+import { ArrowUpRight, ExternalLink, MessageCircle, Tag } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { PartnerSummary } from "@/lib/data/partners";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 type PartnerCardProps = {
   partner: PartnerSummary;
@@ -12,6 +13,8 @@ type PartnerCardProps = {
 };
 
 export function PartnerCard({ partner, className, compact = false }: PartnerCardProps) {
+  const whatsappHref = getWhatsAppLink(partner.whatsappNumber, "partner");
+
   return (
     <article
       className={cn(
@@ -62,6 +65,16 @@ export function PartnerCard({ partner, className, compact = false }: PartnerCard
           >
             Visitar <ExternalLink className="h-3.5 w-3.5" aria-hidden />
           </Link>
+          {whatsappHref ? (
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="col-span-2 inline-flex min-h-10 items-center justify-center gap-1.5 bg-[#25D366] px-3 text-xs font-bold text-[#073B23] transition hover:bg-[#1EBE5D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+            >
+              Falar no WhatsApp <MessageCircle className="h-3.5 w-3.5" aria-hidden />
+            </a>
+          ) : null}
         </div>
       </div>
     </article>

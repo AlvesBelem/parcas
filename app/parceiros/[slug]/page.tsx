@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, Globe2, Tag } from "lucide-react";
+import { ArrowLeft, ExternalLink, Globe2, MessageCircle, Tag } from "lucide-react";
 import { notFound } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { fetchPartnerBySlug } from "@/lib/data/partners";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 type PartnerProfilePageProps = {
   params: Promise<{ slug: string }>;
@@ -28,6 +29,7 @@ export default async function PartnerProfilePage({ params }: PartnerProfilePageP
   if (!partner) notFound();
 
   const joinedAt = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" }).format(partner.createdAt);
+  const whatsappHref = getWhatsAppLink(partner.whatsappNumber, "partner");
 
   return (
     <div className="-mx-4 -mt-8 sm:-mx-6 sm:-mt-10 lg:-mx-8 lg:-mt-12">
@@ -63,6 +65,13 @@ export default async function PartnerProfilePage({ params }: PartnerProfilePageP
                   Visitar canal oficial <ExternalLink className="h-4 w-4" aria-hidden />
                 </Link>
               </Button>
+              {whatsappHref ? (
+                <Button asChild size="lg" className="bg-[#25D366] text-[#073B23] hover:bg-[#1EBE5D]">
+                  <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
+                    Falar no WhatsApp <MessageCircle className="h-4 w-4" aria-hidden />
+                  </a>
+                </Button>
+              ) : null}
               <Button asChild size="lg" variant="secondary">
                 <Link href="/parceiros">Explorar outras lojas</Link>
               </Button>

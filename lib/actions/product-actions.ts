@@ -75,6 +75,7 @@ export async function createProduct(
       name: parsed.data.name,
       platform: parsed.data.platform,
       url: parsed.data.url,
+      whatsappNumber: parsed.data.whatsappNumber,
       ctaLabel: marketplaceCta.label,
       ctaColor: marketplaceCta.color,
       imageUrls: parsed.data.imageUrls,
@@ -156,6 +157,7 @@ export async function updateProduct(
       name: parsed.data.name,
       platform: parsed.data.platform,
       url: parsed.data.url,
+      whatsappNumber: parsed.data.whatsappNumber,
       ctaLabel: marketplaceCta.label,
       ctaColor: marketplaceCta.color,
       imageUrls: parsed.data.imageUrls,
@@ -226,6 +228,7 @@ function extractProductFormValues(formData: FormData): CreateProductInput {
     categoryId: String(formData.get("categoryId") || ""),
     platform: String(formData.get("platform") || ""),
     url: String(formData.get("url") || ""),
+    whatsappNumber: String(formData.get("whatsappNumber") || ""),
     ctaLabel: String(formData.get("ctaLabel") || "Ir para link oficial").trim(),
     ctaColor: String(formData.get("ctaColor") || "#b02b24").trim(),
     imageUrls,
@@ -235,6 +238,8 @@ function extractProductFormValues(formData: FormData): CreateProductInput {
 
 function revalidateProducts() {
   revalidatePath("/");
+  revalidatePath("/parceiros");
+  revalidatePath("/produtos");
   revalidatePath("/admin/products");
   revalidatePath("/admin/overview");
 }

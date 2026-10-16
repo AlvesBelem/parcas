@@ -87,8 +87,8 @@ export default async function AdminOverviewPage() {
         </div>
         <div className="border-t border-(--color-border) pt-5 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
           <BarChart3 className="h-8 w-8 text-(--color-gold)" strokeWidth={1.4} aria-hidden />
-          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-2xl text-(--color-text)">Métricas com contexto</h2>
-          <p className="mt-2 text-sm leading-6 text-[var(--color-text-muted)]">Os números abaixo representam cliques nos links externos registrados pela aplicação.</p>
+          <h2 className="mt-4 font-(family-name:--font-playfair) text-2xl text-(--color-text)">Métricas com contexto</h2>
+          <p className="mt-2 text-sm leading-6 text-(--color-text-muted)">Os números abaixo representam cliques nos links externos registrados pela aplicação.</p>
         </div>
       </section>
 

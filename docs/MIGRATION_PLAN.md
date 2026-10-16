@@ -211,6 +211,13 @@ Após a recomposição das dependências, as validações pendentes foram execut
 - `npm run lint`
 - `npm run build`
 
+## 18. Execução da Fase 3 — contatos por WhatsApp
+
+- As entidades de parceiros, produtos e serviços receberam o campo opcional `whatsappNumber`, normalizado para dígitos com DDI e DDD.
+- Os formulários administrativos permitem configurar o número e validam de 10 a 15 dígitos.
+- Quando configurado, a vitrine pública exibe o botão **Falar no WhatsApp** nos cards e nas páginas de detalhe. O link abre em nova aba com mensagem contextualizada e pronta para envio.
+- A migração aditiva `20261016110000_add_whatsapp_numbers` foi aplicada sem modificar os cadastros existentes.
+
 ## 17. Execução da Fase 3 — banner programado no catálogo
 
 - Criada a entidade aditiva `FeaturedBanner`, com alvo polimórfico para loja, produto ou serviço e período obrigatório de início e término.

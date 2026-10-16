@@ -79,6 +79,17 @@ export function PartnerForm({ categories }: PartnerFormProps) {
             />
           </Field>
 
+          <Field label="WhatsApp" name="whatsappNumber" optional hint="Informe DDI e DDD. Ex.: 5591999999999.">
+            <Input
+              name="whatsappNumber"
+              id="whatsappNumber"
+              type="tel"
+              inputMode="tel"
+              placeholder="5591999999999"
+              autoComplete="tel"
+            />
+          </Field>
+
           <Field
             label="Foto ou logo"
             name="logoUrl"

@@ -8,6 +8,7 @@ export type PartnerProductSummary = {
   slug: string;
   platform: string;
   url: string;
+  whatsappNumber: string | null;
   ctaLabel: string;
   ctaColor: string;
   imageUrls: string[];

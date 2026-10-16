@@ -13,6 +13,7 @@ model Partner {
   slug        String   @unique
   category    String
   url         String
+  whatsappNumber String?
   logoUrl     String
   description String?
   clickCount  Int      @default(0)
@@ -60,6 +61,7 @@ model PartnerProduct {
   categoryId  String?
   platform    String
   url         String
+  whatsappNumber String?
   ctaLabel    String   @default("Ir para o link oficial")
   ctaColor    String   @default("#b02b24")
   imageUrls   String[] @default([])
@@ -79,6 +81,7 @@ model Service {
   slug        String    @unique
   categoryId  String
   url         String
+  whatsappNumber String?
   ctaLabel    String    @default("Conhecer serviço")
   ctaColor    String    @default("#750B2A")
   imageUrl    String?

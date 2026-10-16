@@ -81,7 +81,7 @@ export async function deleteService(formData: FormData) {
 }
 
 function readServiceForm(formData: FormData): ServiceInput {
-  return { name: String(formData.get("name") ?? ""), categoryId: String(formData.get("categoryId") ?? ""), url: String(formData.get("url") ?? ""), imageUrl: String(formData.get("imageUrl") ?? ""), ctaLabel: String(formData.get("ctaLabel") ?? ""), description: String(formData.get("description") ?? "") };
+  return { name: String(formData.get("name") ?? ""), categoryId: String(formData.get("categoryId") ?? ""), url: String(formData.get("url") ?? ""), whatsappNumber: String(formData.get("whatsappNumber") ?? ""), imageUrl: String(formData.get("imageUrl") ?? ""), ctaLabel: String(formData.get("ctaLabel") ?? ""), description: String(formData.get("description") ?? "") };
 }
 
 async function requireAdmin() {
@@ -95,6 +95,7 @@ function denied(): FormActionState {
 
 function revalidateServices() {
   revalidatePath("/");
+  revalidatePath("/parceiros");
   revalidatePath("/servicos");
   revalidatePath("/admin/services");
   revalidatePath("/admin/overview");

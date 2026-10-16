@@ -139,6 +139,10 @@ export function ProductEditForm({ product, categories, onSuccess }: ProductEditF
       <Field label="Link oficial" name="url">
         <Input name="url" type="url" defaultValue={product.url} required />
       </Field>
+      <Field label="WhatsApp" name="whatsappNumber" optional>
+        <Input name="whatsappNumber" type="tel" inputMode="tel" autoComplete="tel" defaultValue={product.whatsappNumber ?? ""} placeholder="5591999999999" />
+        <p className="text-xs text-[#a38271]">Informe DDI e DDD para exibir o botão de WhatsApp.</p>
+      </Field>
       {getMarketplace(selectedPlatform) ? (
         <div className="border border-[var(--color-border)] bg-[var(--color-surface)] p-4 text-sm text-[var(--color-text-muted)]">
           Este produto usará <strong className="font-semibold text-[var(--color-text)]">{getMarketplace(selectedPlatform)?.ctaLabel}</strong> e a identidade visual oficial do marketplace.

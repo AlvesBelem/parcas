@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, ExternalLink, ShoppingBag } from "lucide-react";
+import { ArrowUpRight, ExternalLink, MessageCircle, ShoppingBag } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import type { PartnerProductSummary } from "@/lib/data/products";
 import { getMarketplaceCta } from "@/lib/marketplaces";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 export function ProductCard({ product }: { product: PartnerProductSummary }) {
   const coverImage = product.imageUrls[0] ?? "/logo_cpad_belem.svg";
@@ -13,6 +14,7 @@ export function ProductCard({ product }: { product: PartnerProductSummary }) {
     fallbackLabel: product.ctaLabel,
     fallbackColor: product.ctaColor,
   });
+  const whatsappHref = getWhatsAppLink(product.whatsappNumber, "product");
 
   return (
     <article className="group flex h-full flex-col overflow-hidden border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)] transition duration-200 hover:-translate-y-1 hover:shadow-[var(--shadow-raised)]">
@@ -35,6 +37,11 @@ export function ProductCard({ product }: { product: PartnerProductSummary }) {
           <Link href={`/out/product/${product.slug}`} prefetch={false} className="inline-flex min-h-10 items-center justify-center gap-1 px-2 text-center text-xs font-bold shadow-sm transition hover:brightness-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style={{ backgroundColor: cta.color, color: cta.textColor }}>
             {cta.label} <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden />
           </Link>
+          {whatsappHref ? (
+            <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="col-span-2 inline-flex min-h-10 items-center justify-center gap-1.5 bg-[#25D366] px-3 text-xs font-bold text-[#073B23] transition hover:bg-[#1EBE5D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+              Falar no WhatsApp <MessageCircle className="h-3.5 w-3.5" aria-hidden />
+            </a>
+          ) : null}
         </div>
       </div>
     </article>

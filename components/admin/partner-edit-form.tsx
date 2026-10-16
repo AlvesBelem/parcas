@@ -90,6 +90,10 @@ export function PartnerEditForm({
         <Input name="url" id="edit-url" type="url" defaultValue={partner.url} required />
       </Field>
 
+      <Field label="WhatsApp" name="whatsappNumber" optional hint="Informe DDI e DDD. Ex.: 5591999999999.">
+        <Input name="whatsappNumber" id="edit-whatsappNumber" type="tel" inputMode="tel" autoComplete="tel" defaultValue={partner.whatsappNumber ?? ""} />
+      </Field>
+
       <Field
         label="Foto ou logo"
         name="logoUrl"

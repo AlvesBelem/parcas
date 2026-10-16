@@ -1,5 +1,13 @@
 import { z } from "zod";
 
+import { isValidWhatsAppNumber, normalizeWhatsAppNumber } from "@/lib/whatsapp";
+
+const optionalWhatsAppNumber = z
+  .string()
+  .optional()
+  .transform(normalizeWhatsAppNumber)
+  .refine(isValidWhatsAppNumber, "Informe o WhatsApp com DDI e DDD. Ex.: 5591999999999.");
+
 export const createPartnerSchema = z.object({
   name: z
     .string({ required_error: "Informe o nome da loja." })
@@ -11,6 +19,7 @@ export const createPartnerSchema = z.object({
   url: z
     .string({ required_error: "Informe o link da loja." })
     .url("Use um link valido para a loja parceira."),
+  whatsappNumber: optionalWhatsAppNumber,
   logoUrl: z
     .string({ required_error: "Informe o caminho ou link da foto." })
     .min(2, "Informe o caminho ou link completo da imagem.")

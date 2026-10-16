@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, ExternalLink, Wrench } from "lucide-react";
+import { ArrowUpRight, ExternalLink, MessageCircle, Wrench } from "lucide-react";
 
 import type { ServiceSummary } from "@/lib/data/services";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 type ServiceCardProps = {
   service: ServiceSummary;
@@ -10,6 +11,7 @@ type ServiceCardProps = {
 
 export function ServiceCard({ service }: ServiceCardProps) {
   const image = service.imageUrl || "/logo_cpad_belem.svg";
+  const whatsappHref = getWhatsAppLink(service.whatsappNumber, "service");
   return (
     <article className="group flex h-full flex-col overflow-hidden border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-raised)]">
       <Link href={`/servicos/${service.slug}`} className="relative flex h-40 items-center justify-center bg-[var(--color-surface-warm)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-[var(--color-focus)]">
@@ -22,6 +24,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
         <div className="mt-auto grid grid-cols-2 gap-2 pt-6">
           <Link href={`/servicos/${service.slug}`} className="inline-flex min-h-10 items-center justify-center gap-1 text-xs font-bold text-[var(--color-wine)] underline decoration-[var(--color-gold)] underline-offset-4 hover:text-[var(--color-wine-dark)]">Detalhes <ArrowUpRight className="h-3.5 w-3.5" aria-hidden /></Link>
           <Link href={`/out/service/${service.slug}`} prefetch={false} className="inline-flex min-h-10 items-center justify-center gap-1 bg-[var(--color-wine)] px-3 text-xs font-bold text-white transition hover:bg-[var(--color-wine-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">{service.ctaLabel || "Conhecer serviço"}<ExternalLink className="h-3.5 w-3.5" aria-hidden /></Link>
+          {whatsappHref ? <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="col-span-2 inline-flex min-h-10 items-center justify-center gap-1.5 bg-[#25D366] px-3 text-xs font-bold text-[#073B23] transition hover:bg-[#1EBE5D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Falar no WhatsApp <MessageCircle className="h-3.5 w-3.5" aria-hidden /></a> : null}
         </div>
       </div>
     </article>

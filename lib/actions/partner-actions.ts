@@ -50,6 +50,7 @@ export async function createPartner(
       data: {
         name: parsed.data.name,
         url: parsed.data.url,
+        whatsappNumber: parsed.data.whatsappNumber,
         logoUrl: parsed.data.logoUrl,
         description: parsed.data.description,
         category: category.name,
@@ -58,7 +59,9 @@ export async function createPartner(
     });
 
     revalidatePath("/");
+    revalidatePath("/parceiros");
     revalidatePath("/admin");
+    revalidatePath("/admin/partners");
 
     return {
       ok: true,
@@ -82,6 +85,7 @@ function extractFormValues(formData: FormData): CreatePartnerInput {
     name: String(formData.get("name") || ""),
     categoryId: String(formData.get("categoryId") || ""),
     url: String(formData.get("url") || ""),
+    whatsappNumber: String(formData.get("whatsappNumber") || ""),
     logoUrl: String(formData.get("logoUrl") || ""),
     description: formData.get("description")?.toString(),
   };
@@ -129,6 +133,7 @@ export async function updatePartner(
       data: {
         name: parsed.data.name,
         url: parsed.data.url,
+        whatsappNumber: parsed.data.whatsappNumber,
         logoUrl: parsed.data.logoUrl,
         description: parsed.data.description,
         category: category.name,
@@ -137,6 +142,7 @@ export async function updatePartner(
     });
 
     revalidatePath("/");
+    revalidatePath("/parceiros");
     revalidatePath("/admin/partners");
     revalidatePath("/admin/overview");
 
@@ -177,6 +183,7 @@ export async function togglePartnerStatus(formData: FormData) {
     });
 
     revalidatePath("/");
+    revalidatePath("/parceiros");
     revalidatePath("/admin/partners");
     revalidatePath("/admin/overview");
   } catch (error) {
@@ -208,6 +215,7 @@ export async function deletePartner(formData: FormData) {
   }
 
   revalidatePath("/");
+  revalidatePath("/parceiros");
   revalidatePath("/admin/partners");
   revalidatePath("/admin/overview");
 }
