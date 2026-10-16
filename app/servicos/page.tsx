@@ -89,7 +89,7 @@ export default async function ServicesPage({ searchParams }: { searchParams?: Se
         />
         {result.services.length ? (
           <>
-            <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="mx-1.5 mt-6 grid gap-5 sm:mx-0 sm:grid-cols-2 xl:grid-cols-3">
               {pageServices.map((service) => <ServiceCard key={service.id} service={service} featured={featuredServiceIds.has(service.id)} />)}
             </div>
             <div className="mt-9 flex justify-center sm:justify-start">

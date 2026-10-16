@@ -151,7 +151,7 @@ export default async function PartnersDirectoryPage({ searchParams }: { searchPa
         />
         {pageEntries.length ? (
           <>
-            <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="mx-1.5 mt-6 grid gap-5 sm:mx-0 sm:grid-cols-2 xl:grid-cols-3">
               {pageEntries.map((entry) => <CatalogCard key={`${entry.kind}-${entry.item.id}`} entry={entry} featured={isFeaturedCatalogEntry(entry, featuredTargetKeys)} />)}
             </div>
             <div className="mt-9 flex justify-center sm:justify-start">

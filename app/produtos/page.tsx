@@ -90,7 +90,7 @@ export default async function ProductsCatalogPage({ searchParams }: { searchPara
         />
         {result.products.length ? (
           <>
-            <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="mx-1.5 mt-6 grid gap-5 sm:mx-0 sm:grid-cols-2 xl:grid-cols-3">
               {pageProducts.map((product) => <ProductCard key={product.id} product={product} featured={featuredProductIds.has(product.id)} />)}
             </div>
             <div className="mt-9 flex justify-center sm:justify-start">
