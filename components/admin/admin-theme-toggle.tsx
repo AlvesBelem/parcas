@@ -36,7 +36,8 @@ function getSavedTheme(): AdminTheme {
 function applyTheme(theme: AdminTheme) {
   document.documentElement.setAttribute("data-admin-theme", theme);
   document.getElementById(ADMIN_THEME_ROOT_ID)?.setAttribute("data-admin-theme", theme);
-  document.cookie = `${ADMIN_THEME_COOKIE_KEY}=${theme}; Path=/admin; Max-Age=31536000; SameSite=Lax`;
+  const secure = window.location.protocol === "https:" ? "; Secure" : "";
+  document.cookie = `${ADMIN_THEME_COOKIE_KEY}=${theme}; Path=/admin; Max-Age=31536000; SameSite=Lax${secure}`;
 
   try {
     window.localStorage.setItem(ADMIN_THEME_STORAGE_KEY, theme);

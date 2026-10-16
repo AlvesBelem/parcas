@@ -1,3 +1,5 @@
+import { getSafeExternalUrl } from "@/lib/url-security";
+
 const FALLBACK_SITE_URL = "https://parceiros.cpadbelem.com.br";
 
 function normalizeSiteUrl(value: string | undefined) {
@@ -31,13 +33,7 @@ export function absoluteUrl(path = "/") {
 }
 
 export function urlOrAbsoluteUrl(value: string | null | undefined, fallbackPath: string) {
-  if (!value) return absoluteUrl(fallbackPath);
-
-  try {
-    return new URL(value, siteUrl).toString();
-  } catch {
-    return absoluteUrl(fallbackPath);
-  }
+  return getSafeExternalUrl(value)?.toString() ?? absoluteUrl(fallbackPath);
 }
 
 export function metaDescription(value: string | null | undefined, fallback: string) {

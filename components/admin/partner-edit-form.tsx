@@ -43,10 +43,6 @@ export function PartnerEditForm({
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
 
   useEffect(() => {
-    setSelectedCategory(initialCategory);
-  }, [initialCategory]);
-
-  useEffect(() => {
     if (state.ok) {
       onSuccess?.();
     }

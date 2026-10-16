@@ -1,11 +1,12 @@
 import { z } from "zod";
 
 import { isValidWhatsAppNumber, normalizeWhatsAppNumber } from "@/lib/whatsapp";
+import { isSafeExternalUrl, isSafeImageSource } from "@/lib/url-security";
 
 const optionalImage = z
   .string()
   .trim()
-  .refine((value) => !value || value.startsWith("/") || /^https?:\/\//i.test(value), "Use uma URL HTTPS/HTTP ou caminho iniciado com /.")
+  .refine((value) => !value || isSafeImageSource(value), "Use uma URL HTTPS ou caminho local iniciado com /.")
   .optional()
   .transform((value) => value || undefined);
 
@@ -18,7 +19,7 @@ const optionalWhatsAppNumber = z
 export const serviceSchema = z.object({
   name: z.string().trim().min(3, "Informe o nome do serviço.").max(160, "Use no máximo 160 caracteres."),
   categoryId: z.string().cuid("Selecione uma categoria válida."),
-  url: z.string().trim().url("Use um link válido para o serviço."),
+  url: z.string().trim().url("Use um link válido para o serviço.").refine(isSafeExternalUrl, "Use um link HTTP ou HTTPS válido para o serviço."),
   whatsappNumber: optionalWhatsAppNumber,
   imageUrl: optionalImage,
   ctaLabel: z.string().trim().max(80, "Use no máximo 80 caracteres.").optional().transform((value) => value || "Conhecer serviço"),

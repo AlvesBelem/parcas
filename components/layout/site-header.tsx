@@ -3,6 +3,7 @@
 import { type FormEvent, useId, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Heart, Menu, Search, UserRound, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -147,6 +148,7 @@ function DirectorySearch({
   onNavigate?: () => void;
 }) {
   const searchId = useId();
+  const router = useRouter();
   const [destination, setDestination] = useState<SearchDestination>("parceiros");
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -154,7 +156,7 @@ function DirectorySearch({
     const query = String(new FormData(event.currentTarget).get("q") ?? "").trim();
     const search = new URLSearchParams(query ? { q: query } : {}).toString();
 
-    window.location.assign(`${searchDestinations[destination]}${search ? `?${search}` : ""}`);
+    router.push(`${searchDestinations[destination]}${search ? `?${search}` : ""}`);
     onNavigate?.();
   }
 

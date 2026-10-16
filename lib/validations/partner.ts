@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { isValidWhatsAppNumber, normalizeWhatsAppNumber } from "@/lib/whatsapp";
+import { isSafeExternalUrl, isSafeImageSource } from "@/lib/url-security";
 
 const optionalWhatsAppNumber = z
   .string()
@@ -18,14 +19,15 @@ export const createPartnerSchema = z.object({
     .cuid("Selecione uma categoria valida."),
   url: z
     .string({ required_error: "Informe o link da loja." })
-    .url("Use um link valido para a loja parceira."),
+    .url("Use um link valido para a loja parceira.")
+    .refine(isSafeExternalUrl, "Use um link HTTP ou HTTPS valido para a loja parceira."),
   whatsappNumber: optionalWhatsAppNumber,
   logoUrl: z
     .string({ required_error: "Informe o caminho ou link da foto." })
     .min(2, "Informe o caminho ou link completo da imagem.")
-    .refine(isValidLogoSource, {
+    .refine(isSafeImageSource, {
       message:
-        "Use um link HTTPS completo ou um caminho relativo iniciado com / apontando para a pasta public.",
+        "Use um link HTTPS completo ou um caminho local iniciado com / apontando para a pasta public.",
     }),
   description: z
     .string()
@@ -42,15 +44,3 @@ export const updatePartnerSchema = createPartnerSchema.extend({
 });
 
 export type UpdatePartnerInput = z.infer<typeof updatePartnerSchema>;
-
-function isValidLogoSource(value: string) {
-  if (value.startsWith("/")) {
-    return true;
-  }
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" || url.protocol === "http:";
-  } catch {
-    return false;
-  }
-}

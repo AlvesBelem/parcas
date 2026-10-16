@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { DM_Sans, Fraunces, Geist_Mono } from "next/font/google";
@@ -96,13 +96,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
+  const requestHeaders = await headers();
+  const nonce = requestHeaders.get("x-nonce") ?? undefined;
   const cookieTheme = cookieStore.get("cpad-admin-theme")?.value;
   const adminTheme = cookieTheme === "dark" || cookieTheme === "light" ? cookieTheme : undefined;
 
   return (
     <html lang="pt-BR" data-admin-theme={adminTheme}>
       <body className={`${sans.variable} ${heading.variable} ${geistMono.variable} antialiased`}>
-        <Script id="admin-theme-bootstrap" strategy="beforeInteractive">
+        <Script id="admin-theme-bootstrap" strategy="beforeInteractive" nonce={nonce}>
           {adminThemeBootstrap}
         </Script>
         <JsonLd

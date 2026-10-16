@@ -208,7 +208,7 @@ export function ProductForm({ categories }: ProductFormProps) {
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp"
           multiple
           className="hidden"
           onChange={(event) => event.target.files && handleUpload(event.target.files)}

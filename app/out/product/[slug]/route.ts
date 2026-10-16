@@ -6,6 +6,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 import { startOfDay } from "@/lib/start-of-day";
+import { getSafeExternalUrl } from "@/lib/url-security";
 
 export async function GET(
   req: NextRequest,
@@ -25,7 +26,8 @@ export async function GET(
       select: { id: true, url: true },
     });
 
-    if (!product?.url || !product.id) {
+    const url = getSafeExternalUrl(product?.url);
+    if (!product?.id || !url) {
       throw new Error("Product not found");
     }
 
@@ -53,7 +55,7 @@ export async function GET(
       ]);
     }
 
-    return NextResponse.redirect(product.url, { status: 302 });
+    return NextResponse.redirect(url, { status: 302 });
   } catch (error) {
     console.error("Erro ao registrar clique de produto", { slug, error });
   }

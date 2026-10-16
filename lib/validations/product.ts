@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { isValidWhatsAppNumber, normalizeWhatsAppNumber } from "@/lib/whatsapp";
+import { isSafeExternalUrl, isSafeImageSource } from "@/lib/url-security";
 
 const optionalWhatsAppNumber = z
   .string()
@@ -13,9 +14,9 @@ const imageSchema = z
     z
       .string()
       .min(2, "Informe o link da imagem.")
-      .refine(isValidImageSource, {
+      .refine(isSafeImageSource, {
         message:
-          "Use um link HTTPS completo ou um caminho relativo iniciado com / apontando para a pasta public.",
+          "Use um link HTTPS completo ou um caminho local iniciado com / apontando para a pasta public.",
       }),
   )
   .min(1, "Informe pelo menos uma imagem.")
@@ -35,7 +36,8 @@ export const createProductSchema = z.object({
     .max(80, "A plataforma pode ter no maximo 80 caracteres."),
   url: z
     .string({ required_error: "Informe o link do produto." })
-    .url("Use um link valido para o produto."),
+    .url("Use um link valido para o produto.")
+    .refine(isSafeExternalUrl, "Use um link HTTP ou HTTPS valido para o produto."),
   whatsappNumber: optionalWhatsAppNumber,
   imageUrls: imageSchema,
   ctaLabel: z
@@ -65,15 +67,3 @@ export const updateProductSchema = createProductSchema.extend({
 
 export type CreateProductInput = z.infer<typeof createProductSchema>;
 export type UpdateProductInput = z.infer<typeof updateProductSchema>;
-
-function isValidImageSource(value: string) {
-  if (value.startsWith("/")) {
-    return true;
-  }
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" || url.protocol === "http:";
-  } catch {
-    return false;
-  }
-}
