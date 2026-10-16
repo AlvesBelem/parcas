@@ -29,7 +29,7 @@ export function WhatsAppPartnerCta() {
 }
 
 function isPublicCatalogRoute(pathname: string) {
-  return ["/", "/parceiros", "/produtos", "/servicos"].some(
+  return ["/", "/parceiros", "/produtos", "/servicos", "/seja-um-parceiro"].some(
     (route) => pathname === route || (route !== "/" && pathname.startsWith(`${route}/`)),
   );
 }

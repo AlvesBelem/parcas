@@ -20,7 +20,7 @@ const navigation = [
   { href: "/produtos", label: "Produtos", pending: false },
   { href: "/servicos", label: "Serviços", pending: false },
   { label: "Sobre o Programa", pending: true },
-  { label: "Como Funciona", pending: true },
+  { href: "/seja-um-parceiro", label: "Como Funciona", pending: false },
   { label: "Dúvidas", pending: true },
   { label: "Contato", pending: true },
 ] as const;
@@ -64,12 +64,12 @@ export function SiteHeader() {
             <UserRound className="h-5 w-5 text-[var(--color-wine)]" aria-hidden />
             Área administrativa
           </Link>
-          <a
-            href="mailto:parcerias@cpadbelem.com.br?subject=Quero%20ser%20um%20parceiro"
+          <Link
+            href="/seja-um-parceiro"
             className="ml-2 inline-flex min-h-10 items-center rounded-lg bg-[linear-gradient(135deg,var(--color-gold),#9C671E)] px-5 text-sm font-bold text-white shadow-[0_8px_20px_rgba(156,103,30,0.24)] transition hover:-translate-y-0.5 hover:brightness-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
           >
             Seja um Parceiro
-          </a>
+          </Link>
         </div>
 
         <button
@@ -125,12 +125,13 @@ export function SiteHeader() {
             >
               <UserRound className="h-4 w-4" aria-hidden /> Área admin
             </Link>
-            <a
-              href="mailto:parcerias@cpadbelem.com.br?subject=Quero%20ser%20um%20parceiro"
+            <Link
+              href="/seja-um-parceiro"
+              onClick={() => setIsMenuOpen(false)}
               className="inline-flex min-h-11 items-center justify-center rounded-lg bg-[var(--color-gold)] px-3 text-sm font-bold text-white"
             >
               Seja um Parceiro
-            </a>
+            </Link>
           </div>
         </div>
       </div>
