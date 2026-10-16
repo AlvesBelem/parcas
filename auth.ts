@@ -17,6 +17,11 @@ const authResult = NextAuth({
     }),
   ],
   callbacks: {
+    async signIn({ user }) {
+      // A conta precisa ser autorizada antes de criar um usuário ou uma sessão.
+      // Ao negar, retornamos para a vitrine sem exibir a tela de erro do provedor.
+      return isAdminEmail(user.email) || "/parceiros";
+    },
     async session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;

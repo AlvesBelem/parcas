@@ -34,7 +34,7 @@ export default async function AdminLayout({
   }
 
   if (!isAdminEmail(session.user?.email)) {
-    redirect("/acesso-negado");
+    redirect("/parceiros");
   }
 
   async function handleSignOut() {
