@@ -6,6 +6,7 @@ import { isAdminEmail } from "@/lib/auth-helpers";
 import { Button } from "@/components/ui/button";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { AdminMobileMenu } from "@/components/admin/admin-mobile-menu";
+import { AdminThemeToggle } from "@/components/admin/admin-theme-toggle";
 
 const navItems = [
   { label: "Visão geral", href: "/admin/overview", icon: "overview" },
@@ -36,7 +37,7 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="-mx-4 -mt-8 min-h-full bg-(--color-surface) sm:-mx-6 sm:-mt-10 lg:-mx-8 lg:-mt-12">
+    <div id="admin-theme-root" className="-mx-4 -mt-8 min-h-full bg-(--color-surface) sm:-mx-6 sm:-mt-10 lg:-mx-8 lg:-mt-12">
       <div className="border-b border-white/15 bg-(--color-wine-dark) text-white">
         <div className="mx-auto flex max-w-360 items-center justify-between gap-4 px-4 py-5 sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-3">
@@ -48,11 +49,14 @@ export default async function AdminLayout({
               <p className="truncate font-(family-name:--font-playfair) text-xl">Administração CPAD Belém</p>
             </div>
           </div>
-          <form action={handleSignOut}>
-            <Button type="submit" variant="secondary" size="sm" className="border-white/25 bg-transparent text-white hover:border-white hover:bg-white/10">
-              Sair
-            </Button>
-          </form>
+          <div className="flex shrink-0 items-center gap-2">
+            <AdminThemeToggle />
+            <form action={handleSignOut}>
+              <Button type="submit" variant="secondary" size="sm" className="border-white/25 bg-transparent text-white hover:border-white hover:bg-white/10">
+                Sair
+              </Button>
+            </form>
+          </div>
         </div>
       </div>
 

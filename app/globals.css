@@ -64,6 +64,77 @@ body {
   color: var(--color-wine-dark);
 }
 
+/* O tema é delimitado ao conteúdo administrativo para não interferir no catálogo público. */
+[data-admin-theme="light"] {
+  color-scheme: light;
+  --color-wine: #750b2a;
+  --color-wine-dark: #51071f;
+  --color-gold: #c3944d;
+  --color-gold-light: #f1c77d;
+  --color-canvas: #ffffff;
+  --color-surface: #f8f7f5;
+  --color-surface-warm: #f4eee7;
+  --color-text: #202020;
+  --color-text-muted: #666666;
+  --color-text-subtle: #8a817a;
+  --color-border: #e8e4e0;
+  --color-border-strong: #d7d0c9;
+  --color-focus: #a96e1c;
+  --shadow-card: 0 12px 28px rgba(58, 35, 25, 0.08);
+  --shadow-raised: 0 20px 48px rgba(58, 35, 25, 0.13);
+}
+
+[data-admin-theme="dark"] {
+  color-scheme: dark;
+  --color-wine: #8d1839;
+  --color-wine-dark: #3d0718;
+  --color-gold: #c99d5b;
+  --color-gold-light: #f1cc88;
+  --color-canvas: #211b1a;
+  --color-surface: #141112;
+  --color-surface-warm: #2b211f;
+  --color-text: #faf4ef;
+  --color-text-muted: #d5c7bd;
+  --color-text-subtle: #b3a198;
+  --color-border: #4f403b;
+  --color-border-strong: #705c54;
+  --color-focus: #f1cc88;
+  --shadow-card: 0 14px 30px rgba(0, 0, 0, 0.42);
+  --shadow-raised: 0 24px 52px rgba(0, 0, 0, 0.56);
+}
+
+[data-admin-theme="dark"] .bg-white:not(.bg-transparent) {
+  background-color: var(--color-canvas);
+}
+
+[data-admin-theme="dark"] [class*="bg-[#fff8f3]"] {
+  background-color: var(--color-surface-warm);
+}
+
+[data-admin-theme="dark"] [class*="border-[#eaded5]"] {
+  border-color: var(--color-border);
+}
+
+[data-admin-theme="dark"] [class*="text-[#2f1d15]"],
+[data-admin-theme="dark"] [class*="text-[#3f2b22]"] {
+  color: var(--color-text);
+}
+
+[data-admin-theme="dark"] [class*="text-[#7a5a4b]"],
+[data-admin-theme="dark"] [class*="text-[#a38271]"] {
+  color: var(--color-text-muted);
+}
+
+[data-admin-theme="dark"] [class*="text-[#b02b24]"] {
+  color: #ffb5c3;
+}
+
+[data-admin-theme="dark"] .admin-list-actions > button,
+[data-admin-theme="dark"] .admin-list-actions > form > button,
+[data-admin-theme="dark"] .admin-list-actions > a {
+  color: #ffffff;
+}
+
 @keyframes whatsapp-partner-pulse {
   0%,
   78%,

@@ -53,7 +53,7 @@ export function PartnerGrid({ partners, onEdit, featuredBanners, onFeature }: Pa
                 <span>{partner.clickCount} cliques externos registrados</span>
               </div>
             </div>
-            <div className="flex flex-wrap gap-2 xl:justify-end">
+            <div className="admin-list-actions flex flex-wrap gap-2 xl:justify-end">
               <Button type="button" variant="secondary" size="sm" onClick={() => onEdit(partner)}><Pencil className="h-3.5 w-3.5" aria-hidden /> Editar</Button>
               <Button type="button" variant="secondary" size="sm" onClick={() => onFeature({ targetType: "PARTNER", targetId: partner.id, name: partner.name }, bannerSchedule)} disabled={!partner.active && !bannerSchedule}><Sparkles className="h-3.5 w-3.5" aria-hidden /> {bannerSchedule ? "Banner agendado" : "Adicionar ao banner"}</Button>
               <form action={togglePartnerStatus}>

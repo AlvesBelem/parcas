@@ -53,7 +53,7 @@ export function ServiceGrid({
                 <p className="mt-2 line-clamp-2 text-sm leading-6 text-[var(--color-text-muted)]">{service.description ?? "Sem descrição cadastrada."}</p>
                 <div className="mt-3 text-xs text-[var(--color-text-subtle)]">{service.clickCount} cliques externos registrados</div>
               </div>
-              <div className="flex flex-wrap gap-2 xl:justify-end">
+              <div className="admin-list-actions flex flex-wrap gap-2 xl:justify-end">
                 <Button type="button" variant="secondary" size="sm" onClick={() => onEdit(service)}><Pencil className="h-3.5 w-3.5" aria-hidden />Editar</Button>
                 <Button type="button" variant="secondary" size="sm" onClick={() => onFeature({ targetType: "SERVICE", targetId: service.id, name: service.name }, bannerSchedule)} disabled={!service.active && !bannerSchedule}><Sparkles className="h-3.5 w-3.5" aria-hidden />{bannerSchedule ? "Banner agendado" : "Adicionar ao banner"}</Button>
                 <form action={toggleServiceStatus}>

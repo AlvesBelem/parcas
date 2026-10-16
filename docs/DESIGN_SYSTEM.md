@@ -4,7 +4,7 @@
 
 ## Direção visual
 
-Institucional editorial: vinho profundo para confiança e pertencimento, dourado reservado para chamadas de valor e uma base branca/areia para leitura comercial. Títulos usam Playfair Display; interfaces, Manrope. A linguagem evita fundos decorativos e excesso de bordas arredondadas.
+Institucional editorial: vinho profundo para confiança e pertencimento, dourado reservado para chamadas de valor e uma base branca/areia para leitura comercial. Títulos usam Fraunces; interfaces, DM Sans. A linguagem evita fundos decorativos e excesso de bordas arredondadas.
 
 ## Tokens
 
