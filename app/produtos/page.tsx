@@ -10,21 +10,28 @@ import {
 import { ProductCard } from "@/components/catalog/product-card";
 import { PaginationControls } from "@/components/home/pagination-controls";
 import { fetchProductCategoryOptions } from "@/lib/data/product-categories";
-import { DEFAULT_PRODUCT_PAGE_SIZE, fetchPartnerProducts } from "@/lib/data/products";
+import { fetchPartnerProducts } from "@/lib/data/products";
+import { fetchActiveFeaturedBanners, getFeaturedTargetIds, prioritizeFeatured } from "@/lib/data/featured-banners";
 
 type SearchParams = Record<string, string | string[] | undefined> | Promise<Record<string, string | string[] | undefined>>;
+const PRODUCTS_PER_PAGE = 50;
+const CATALOG_FETCH_LIMIT = 1000;
 
 export default async function ProductsCatalogPage({ searchParams }: { searchParams?: SearchParams }) {
   const params = await resolveSearchParams(searchParams);
   const categorySlug = (getParam(params.category) ?? getParam(params.productCategory))?.trim() || undefined;
   const search = getParam(params.q)?.trim().slice(0, 100) || undefined;
   const page = parsePage(getParam(params.page));
-  const [categories, result] = await Promise.all([
+  const [categories, result, featuredBanners] = await Promise.all([
     fetchProductCategoryOptions(),
-    fetchPartnerProducts({ page, perPage: DEFAULT_PRODUCT_PAGE_SIZE, categorySlug, search }),
+    fetchPartnerProducts({ page: 1, perPage: CATALOG_FETCH_LIMIT, categorySlug, search }),
+    fetchActiveFeaturedBanners(),
   ]);
   const selectedCategory = categories.find((category) => category.slug === categorySlug);
-  const totalPages = Math.ceil(result.total / DEFAULT_PRODUCT_PAGE_SIZE);
+  const featuredProductIds = getFeaturedTargetIds(featuredBanners, "PRODUCT");
+  const products = prioritizeFeatured(result.products, featuredProductIds);
+  const totalPages = Math.ceil(result.total / PRODUCTS_PER_PAGE);
+  const pageProducts = products.slice((page - 1) * PRODUCTS_PER_PAGE, page * PRODUCTS_PER_PAGE);
   const hasFilters = Boolean(categorySlug || search);
 
   return (
@@ -63,10 +70,10 @@ export default async function ProductsCatalogPage({ searchParams }: { searchPara
         {result.products.length ? (
           <>
             <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-              {result.products.map((product) => <ProductCard key={product.id} product={product} />)}
+              {pageProducts.map((product) => <ProductCard key={product.id} product={product} featured={featuredProductIds.has(product.id)} />)}
             </div>
             <div className="mt-9 flex justify-center sm:justify-start">
-              <PaginationControls page={result.page} totalPages={totalPages} buildHref={(nextPage) => buildPageHref({ categorySlug, search, page: nextPage })} />
+              <PaginationControls page={page} totalPages={totalPages} buildHref={(nextPage) => buildPageHref({ categorySlug, search, page: nextPage })} />
             </div>
           </>
         ) : (

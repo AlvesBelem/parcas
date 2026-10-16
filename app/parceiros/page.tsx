@@ -32,7 +32,7 @@ type CatalogEntry =
   | { kind: "products"; item: PartnerProductSummary }
   | { kind: "services"; item: ServiceSummary };
 
-const CATALOG_PAGE_SIZE = 12;
+const CATALOG_PAGE_SIZE = 50;
 const CATALOG_FETCH_LIMIT = 1000;
 
 const typeOptions = [
@@ -83,8 +83,10 @@ export default async function PartnersDirectoryPage({ searchParams }: { searchPa
   const categoryOptions = createCategoryOptions(partnerCategories, productCategories, serviceCategories);
   const selectedCategory = categoryOptions.find((category) => category.slug === getParam(params.category));
   const entries = createCatalogEntries({ type, categoryFilter, partnerResult: partnerResult.partners, productResult: productResult.products, serviceResult: serviceResult.services });
-  const totalPages = Math.ceil(entries.length / CATALOG_PAGE_SIZE);
-  const pageEntries = entries.slice((page - 1) * CATALOG_PAGE_SIZE, page * CATALOG_PAGE_SIZE);
+  const featuredTargetKeys = new Set(featuredBanners.map((banner) => `${banner.targetType}:${banner.targetId}`));
+  const orderedEntries = prioritizeCatalogEntries(entries, featuredTargetKeys);
+  const totalPages = Math.ceil(orderedEntries.length / CATALOG_PAGE_SIZE);
+  const pageEntries = orderedEntries.slice((page - 1) * CATALOG_PAGE_SIZE, page * CATALOG_PAGE_SIZE);
   const hasFilters = Boolean(search || type !== "all" || categoryFilter);
 
   return (
@@ -129,7 +131,7 @@ export default async function PartnersDirectoryPage({ searchParams }: { searchPa
         {pageEntries.length ? (
           <>
             <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-              {pageEntries.map((entry) => <CatalogCard key={`${entry.kind}-${entry.item.id}`} entry={entry} />)}
+              {pageEntries.map((entry) => <CatalogCard key={`${entry.kind}-${entry.item.id}`} entry={entry} featured={isFeaturedCatalogEntry(entry, featuredTargetKeys)} />)}
             </div>
             <div className="mt-9 flex justify-center sm:justify-start">
               <PaginationControls page={page} totalPages={totalPages} buildHref={(nextPage) => buildPageHref({ search, type, category: getParam(params.category), page: nextPage })} />
@@ -149,14 +151,14 @@ export default async function PartnersDirectoryPage({ searchParams }: { searchPa
   );
 }
 
-function CatalogCard({ entry }: { entry: CatalogEntry }) {
+function CatalogCard({ entry, featured }: { entry: CatalogEntry; featured: boolean }) {
   switch (entry.kind) {
     case "partners":
-      return <PartnerCard partner={entry.item} />;
+      return <PartnerCard partner={entry.item} featured={featured} />;
     case "products":
-      return <ProductCard product={entry.item} />;
+      return <ProductCard product={entry.item} featured={featured} />;
     case "services":
-      return <ServiceCard service={entry.item} />;
+      return <ServiceCard service={entry.item} featured={featured} />;
   }
 }
 
@@ -180,7 +182,19 @@ function createCatalogEntries({
     ...(canInclude("services") ? serviceResult.map((item) => ({ kind: "services" as const, item })) : []),
   ];
 
-  return entries.sort((a, b) => b.item.createdAt.getTime() - a.item.createdAt.getTime());
+  return entries;
+}
+
+function prioritizeCatalogEntries(entries: CatalogEntry[], featuredTargetKeys: ReadonlySet<string>) {
+  return [...entries].sort((left, right) => {
+    const featuredDifference = Number(isFeaturedCatalogEntry(right, featuredTargetKeys)) - Number(isFeaturedCatalogEntry(left, featuredTargetKeys));
+    return featuredDifference || right.item.createdAt.getTime() - left.item.createdAt.getTime();
+  });
+}
+
+function isFeaturedCatalogEntry(entry: CatalogEntry, featuredTargetKeys: ReadonlySet<string>) {
+  const targetType = entry.kind === "partners" ? "PARTNER" : entry.kind === "products" ? "PRODUCT" : "SERVICE";
+  return featuredTargetKeys.has(`${targetType}:${entry.item.id}`);
 }
 
 function createCategoryOptions(

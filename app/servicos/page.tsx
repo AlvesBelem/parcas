@@ -10,22 +10,28 @@ import {
 import { ServiceCard } from "@/components/catalog/service-card";
 import { PaginationControls } from "@/components/home/pagination-controls";
 import { fetchServiceCategoryOptions, fetchServices } from "@/lib/data/services";
+import { fetchActiveFeaturedBanners, getFeaturedTargetIds, prioritizeFeatured } from "@/lib/data/featured-banners";
 
 type SearchParams = Record<string, string | string[] | undefined> | Promise<Record<string, string | string[] | undefined>>;
-const SERVICES_PER_PAGE = 12;
+const SERVICES_PER_PAGE = 50;
+const CATALOG_FETCH_LIMIT = 1000;
 
 export default async function ServicesPage({ searchParams }: { searchParams?: SearchParams }) {
   const params = await resolveSearchParams(searchParams);
   const categorySlug = getParam(params.category)?.trim() || undefined;
   const search = getParam(params.q)?.trim().slice(0, 100) || undefined;
   const page = parsePage(getParam(params.page));
-  const [categories, result] = await Promise.all([
+  const [categories, result, featuredBanners] = await Promise.all([
     fetchServiceCategoryOptions(),
-    fetchServices({ categorySlug, search, page, perPage: SERVICES_PER_PAGE }),
+    fetchServices({ categorySlug, search, page: 1, perPage: CATALOG_FETCH_LIMIT }),
+    fetchActiveFeaturedBanners(),
   ]);
   const selectedCategory = categories.find((category) => category.slug === categorySlug);
   const hasFilters = Boolean(categorySlug || search);
   const totalPages = Math.ceil(result.total / SERVICES_PER_PAGE);
+  const featuredServiceIds = getFeaturedTargetIds(featuredBanners, "SERVICE");
+  const services = prioritizeFeatured(result.services, featuredServiceIds);
+  const pageServices = services.slice((page - 1) * SERVICES_PER_PAGE, page * SERVICES_PER_PAGE);
 
   return (
     <div className="-mx-4 -mt-8 sm:-mx-6 sm:-mt-10 lg:-mx-8 lg:-mt-12">
@@ -63,10 +69,10 @@ export default async function ServicesPage({ searchParams }: { searchParams?: Se
         {result.services.length ? (
           <>
             <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-              {result.services.map((service) => <ServiceCard key={service.id} service={service} />)}
+              {pageServices.map((service) => <ServiceCard key={service.id} service={service} featured={featuredServiceIds.has(service.id)} />)}
             </div>
             <div className="mt-9 flex justify-center sm:justify-start">
-              <PaginationControls page={result.page} totalPages={totalPages} buildHref={(nextPage) => buildPageHref({ categorySlug, search, page: nextPage })} />
+              <PaginationControls page={page} totalPages={totalPages} buildHref={(nextPage) => buildPageHref({ categorySlug, search, page: nextPage })} />
             </div>
           </>
         ) : (

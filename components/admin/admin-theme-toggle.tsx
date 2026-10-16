@@ -73,7 +73,7 @@ export function AdminThemeToggle() {
       <button
         type="button"
         onClick={() => selectTheme("light")}
-        className={`inline-flex h-8 w-8 items-center justify-center rounded-md transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-gold-light)] ${theme === "light" ? "bg-[var(--color-gold-light)] text-[var(--color-wine-dark)] shadow-sm" : "text-white/75 hover:bg-white/10 hover:text-white"}`}
+        className={`inline-flex h-8 w-8 items-center justify-center rounded-md transition focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-(--color-gold-light) ${theme === "light" ? "bg-(--color-gold-light) text-(--color-wine-dark) shadow-sm" : "text-white/75 hover:bg-white/10 hover:text-white"}`}
         aria-label="Usar modo claro"
         aria-pressed={theme === "light"}
         title="Modo claro"
@@ -83,7 +83,7 @@ export function AdminThemeToggle() {
       <button
         type="button"
         onClick={() => selectTheme("dark")}
-        className={`inline-flex h-8 w-8 items-center justify-center rounded-md transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-gold-light)] ${theme === "dark" ? "bg-[var(--color-gold-light)] text-[var(--color-wine-dark)] shadow-sm" : "text-white/75 hover:bg-white/10 hover:text-white"}`}
+        className={`inline-flex h-8 w-8 items-center justify-center rounded-md transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-gold-light) ${theme === "dark" ? "bg-(--color-gold-light) text-(--color-wine-dark) shadow-sm" : "text-white/75 hover:bg-white/10 hover:text-white"}`}
         aria-label="Usar modo escuro"
         aria-pressed={theme === "dark"}
         title="Modo escuro"

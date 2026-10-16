@@ -14,6 +14,7 @@ export type FeaturedBannerSchedule = {
 export type FeaturedCatalogBanner = {
   id: string;
   targetType: FeaturedBannerTarget;
+  targetId: string;
   title: string;
   category: string;
   description: string | null;
@@ -72,6 +73,7 @@ async function resolveBannerContent({
       return {
         id,
         targetType,
+        targetId,
         title: partner.name,
         category: partner.category,
         description: partner.description,
@@ -89,6 +91,7 @@ async function resolveBannerContent({
       return {
         id,
         targetType,
+        targetId,
         title: product.name,
         category: product.category?.name ?? "Produto afiliado",
         description: product.description,
@@ -106,6 +109,7 @@ async function resolveBannerContent({
       return {
         id,
         targetType,
+        targetId,
         title: service.name,
         category: service.category.name,
         description: service.description,
@@ -115,4 +119,25 @@ async function resolveBannerContent({
       };
     }
   }
+}
+
+export function getFeaturedTargetIds(
+  banners: readonly FeaturedCatalogBanner[],
+  targetType: FeaturedBannerTarget,
+) {
+  return new Set(
+    banners
+      .filter((banner) => banner.targetType === targetType)
+      .map((banner) => banner.targetId),
+  );
+}
+
+export function prioritizeFeatured<T extends { id: string; createdAt: Date }>(
+  entries: readonly T[],
+  featuredTargetIds: ReadonlySet<string>,
+) {
+  return [...entries].sort((left, right) => {
+    const featuredDifference = Number(featuredTargetIds.has(right.id)) - Number(featuredTargetIds.has(left.id));
+    return featuredDifference || right.createdAt.getTime() - left.createdAt.getTime();
+  });
 }
